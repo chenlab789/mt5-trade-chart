@@ -91,7 +91,6 @@ table.t tr.click{cursor:pointer}table.t tr.click:hover td{background:#151517}
  <div class="seg" id="tf"><button data-tf="M15">15m</button><button data-tf="H1" class="on">1H</button><button data-tf="H4">4H</button><button data-tf="D1">1D</button></div>
  <div class="sp"></div>
  <div class="stats" id="stats"></div>
- <label class="stat" style="display:flex;align-items:center;gap:6px;padding:4px 10px" title="ทุนที่ใช้คิด % (ยิง lot ตายตัว)" data-en-title="Capital base for % (fixed lot)"><small style="display:inline" data-en="Capital $">ทุน $</small><input id="base" type="number" min="1" step="50" style="width:56px;background:transparent;border:0;color:var(--tx);font:600 14px Segoe UI;outline:0"></label>
  <div class="seg" id="mode" title="โหมด % ซ่อนตัวเลขเงินทั้งหมด ไว้แคปให้คนอื่นดู" data-en-title="% mode hides all dollar amounts for sharing"><button data-m="$" class="on" data-en="$ real">$ จริง</button><button data-m="%" data-en="% only">% อย่างเดียว</button></div>
  <div class="seg" id="lang"><button data-l="th">TH</button><button data-l="en">EN</button></div>
  <button class="btn" id="exp">Export PNG</button>
@@ -141,8 +140,8 @@ let MODE='$';try{MODE=localStorage.getItem('xau-mode')||'$'}catch(e){}
 // ================= คำนวณ =================
 const DIR=t=>t.side==='buy'?1:-1, mv=t=>(t.exit-t.entry)*DIR(t), ppt=t=>t.vol*ACCT.csize;
 const CLOSED=TRADES.filter(t=>!t.open).sort((a,b)=>a.t1-b.t1), OPEN=TRADES.filter(t=>t.open);
-// % = เทียบทุนตั้งต้นตายตัว (ยิง lot ตายตัว -> TWR ใช้ไม่ได้ เพราะ balance แกว่งจากการโอนเข้า/ออก)
-let BASE=300;try{BASE=+localStorage.getItem('xau-base')||300}catch(e){}
+// % = เทียบยอดฝากรวม ไม่ทบต้น (ยิง lot ตายตัว -> TWR ใช้ไม่ได้ เพราะ balance แกว่งจากการโอนเข้า/ออก)
+const BASE=Math.max(1,CASH.filter(c=>c.amt>0).reduce((a,c)=>a+c.amt,0)); // ฐาน % = ยอดฝากเข้ารวม (คิดอัตโนมัติ)
 const calcAP=()=>TRADES.forEach(t=>{t.ap=t.profit/BASE*100});calcAP();
 const BIG=0.5; // ขาดทุนเกินกี่ % ของราคาทอง โดยไม่โดน SL = หลุดไม่มีเบรก
 const pp=(x,t)=>x/t.entry*100; // ระยะราคา -> % ของราคาทอง
@@ -253,7 +252,7 @@ function showCard(t){const c=$('#card');if(!t){c.style.display='none';return}
  if(t.comment&&t.comment!=='OPEN')rows.push([tx('หมายเหตุ','Note'),t.comment]);
  c.innerHTML=`<div class="hd"><span><span class="tag ${t.side}">${t.side.toUpperCase()}</span> <span class="m">#${t.id}</span>${t.flags.map(f=>`<span class="flag">${FL(f)}</span>`).join('')}</span><button class="x" onclick="select(null)">✕</button></div>
   <table class="num">${rows.map(([k,v])=>`<tr><td class="m">${k}</td><td>${v}</td></tr>`).join('')}</table>
-  <div class="pl num ${cls(t.profit)}">${$Ms(t.profit,t.ap)} <span style="font-size:12px" class="m">${MODE==='$'?`(${sg(t.ap)}% ${tx('ของทุน','of capital')})`:tx('ของทุน','of capital')}</span></div>`;
+  <div class="pl num ${cls(t.profit)}">${$Ms(t.profit,t.ap)} <span style="font-size:12px" class="m">${MODE==='$'?`(${sg(t.ap)}% ${tx('ของเงินฝาก','of deposits')})`:tx('ของเงินฝาก','of deposits')}</span></div>`;
  c.style.display='block'}
 
 let F='all';
@@ -261,7 +260,7 @@ const pass=t=>F==='all'||(F==='win'&&t.profit>0)||(F==='loss'&&t.profit<=0)||(F=
 function renderList(){const L=[...TRADES].reverse().filter(pass);$('#count').textContent=L.length+tx(' ไม้',' trades');
  $('#list').innerHTML=L.map(t=>`<div class="row${sel===t?' on':''}" data-id="${t.id}"><span class="tag ${t.side}">${t.side.toUpperCase()}</span>
   <div class="num">${fmt(t.entry)} → ${fmt(t.exit)}${t.open?'<span class="live">● LIVE</span>':''}${t.flags.length?'<span class="flag">⚠</span>':''}<small>${dts(t.t0)} · ${dur(t.t1-t.t0)}</small></div>
-  <div class="pl num ${cls(t.profit)}">${$Ms(t.profit,t.ap)}<small>${MODE==='$'?sg(t.ap)+tx('% ทุน','% cap'):tx('ราคา ','price ')+sg(t.pct)+'%'}</small></div></div>`).join('')}
+  <div class="pl num ${cls(t.profit)}">${$Ms(t.profit,t.ap)}<small>${MODE==='$'?sg(t.ap)+tx('% เงินฝาก','% dep'):tx('ราคา ','price ')+sg(t.pct)+'%'}</small></div></div>`).join('')}
 $('#filters').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;F=b.dataset.f;$$('.chip').forEach(c=>c.classList.toggle('on',c===b));renderList()});
 $('#list').addEventListener('click',e=>{const r=e.target.closest('.row');if(r)select(TRADES.find(t=>t.id==r.dataset.id),true)});
 
@@ -310,7 +309,7 @@ function renderPerf(){
  const V=[];
  if(R.n&&P.n){
   const ex=`${sg(P.expP,3)}% → ${sg(R.expP,3)}%`;
-  V.push(R.expP>P.expP?`<b class="w">▲ ${tx('คาดหวังต่อไม้ดีขึ้น','Expectancy improved')}</b> ${tx(`จาก ${ex} ของทุนต่อไม้`,`from ${ex} of capital per trade`)}`:`<b class="l">▼ ${tx('คาดหวังต่อไม้แย่ลง','Expectancy dropped')}</b> ${tx(`จาก ${ex} ของทุนต่อไม้`,`from ${ex} of capital per trade`)}`);
+  V.push(R.expP>P.expP?`<b class="w">▲ ${tx('คาดหวังต่อไม้ดีขึ้น','Expectancy improved')}</b> ${tx(`จาก ${ex} ของเงินฝากต่อไม้`,`from ${ex} of deposits per trade`)}`:`<b class="l">▼ ${tx('คาดหวังต่อไม้แย่ลง','Expectancy dropped')}</b> ${tx(`จาก ${ex} ของเงินฝากต่อไม้`,`from ${ex} of deposits per trade`)}`);
   V.push(R.payoff>=P.payoff?`<b class="w">▲ Payoff</b> ${P.payoff.toFixed(2)} → ${R.payoff.toFixed(2)} — ${tx('ไม้ชนะใหญ่กว่าไม้แพ้มากขึ้น','winners getting bigger vs losers')}`:`<b class="l">▼ Payoff</b> ${P.payoff.toFixed(2)} → ${R.payoff.toFixed(2)} — ${tx('ไม้ชนะเล็กลงเทียบไม้แพ้','winners shrinking vs losers')}`);
  }
  if(R.n)V.push(R.cap<50?`<b class="wr">● ${tx('ยังออกไม้เร็ว','Still exiting early')}</b> ${tx(`ช่วงนี้ไม้ชนะเก็บได้เฉลี่ยแค่ ${R.cap.toFixed(0)}% ของระยะที่ตลาดเคยให้ (MFE)`,`winners kept only ${R.cap.toFixed(0)}% of the max move on average (MFE)`)}`:`<b class="w">● ${tx('ถือไม้ชนะได้ดี','Holding winners well')}</b> ${tx(`ช่วงนี้เก็บได้เฉลี่ย ${R.cap.toFixed(0)}% ของ MFE`,`kept ${R.cap.toFixed(0)}% of MFE on average`)}`);
@@ -362,7 +361,7 @@ function renderPerf(){
   </div><ul class="verdict">${V.map(v=>`<li>${v}</li>`).join('')}</ul></div>
 
  <div class="box c12"><h3>${tx('ภาพรวม','Overview')} · ${pr.l} <small>${A.n}${tx(' ไม้',' trades')} · ${dts(C[0].t1).split(' ')[1]} – ${dts(C[C.length-1].t1).split(' ')[1]}</small></h3><div class="kpis">
-  ${kpi(MODE==='$'?'Net P/L':tx('ผลตอบแทน','Return'),$Ms(A.net,A.netP),MODE==='$'?`${sg(A.netP)}% ${tx('ของทุน','of capital')} $${fmt(BASE,0)}`:tx('เทียบทุนตั้งต้น · ไม่ทบต้น','vs starting capital · non-compounded'),cls(A.net))}
+  ${kpi(MODE==='$'?'Net P/L':tx('ผลตอบแทน','Return'),$Ms(A.net,A.netP),MODE==='$'?`${sg(A.netP)}% ${tx('ของเงินฝาก','of deposits')} $${fmt(BASE,0)}`:tx('เทียบยอดฝากรวม · ไม่ทบต้น','vs total deposits · non-compounded'),cls(A.net))}
   ${kpi('Winrate',A.wr.toFixed(1)+'%',`${A.w}W / ${A.n-A.w}L · ${tx('เสมอตัว','BE')} ${A.be}`)}
   ${kpi('Profit factor',A.pf.toFixed(2))}
   ${kpi('Payoff',A.payoff.toFixed(2),MODE==='$'?`avg W $${fmt(A.aw)} / L $${fmt(A.al)}`:`avg W ${sg(A.awP)}% / L −${fmt(A.alP)}%`)}
@@ -373,7 +372,7 @@ function renderPerf(){
   ${MODE==='$'?kpi(tx('ถอน/โอนออก','Withdrawn'),'$'+fmt(wdTot),`${(wdTot/Math.max(A.net,1e-9)*100).toFixed(0)}% ${tx('ของกำไรสุทธิ','of net profit')}`):''}
  </div></div>
 
- <div class="box c12"><h3>Equity curve <small>${MODE==='$'?tx('กำไรสะสม ($) — ไม่รวมฝาก/ถอน','cumulative P/L ($) — excl. deposits/withdrawals'):tx('ผลตอบแทนสะสม (% ของทุน)','cumulative return (% of capital)')} · ${tx('แท่งแดง = drawdown','red bars = drawdown')}</small></h3><div id="eq"></div></div>
+ <div class="box c12"><h3>Equity curve <small>${MODE==='$'?tx('กำไรสะสม ($) — ไม่รวมฝาก/ถอน','cumulative P/L ($) — excl. deposits/withdrawals'):tx('ผลตอบแทนสะสม (% ของเงินฝากรวม)','cumulative return (% of total deposits)')} · ${tx('แท่งแดง = drawdown','red bars = drawdown')}</small></h3><div id="eq"></div></div>
 
  <div class="box c12"><h3>${tx('รายเดือน','Monthly')} <small>${tx('เฉพาะไม้ในช่วงที่เลือก','trades in selected period')}</small></h3>
   <div class="mbars num">${MS.map(s=>{const v=MODE==='$'?s.net:s.netP;return `<div><span class="${cls(v)}">${$Ms(s.net,s.netP)}</span><i style="height:${Math.abs(v)/mmx*100}%;background:${v>=0?'var(--win)':'var(--loss)'}"></i><span class="m">${mname(s.k)}</span></div>`}).join('')}</div>
@@ -436,7 +435,7 @@ function card(period,mode){
  T(mode==='$'?tx('กำไรสุทธิ','Net profit'):tx('ผลตอบแทน','Return'),72,210,28,MU);
  const big=mode==='$'?(s.net>=0?'+$':'−$')+fmt(Math.abs(s.net)):sg(s.netP)+'%';
  T(big,68,340,150,s.net>=0?G:R,800);
- T(mode==='$'?`${sg(s.netP)}% ${tx('ของทุน','of capital')} $${fmt(BASE,0)}`:tx('เทียบทุนตั้งต้น · ไม่ทบต้น','vs starting capital · non-compounded'),72,398,28,MU);
+ T(mode==='$'?`${sg(s.netP)}% ${tx('ของเงินฝาก','of deposits')} $${fmt(BASE,0)}`:tx('เทียบยอดฝากรวม · ไม่ทบต้น','vs total deposits · non-compounded'),72,398,28,MU);
  // equity curve
  const x0=72,x1=W-72,y0=450,y1=730;g.strokeStyle='#1f1f23';g.lineWidth=1;[0,.5,1].forEach(f=>{g.beginPath();g.moveTo(x0,y0+(y1-y0)*f);g.lineTo(x1,y0+(y1-y0)*f);g.stroke()});
  const pts=[0];let cu=0;L.forEach(t=>{cu+=t.profit;pts.push(cu)});
@@ -492,8 +491,6 @@ function setLang(l){LANG=l;try{localStorage.setItem('xau-lang',l)}catch(e){}
  renderHeader();renderList();showCard(sel);if(VIEW==='perf')renderPerf();if($('#modal').classList.contains('on'))refreshPrev()}
 $('#lang').onclick=e=>{const b=e.target.closest('button');if(b)setLang(b.dataset.l)};
 
-$('#base').value=BASE;
-$('#base').onchange=e=>{const v=+e.target.value;if(!(v>0))return;BASE=v;try{localStorage.setItem('xau-base',v)}catch(_){}calcAP();ALL=stats(CLOSED);setMode(MODE)};
 setTF('H1',false);setMode(MODE);setLang(LANG);
 chart.timeScale().setVisibleLogicalRange({from:bars.length-21*24,to:bars.length+5});
 if(location.hash==='#perf')setView('perf');

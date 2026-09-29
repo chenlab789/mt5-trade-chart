@@ -1,4 +1,4 @@
-﻿# MT5 Trade Chart
+# MT5 Trade Chart
 
 ดึงประวัติเทรดทองจาก MetaTrader 5 มาวาดเป็นกล่องบนกราฟแท่งเทียน แบบ position box ใน TradingView แล้วสรุป performance ให้ดูว่าเทรดดีตรงไหน รั่วตรงไหน
 
@@ -55,7 +55,7 @@ python build.py
 หน้าเว็บไม่อัปเดตเอง อยากเห็นไม้ใหม่ต้องรันใหม่ ถ้าอยากกดจากเดสก์ท็อป ให้สร้างช็อตคัทไปที่ `open_chart.bat`
 
 ### ความหมายตัวเลข
-- **% ในโหมด %** คิดเทียบกับช่อง "ทุน $" ที่มุมขวาบน ไม่ทบต้น ใส่ทุนที่คุณใช้เทรดจริง
+- **% ในโหมด %** คิดเทียบกับยอดเงินฝากเข้ารวมของบัญชี (คำนวณให้อัตโนมัติ) ไม่ทบต้น
 - **MFE** = ระหว่างถือ ไม้เคยบวกไปไกลสุดแค่ไหน · **MAE** = เคยติดลบลึกสุดแค่ไหน (เป็น % ของราคาทอง)
 - **ไม้เสมอตัว** = ราคาขยับไม่ถึง 0.05% ระหว่างเข้ากับออก
 - **ถัวขาดทุน** = เปิดทิศเดิมเพิ่มที่ราคาแย่กว่าไม้ที่ถืออยู่
@@ -114,7 +114,7 @@ then open `trade_chart.html` in a browser.
 The page is a snapshot and does not update on its own. Re-run to see new trades. For one-click access, create a desktop shortcut to `open_chart.bat`.
 
 ### What the numbers mean
-- **% mode** returns are measured against the "Capital $" box in the top-right corner, non-compounded. Set it to the capital you actually trade with.
+- **% mode** returns are measured against the total amount deposited into the account (calculated automatically), non-compounded.
 - **MFE** = the furthest a trade moved in your favor while open · **MAE** = the furthest it moved against you (as % of gold price)
 - **Breakeven** = price moved less than 0.05% between entry and exit
 - **Averaging down** = added a same-direction trade at a worse price while a position was still open
