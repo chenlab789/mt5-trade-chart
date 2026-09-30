@@ -19,6 +19,7 @@ Plot your MetaTrader 5 gold trades as TradingView-style position boxes on a cand
 - **โหมด % อย่างเดียว**: ซ่อนตัวเลขเงินทั้งหมด ไว้แคปแชร์ให้คนอื่นดู
 - **Export PNG**: รูปการ์ดสรุปผลขนาด 1080×1350 ขนาดโพสต์ IG/FB
 - **2 ภาษา**: ไทย / อังกฤษ
+- **ธีมมืด / สว่าง**: กดปุ่ม ☀/☾ ที่หัวเว็บ ครั้งแรกจะใช้ธีมตามเครื่อง
 
 ### สิ่งที่ต้องมี
 - Windows ที่ลงโปรแกรม **MetaTrader 5** และ login บัญชีไว้ (Python API ของ MT5 ใช้ได้บน Windows เท่านั้น)
@@ -78,6 +79,7 @@ python build.py
 - **% only mode**: hides every dollar amount so you can share screenshots.
 - **Export PNG**: 1080×1350 summary card, sized for Instagram/Facebook posts.
 - **Thai / English** UI.
+- **Dark / light theme**: toggle with the ☀/☾ button in the header. Defaults to your system setting.
 
 ### Requirements
 - Windows with the **MetaTrader 5** terminal installed and logged in (the MT5 Python API is Windows-only)
