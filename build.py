@@ -40,7 +40,14 @@ try:
     if acct is None or (LOGIN and acct.login != LOGIN):
         fail(f'ยังไม่ได้อยู่บัญชี {LOGIN} — ไม่เขียนทับหน้าเว็บ / not on account {LOGIN}, aborting')
 
-    all_deals = m.history_deals_get(dt.datetime(2000, 1, 1), dt.datetime.now() + dt.timedelta(days=2)) or ()
+    H0, H1 = dt.datetime(2000, 1, 1, tzinfo=dt.UTC), dt.datetime.now(dt.UTC) + dt.timedelta(days=2)
+    # หลัง login ประวัติ deal ซิงก์ตามมาทีหลัง (~1 วิ) -> รอจนไม้ที่เปิดอยู่มี deal ตอนเปิดครบ
+    open_ids = {p.identifier for p in m.positions_get() or []}
+    for _ in range(30):
+        all_deals = m.history_deals_get(H0, H1) or ()
+        if open_ids <= {d.position_id for d in all_deals if d.entry == 0}:
+            break
+        time.sleep(0.5)
     if not SYM:  # หา symbol ทองที่เทรดเยอะสุด
         cnt = collections.Counter(d.symbol for d in all_deals if d.symbol and ('XAU' in d.symbol.upper() or 'GOLD' in d.symbol.upper()))
         if not cnt:
@@ -57,7 +64,7 @@ try:
     # ฝาก/ถอน/โอน (deal type 2 = balance)
     cash = [{'t': d.time + shift, 'amt': d.profit, 'note': d.comment} for d in all_deals if d.type == 2]
     csize = m.symbol_info(SYM).trade_contract_size
-    orders = {o.ticket: o for o in m.history_orders_get(dt.datetime(2000, 1, 1), dt.datetime.now() + dt.timedelta(days=2)) or []}
+    orders = {o.ticket: o for o in m.history_orders_get(H0, H1) or []}
 
     pos = collections.defaultdict(lambda: {'in': [], 'out': []})
     for d in deals:
@@ -82,6 +89,9 @@ try:
         trades.append(t)
 
     for op in m.positions_get(symbol=SYM) or []:
+        if not any(t['id'] == op.identifier for t in trades):  # ประวัติยังไม่มา -> สร้างจาก position ตรงๆ
+            trades.append({'id': op.identifier, 'side': 'buy' if op.type == 0 else 'sell', 'vol': op.volume,
+                           'entry': op.price_open, 't0': op.time + shift, 'sl': None, 'tp': None})
         for t in trades:
             if t['id'] == op.identifier:
                 t.update(exit=op.price_current, t1=int(time.time()) + srv_off_h*3600 + shift, open=True,
