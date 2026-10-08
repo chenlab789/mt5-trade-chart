@@ -27,7 +27,7 @@ Plot your MetaTrader 5 gold trades as TradingView-style position boxes on a cand
 
 ### วิธีติดตั้ง
 ```bat
-git clone https://github.com/chenlab789/mt5-trade-chart.git
+git clone https://github.com/lec79731-debug/mt5-trade-chart.git
 cd mt5-trade-chart
 pip install -r requirements.txt
 copy config.example.json config.json
@@ -87,7 +87,7 @@ python build.py
 
 ### Install
 ```bat
-git clone https://github.com/chenlab789/mt5-trade-chart.git
+git clone https://github.com/lec79731-debug/mt5-trade-chart.git
 cd mt5-trade-chart
 pip install -r requirements.txt
 copy config.example.json config.json
