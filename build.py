@@ -228,8 +228,6 @@ built = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     json.dumps({'maxLot': MAX_LOT, 'tz': TZ_OUT}), json.dumps(built)), encoding='utf-8')
 out = HERE / 'trade_chart.html'
 out.write_text((HERE / 'template.html').read_text(encoding='utf-8'), encoding='utf-8-sig')
-if (HERE / 'template_preview.html').exists():  # ดีไซน์ใหม่ (ยังไม่ขึ้นจริง) ใช้ data.js ชุดเดียวกัน
-    (HERE / 'preview.html').write_text((HERE / 'template_preview.html').read_text(encoding='utf-8'), encoding='utf-8-sig')
 (HERE / 'stamp.json').write_text(json.dumps({'built': built}), encoding='utf-8')
 stamp('done', built); DONE.append(1)
 print(f'{len(accts)} accounts, {len(trades)} trades -> {out}')

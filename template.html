@@ -1,466 +1,443 @@
 <!doctype html>
 <html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>XAU Trade Replay</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23060606%22/%3E%3Crect%20x%3D%226%22%20y%3D%2220%22%20width%3D%2252%22%20height%3D%2230%22%20rx%3D%224%22%20fill%3D%22%2310b981%22%20fill-opacity%3D%22.25%22%20stroke%3D%22%2310b981%22%20stroke-width%3D%223%22/%3E%3Cline%20x1%3D%2223%22%20y1%3D%228%22%20x2%3D%2223%22%20y2%3D%2246%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%224%22/%3E%3Crect%20x%3D%2216%22%20y%3D%2214%22%20width%3D%2214%22%20height%3D%2224%22%20rx%3D%222%22%20fill%3D%22%23ef4444%22/%3E%3Cline%20x1%3D%2243%22%20y1%3D%2216%22%20x2%3D%2243%22%20y2%3D%2258%22%20stroke%3D%22%2310b981%22%20stroke-width%3D%224%22/%3E%3Crect%20x%3D%2236%22%20y%3D%2226%22%20width%3D%2214%22%20height%3D%2224%22%20rx%3D%222%22%20fill%3D%22%2310b981%22/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%232b59c3%22/%3E%3Cpath%20d%3D%22M16%2048V16M16%2048h32M24%2040V26M32%2040V20M40%2040V32%22%20stroke%3D%22%23fff%22%20stroke-width%3D%225%22%20fill%3D%22none%22/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
 <style>
-:root{--bg:#060606;--panel:#0c0c0d;--card:#111113;--line:#1f1f23;--tx:#e4e4e7;--mute:#71717a;--win:#10b981;--loss:#ef4444;--warn:#f59e0b;
- --soft:#141416;--soft2:#161618;--track:#18181b;--quiet:#0a0a0b;--float:#131315f2;--tip:#18181bf2;--tipline:#2a2a2e;--live:#fbbf24;
- --grid:#111113;--axis:#8b8b93;--cross:#3f3f46;--crossbg:#27272a;--entry:rgba(228,228,231,.7);--mfe:250,204,21;color-scheme:dark}
-:root[data-theme="light"]{--bg:#f6f6f7;--panel:#ffffff;--card:#ffffff;--line:#e4e4e7;--tx:#18181b;--mute:#6b6b75;--win:#059669;--loss:#dc2626;--warn:#b45309;
- --soft:#f4f4f5;--soft2:#efeff1;--track:#ececef;--quiet:#fafafa;--float:#fffffff2;--tip:#fffffff5;--tipline:#e4e4e7;--live:#b45309;
- --grid:#eeeef0;--axis:#6b6b75;--cross:#a1a1aa;--crossbg:#52525b;--entry:rgba(24,24,27,.55);--mfe:217,119,6;color-scheme:light}
-*{box-sizing:border-box}html,body{height:100%}
-body{margin:0;background:var(--bg);color:var(--tx);font:13px/1.45 "Segoe UI",Tahoma,system-ui,sans-serif;display:flex;flex-direction:column;overflow:hidden}
-button{font:inherit}.num{font-variant-numeric:tabular-nums}.w{color:var(--win)}.l{color:var(--loss)}.m{color:var(--mute)}.wr{color:var(--warn)}
-header{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap}
-.brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px}
-.brand i{width:8px;height:8px;border-radius:50%;background:var(--win);box-shadow:0 0 0 3px #10b98122}
-.seg{display:flex;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:3px}
-.seg button{all:unset;cursor:pointer;padding:5px 12px;border-radius:6px;font-weight:600;color:var(--mute);font-size:12px}
-.seg button:hover{color:var(--tx)}.seg button.on{background:#10b98122;color:var(--win)}
-.btn{all:unset;cursor:pointer;padding:7px 14px;border-radius:8px;background:var(--win);color:#04130d;font-weight:700;font-size:12px}
-.btn:hover{filter:brightness(1.1)}.btn.ghost{background:var(--card);color:var(--tx);border:1px solid var(--line)}
-.stats{display:flex;gap:8px;flex-wrap:wrap}
-.stat{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:5px 12px;min-width:80px}
-.stat small{display:block;color:var(--mute);font-size:11px}.stat b{font-size:14px}
+:root{--bg:#f3f4f6;--card:#fff;--tx:#14161a;--mute:#4b5260;--line:#e3e5ea;--soft:#f8f9fb;--soft2:#f1f2f5;--track:#eef0f3;
+ --blue:#2b59c3;--bluebg:#eaf0fb;--win:#0a8f5a;--winbg:#e6f4ee;--loss:#c23b3b;--lossbg:#fbeaea;--warn:#b36b00;--warnbg:#fff6e6;--warntx:#8a5a00}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.45 Anuphan,"Segoe UI",Tahoma,sans-serif;font-variant-numeric:tabular-nums}
+button{font:inherit;color:inherit}.w{color:var(--win)}.l{color:var(--loss)}.m{color:var(--mute)}.wr{color:var(--warn)}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(10,143,90,.45)}70%{box-shadow:0 0 0 8px rgba(10,143,90,0)}100%{box-shadow:0 0 0 0 rgba(10,143,90,0)}}
+@keyframes pulseW{0%{box-shadow:0 0 0 0 rgba(179,107,0,.45)}70%{box-shadow:0 0 0 8px rgba(179,107,0,0)}100%{box-shadow:0 0 0 0 rgba(179,107,0,0)}}
+@keyframes slidein{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
+.rise{animation:rise .45s both}
+.lift{transition:transform .18s ease,box-shadow .18s ease}.lift:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(20,22,26,.07)}
+header{position:sticky;top:0;z-index:10;min-height:64px;background:var(--card);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:20px;padding:8px 28px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px;white-space:nowrap}
+.logo b{width:28px;height:28px;border-radius:8px;background:var(--blue);display:grid;place-items:center}
+.tabs{display:flex;gap:4px;flex-wrap:wrap}
+.tabs button{all:unset;cursor:pointer;padding:8px 14px;border-radius:8px;color:var(--mute);font-weight:500;transition:background .2s,color .2s}
+.tabs button:hover{color:var(--tx)}.tabs button.on{background:var(--bluebg);color:var(--blue);font-weight:600}
 .sp{flex:1}
-.view{flex:1;display:none;min-height:0}.view.on{display:flex}
-/* ---- chart view ---- */
-#wrap{flex:1;position:relative;min-width:0}#chart{position:absolute;inset:0}
-#ov{position:absolute;inset:0;pointer-events:none;z-index:3}
-#legend{position:absolute;left:12px;top:10px;z-index:4;font-size:12px;pointer-events:none}
-#card{position:absolute;left:12px;top:40px;z-index:4;background:var(--float);border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:240px;display:none;backdrop-filter:blur(6px)}
-#card .hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:12px}
-#card table{border-collapse:collapse;width:100%}#card td{padding:2px 0}#card td:last-child{text-align:right}
-#card .pl{font-size:18px;font-weight:700;margin-top:6px}
-#card .x{all:unset;cursor:pointer;color:var(--mute);font-size:16px}
-#tip{position:absolute;z-index:5;background:var(--tip);border:1px solid var(--tipline);padding:7px 10px;border-radius:8px;pointer-events:none;display:none;white-space:nowrap;font-size:12px}
-.tag{font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:.4px}
-.tag.buy{background:#10b98122;color:var(--win)}.tag.sell{background:#ef444422;color:var(--loss)}
-.flag{font-size:10px;padding:1px 6px;border-radius:4px;background:#f59e0b1f;color:var(--warn);margin-left:4px;white-space:nowrap}
-aside{width:320px;border-left:1px solid var(--line);background:var(--panel);display:flex;flex-direction:column;min-height:0}
-.filters{display:flex;gap:6px;padding:10px 12px;border-bottom:1px solid var(--line);flex-wrap:wrap}
-.chip{all:unset;cursor:pointer;padding:4px 10px;border:1px solid var(--line);border-radius:999px;font-size:12px;color:var(--mute)}
-.chip.on{border-color:#10b98166;color:var(--win);background:#10b98114}
-#count{margin-left:auto;align-self:center;font-size:11px}
-#list{overflow:auto;flex:1}
-.row{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:9px 12px;border-bottom:1px solid var(--soft2);cursor:pointer;border-left:3px solid transparent}
-.row:hover{background:var(--soft)}.row.on{background:#10b98110;border-left-color:var(--win)}
-.row small{display:block;color:var(--mute);font-size:11px}.row .pl{text-align:right;font-weight:600}
-.live{font-size:10px;color:var(--live);margin-left:4px}
-.hint{padding:8px 12px;border-top:1px solid var(--line);font-size:11px;color:var(--mute)}
-/* ---- performance view ---- */
-#perf{overflow:auto;display:none}#perf.on{display:block}
-.pw{max-width:1240px;margin:0 auto;padding:18px 16px 40px;display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
-.box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;min-width:0}
-.box h3{margin:0 0 10px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px}
-.box h3 small{font-weight:400;color:var(--mute)}
+.chip{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--mute);background:var(--bg);padding:6px 12px;border-radius:999px;white-space:nowrap}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--win);animation:pulse 2s infinite}.dot.busy{background:var(--warn);animation:pulseW 1.2s infinite}
+.seg{display:flex;background:var(--bg);border-radius:8px;padding:3px;font-size:12px}
+.seg button{all:unset;cursor:pointer;padding:5px 12px;border-radius:6px;color:var(--mute);transition:background .2s}
+.seg button.on{background:var(--card);color:var(--tx);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.btn{all:unset;cursor:pointer;height:38px;padding:0 18px;border-radius:10px;background:var(--blue);color:#fff;font-weight:600;display:inline-flex;align-items:center;gap:8px}
+.btn.ghost{background:var(--card);color:var(--tx);border:1px solid var(--line)}
+.wrap{max-width:1392px;margin:0 auto;padding:20px 24px 40px;display:flex;flex-direction:column;gap:16px}
+.accts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.acct{all:unset;cursor:pointer;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 16px;display:flex;flex-direction:column;gap:2px}
+.acct.on{border:2px solid var(--blue);padding:11px 15px}
+.acct small{font-size:12px;color:var(--mute);display:flex;justify-content:space-between;gap:8px}.acct b{font-size:16px}.acct span{font-size:13px;font-weight:600}
+.bar-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;min-width:0}
+.kpi{padding:16px 18px}.kpi small{display:block;font-size:13px;color:var(--mute)}.kpi b{display:block;font-size:30px;font-weight:700;line-height:1.25}.kpi i{font-style:normal;font-size:12px;color:var(--mute)}
+.row2{display:flex;gap:16px;flex-wrap:wrap;align-items:stretch}
+.chartcard{flex:999 1 640px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.chhead{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+#wrap{position:relative;height:420px;transition:height .35s ease}#wrap.big{height:max(560px,calc(100vh - 330px))}
+#chart{position:absolute;inset:0}#ov{position:absolute;inset:0;pointer-events:none;z-index:3}
+#legend{position:absolute;left:10px;top:8px;z-index:4;font-size:12px;pointer-events:none}
+#tip{position:absolute;z-index:5;background:#fff;border:1px solid var(--line);box-shadow:0 6px 20px rgba(0,0,0,.08);padding:7px 10px;border-radius:8px;pointer-events:none;display:none;white-space:nowrap;font-size:12px}
+.side{flex:1 1 360px;display:flex;flex-direction:column;min-width:0}
+.side h3,.card h3{margin:0;font-size:15px;font-weight:700}
+.shead{display:flex;align-items:center;gap:8px;padding:14px 16px 10px}
+.link{all:unset;cursor:pointer;font-size:12px;color:var(--blue);font-weight:600}
+.dayh{padding:7px 16px 5px;font-size:12px;font-weight:600;color:var(--mute);background:var(--soft);border-top:1px solid var(--track);display:flex;justify-content:space-between}
+.tr{all:unset;cursor:pointer;box-sizing:border-box;width:100%;display:flex;align-items:center;gap:12px;padding:9px 16px;border-top:1px solid var(--soft2);transition:background .15s}
+.tr:hover{background:#f6f8fc}.tr.on{background:#eef3fc}
+.tr .px{flex:1;min-width:0}.tr .px b{display:block;font-size:13px;font-weight:500}.tr .px small{display:block;font-size:12px;color:var(--mute)}
+.tr .pl{text-align:right}.tr .pl b{display:block;font-weight:700;font-size:15px}.tr .pl small{font-size:11px;color:var(--mute)}
+.tag{font-size:11px;font-weight:700;width:42px;text-align:center;padding:4px 0;border-radius:6px;flex:none}
+.tag.buy{color:var(--win);background:var(--winbg)}.tag.sell{color:var(--loss);background:var(--lossbg)}
+.flag{font-size:11px;background:var(--warnbg);color:var(--warntx);padding:2px 9px;border-radius:999px;white-space:nowrap}
+.live{font-size:11px;color:var(--warn);font-weight:600}
+.scroll{overflow:auto}
+.detail{padding:20px;display:flex;flex-direction:column;gap:14px;animation:slidein .35s both}
+.detail .big{font-size:40px;font-weight:700;line-height:1.15}
+.dgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;border-top:1px solid var(--track);padding-top:14px}
+.dgrid small{display:block;font-size:12px;color:var(--mute)}
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.filters button{all:unset;cursor:pointer;padding:6px 14px;border-radius:999px;font-size:13px;background:var(--bg);color:var(--mute);transition:background .2s,color .2s}
+.filters button.on{background:var(--tx);color:#fff}
+.grid12{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
 .c12{grid-column:span 12}.c8{grid-column:span 8}.c6{grid-column:span 6}.c4{grid-column:span 4}
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
-.kpi small{display:block;color:var(--mute);font-size:11px}.kpi b{font-size:20px;display:block}.kpi i{font-style:normal;font-size:11px}
-.verdict{margin:12px 0 0;padding:0;list-style:none;display:grid;gap:6px}
-.verdict li{padding:8px 12px;border-radius:8px;background:var(--quiet);border:1px solid var(--line)}
-.verdict li b{margin-right:6px}
-table.t{width:100%;border-collapse:collapse}table.t th{font-weight:600;color:var(--mute);font-size:11px;text-align:right;padding:6px 8px;border-bottom:1px solid var(--line)}
-table.t td{text-align:right;padding:7px 8px;border-bottom:1px solid var(--track)}table.t th:first-child,table.t td:first-child{text-align:left}
-table.t tr.click{cursor:pointer}table.t tr.click:hover td{background:var(--soft)}
-.tscroll{overflow-x:auto}
-.br{display:grid;grid-template-columns:92px 1fr 72px 44px 30px;gap:8px;align-items:center;padding:4px 0;font-size:12px}
-.br .bar{height:8px;background:var(--track);border-radius:4px;position:relative;overflow:hidden}
-.br .bar i{position:absolute;top:0;bottom:0;border-radius:4px}
+.pad{padding:18px}
+table.t{width:100%;border-collapse:collapse;font-size:13px}table.t th{font-weight:500;color:var(--mute);font-size:12px;text-align:right;padding:8px;border-bottom:1px solid var(--line)}
+table.t td{text-align:right;padding:8px;border-bottom:1px solid var(--soft2)}table.t th:first-child,table.t td:first-child{text-align:left}
+table.t tr.click{cursor:pointer}table.t tr.click:hover td{background:#f6f8fc}
+.mb{position:relative;height:300px;display:grid;gap:12px;margin-top:8px}
+.mb .ax{position:absolute;left:0;right:0;top:50%;border-top:1px solid #d9dce3}
+.mb .col{position:relative;height:100%}
+.mb .bar{position:absolute;left:14%;right:14%;transition:height .7s cubic-bezier(.2,.8,.2,1)}
+.mb .v{position:absolute;left:0;right:0;text-align:center;font-size:12px;font-weight:600;transition:opacity .4s .3s}
+.mb .lb{position:absolute;bottom:-22px;left:0;right:0;text-align:center;font-size:12px;color:var(--mute)}
+.ring{display:flex;align-items:center;gap:18px;padding:18px}
+.ring circle.v{transition:stroke-dashoffset 1s cubic-bezier(.2,.8,.2,1)}
+.cmp{display:grid;grid-template-columns:150px minmax(0,1fr) 190px;gap:14px;align-items:center;padding:10px 0;border-top:1px solid var(--soft2)}
+.cmp .tk{height:8px;background:var(--track);border-radius:4px;position:relative;overflow:hidden}.cmp .tk i{position:absolute;left:0;top:0;bottom:0;border-radius:4px;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.br{display:grid;grid-template-columns:96px 1fr 84px 44px 34px;gap:8px;align-items:center;padding:5px 0;font-size:13px}
+.br .bt{height:8px;background:var(--track);border-radius:4px;position:relative;overflow:hidden}.br .bt i{position:absolute;top:0;bottom:0;left:0;border-radius:4px}
 .br span:not(:first-child){text-align:right}
 .heat{display:flex;gap:3px;overflow-x:auto;padding-bottom:4px}.heat .wk{display:grid;grid-template-rows:14px repeat(7,14px);gap:3px}
 .heat .d{width:14px;height:14px;border-radius:3px;background:var(--soft2)}.heat .ml{font-size:10px;color:var(--mute);white-space:nowrap;height:14px}
 .heat .dl{display:grid;grid-template-rows:14px repeat(7,14px);gap:3px;font-size:10px;color:var(--mute);margin-right:4px}
 #eq{height:260px;position:relative}
-.mbars{display:flex;align-items:flex-end;gap:10px;height:150px;padding-top:10px}
-.mbars div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;font-size:11px;gap:4px}
-.mbars i{width:100%;max-width:56px;border-radius:5px 5px 0 0;min-height:2px}
-.cap{display:flex;height:22px;border-radius:6px;overflow:hidden;margin:6px 0 4px}
-.cap i{display:flex;align-items:center;justify-content:center;font-size:11px;font-style:normal;color:#04130d;font-weight:700}
-/* modal */
-#modal{position:fixed;inset:0;background:#000a;z-index:20;display:none;align-items:center;justify-content:center;padding:16px}
+#modal{position:fixed;inset:0;background:rgba(20,22,26,.45);z-index:20;display:none;align-items:center;justify-content:center;padding:16px}
 #modal.on{display:flex}
-#modal .mb{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;max-width:560px;width:100%;max-height:96vh;display:flex;flex-direction:column;gap:12px}
+#modal .mbx{background:#fff;border-radius:16px;padding:16px;max-width:560px;width:100%;max-height:96vh;display:flex;flex-direction:column;gap:12px;animation:rise .3s both}
 #modal .ctl{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-#modal select,.sel{background:var(--card);color:var(--tx);border:1px solid var(--line);border-radius:8px;padding:6px 10px;font:inherit}
-#modal img{width:100%;border-radius:10px;border:1px solid var(--line);object-fit:contain;min-height:0;flex:1}
-#theme{all:unset;cursor:pointer;display:grid;place-items:center;width:32px;height:32px;border-radius:8px;background:var(--card);border:1px solid var(--line);color:var(--tx)}
-#theme:hover{border-color:var(--mute)}#theme svg{width:16px;height:16px}
-@media(max-width:1640px){.stat.o1{display:none}}@media(max-width:1480px){.stat.o2{display:none}}
-@media(max-width:900px){.c8,.c6,.c4{grid-column:span 12}}
-@media(max-width:820px){.view.on#vchart{flex-direction:column}aside{width:auto;height:38vh;border-left:0;border-top:1px solid var(--line)}}
+#modal select{background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 10px;font:inherit}
+#modal img{width:100%;border-radius:10px;object-fit:contain;min-height:0;flex:1}
+.empty{padding:40px;text-align:center;color:var(--mute)}
+@media(max-width:900px){.c8,.c6,.c4{grid-column:span 12}header{padding:8px 16px}.wrap{padding:16px}.cmp{grid-template-columns:110px 1fr}.cmp>span:last-child{grid-column:span 2;text-align:left}}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 </style></head><body>
 <header>
- <div class="brand"><i></i><span id="brand"></span><span id="sync" class="m" style="font-weight:400;font-size:11px"></span></div>
- <select id="acct" class="sel" title="เลือกบัญชี" data-en-title="Choose account"></select>
- <div class="seg" id="views"><button data-v="chart" class="on" data-en="Chart">กราฟ</button><button data-v="perf">Performance</button></div>
- <div class="seg" id="tf"><button data-tf="M15">15m</button><button data-tf="H1" class="on">1H</button><button data-tf="H4">4H</button><button data-tf="D1">1D</button></div>
+ <div class="logo"><b><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" aria-hidden="true"><path d="M4 19V5M4 19h16M8 15V9M12 15V6M16 15v-4"/></svg></b>XAU Trade Replay</div>
+ <nav class="tabs" id="tabs" aria-label="หน้า">
+  <button data-t="overview">ภาพรวม</button><button data-t="chart">กราฟเต็มจอ</button><button data-t="journal">สมุดไม้</button><button data-t="monthly">รายเดือน</button><button data-t="discipline">วินัย</button>
+ </nav>
  <div class="sp"></div>
- <div class="stats" id="stats"></div>
- <div class="seg" id="mode" title="โหมด % ซ่อนตัวเลขเงินทั้งหมด ไว้แคปให้คนอื่นดู" data-en-title="% mode hides all dollar amounts for sharing"><button data-m="$" class="on" data-en="$ real">$ จริง</button><button data-m="%" data-en="% only">% อย่างเดียว</button></div>
- <div class="seg" id="lang"><button data-l="th">TH</button><button data-l="en">EN</button></div>
- <button id="theme" title="ธีมสว่าง / มืด" data-en-title="Light / dark theme"></button>
- <button class="btn" id="exp">Export PNG</button>
+ <div class="chip"><span class="dot" id="dot"></span><span id="sync"></span></div>
+ <div class="seg" id="mode" title="โหมด % ซ่อนตัวเลขเงิน ไว้แคปให้คนอื่นดู"><button data-m="$">$ จริง</button><button data-m="%">% อย่างเดียว</button></div>
+ <button class="btn lift" id="exp"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Export รูป</button>
 </header>
 
-<div class="view on" id="vchart">
- <div id="wrap"><div id="chart"></div><canvas id="ov"></canvas><div id="legend" class="num"></div><div id="card"></div><div id="tip"></div></div>
- <aside>
-  <div class="filters" id="filters">
-   <button class="chip on" data-f="all" data-en="All">ทั้งหมด</button><button class="chip" data-f="win" data-en="Wins">กำไร</button><button class="chip" data-f="loss" data-en="Losses">ขาดทุน</button>
-   <button class="chip" data-f="buy">Buy</button><button class="chip" data-f="sell">Sell</button><button class="chip" data-f="flag" data-en="⚠ Flagged">⚠ ติดธง</button><span id="count" class="m"></span>
-  </div>
-  <div id="list"></div>
-  <div class="hint"><span data-en="Click a box or row to zoom · Esc clear · ↑↓ step trades · data as of">คลิกกล่องบนกราฟหรือรายการเพื่อซูม · Esc ยกเลิก · ↑↓ เลื่อนไม้ · ข้อมูล ณ</span> <span class="built"></span> (<span class="tzl"></span>)</div>
- </aside>
+<div class="wrap">
+ <div class="accts" id="accts"></div>
+ <div class="bar-row"><div class="seg" id="per"></div><span class="m" style="font-size:12px" id="perl"></span></div>
+ <div class="kpis" id="kpis"></div>
+
+ <div class="row2" id="vchart">
+  <section class="card chartcard rise" style="animation-delay:.15s">
+   <div class="chhead"><b id="sym"></b><span class="m" style="font-size:12px" id="float"></span><div class="sp"></div>
+    <div class="seg" id="tf"><button data-tf="M15">15m</button><button data-tf="H1">1H</button><button data-tf="H4">4H</button><button data-tf="D1">1D</button></div></div>
+   <div id="wrap"><div id="chart"></div><canvas id="ov"></canvas><div id="legend"></div><div id="tip"></div></div>
+  </section>
+  <section class="card side rise" style="animation-delay:.25s" id="side"></section>
+ </div>
+ <div id="vpage"></div>
 </div>
 
-<div class="view" id="perf"><div class="pw" id="pw"></div></div>
-
-<div id="modal"><div class="mb">
- <div class="ctl"><b style="font-size:14px" data-en="Export report image">Export รูปรายงาน</b><div class="sp"></div>
-  <select id="period"></select>
-  <div class="seg" id="mode2"><button data-m="$" data-en="$ real">$ จริง</button><button data-m="%" data-en="% only">% อย่างเดียว</button></div></div>
- <img id="prev" alt="preview">
- <div class="ctl"><span class="m" style="font-size:11px" data-en="1080×1350 · IG/FB post size">1080×1350 · ขนาดโพสต์ IG/FB</span><div class="sp"></div><button class="btn ghost" id="mclose" data-en="Close">ปิด</button><button class="btn" id="dl" data-en="Download PNG">ดาวน์โหลด PNG</button></div>
+<div id="modal"><div class="mbx">
+ <div class="ctl"><b style="font-size:15px">Export รูปรายงาน</b><div class="sp"></div><select id="period"></select>
+  <div class="seg" id="mode2"><button data-m="$">$ จริง</button><button data-m="%">% อย่างเดียว</button></div></div>
+ <img id="prev" alt="ตัวอย่างรูปรายงาน">
+ <div class="ctl"><span class="m" style="font-size:12px">1080×1350 · ขนาดโพสต์ IG/FB</span><div class="sp"></div><button class="btn ghost" id="mclose">ปิด</button><button class="btn" id="dl">ดาวน์โหลด PNG</button></div>
 </div></div>
 
 <script src="data.js"></script>
 <script>
-// เลือกบัญชี (จำไว้ใน localStorage) -> กรองไม้/เงินเข้าออกก่อนคำนวณทุกอย่าง
-let SEL='all';try{SEL=localStorage.getItem('xau-acct')||'all'}catch(e){}
-if(SEL!=='all'&&!ACCTS.some(a=>String(a.login)===SEL))SEL='all';
-const inSel=x=>SEL==='all'||String(x.acct)===SEL;
-const TRADES=RAW_TRADES.filter(inSel),CASH=RAW_CASH.filter(inSel);
-const ACCT={...META,...(ACCTS.find(a=>String(a.login)===SEL)||ACCTS[ACCTS.length-1])};
 const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
+const ls=(k,d)=>{try{return localStorage.getItem(k)||d}catch(e){return d}},lset=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
 const fmt=(n,d=2)=>n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
-const sg=(n,d=2)=>(n>0?'+':n<0?'−':'')+fmt(Math.abs(n),d), cls=n=>n>0?'w':n<0?'l':'m';
-let LANG='th';try{LANG=localStorage.getItem('xau-lang')||'th'}catch(e){}
-const tx=(th,en)=>LANG==='en'?en:th; // ข้อความ 2 ภาษา
-const WD={th:['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'],en:['Sun','Mon','Tue','Wed','Thu','Fri','Sat']};
-const MN={th:['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'],en:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']};
-let TH=WD[LANG]||WD.th,MO=MN[LANG]||MN.th;
+const sg=(n,d=2)=>(n>0?'+':n<0?'−':'')+fmt(Math.abs(n),d),cls=n=>n>0?'w':n<0?'l':'m';
+const TH=['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'],MO=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
 const D=t=>new Date(t*1000),pad=n=>String(n).padStart(2,'0');
 const dts=t=>{const d=D(t);return `${TH[d.getUTCDay()]} ${d.getUTCDate()}/${d.getUTCMonth()+1} ${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}`};
-const dur=s=>{const h=s/3600;return h<1?Math.round(h*60)+tx(' นาที',' min'):h<48?h.toFixed(1)+tx(' ชม.',' h'):(h/24).toFixed(1)+tx(' วัน',' d')};
-const mkey=t=>{const d=D(t);return d.getUTCFullYear()+'-'+pad(d.getUTCMonth()+1)},mname=k=>MO[+k.slice(5)-1]+' '+(LANG==='en'?k.slice(0,4):+k.slice(0,4)+543-2500);
+const dayL=t=>{const d=D(t);return `${TH[d.getUTCDay()]} ${d.getUTCDate()} ${MO[d.getUTCMonth()]} ${String(d.getUTCFullYear()+543).slice(2)}`};
+const dur=s=>{const h=s/3600;return h<1?Math.round(h*60)+' นาที':h<48?h.toFixed(1)+' ชม.':(h/24).toFixed(1)+' วัน'};
+const mkey=t=>{const d=D(t);return d.getUTCFullYear()+'-'+pad(d.getUTCMonth()+1)},mname=k=>MO[+k.slice(5)-1]+' '+(+k.slice(0,4)+543-2500);
 const dkey=t=>D(t).toISOString().slice(0,10);
-$$('.built').forEach(e=>e.textContent=BUILT);
-const TZ=+(ACCT.tz??7),TZL='UTC'+(TZ>=0?'+':'')+TZ;$$('.tzl').forEach(e=>e.textContent=TZL);
-let MODE='$';try{MODE=localStorage.getItem('xau-mode')||'$'}catch(e){}
+const TZ=+(META.tz??7),TZL='UTC'+(TZ>=0?'+':'')+TZ;
+const sum=(a,f)=>a.reduce((s,x)=>s+f(x),0),avg=(a,f)=>a.length?sum(a,f)/a.length:0;
+const DIR=t=>t.side==='buy'?1:-1,mv=t=>(t.exit-t.entry)*DIR(t),ppt=t=>t.vol*(t.cs||1),pp=(x,t)=>x/t.entry*100;
+const BIG=0.5;
+const ANAME=Object.fromEntries(ACCTS.map(a=>[a.login,a.name||('#'+a.login)]));
+let ST={acct:ls('xau-acct','all'),tab:ls('xau-tab','overview'),per:ls('xau-per','all'),mode:ls('xau-mode','$'),filter:'all',sel:null,tf:'H1'};
+if(ST.acct!=='all'&&!ACCTS.some(a=>String(a.login)===ST.acct))ST.acct='all';
 
-// ================= คำนวณ =================
-const DIR=t=>t.side==='buy'?1:-1, mv=t=>(t.exit-t.entry)*DIR(t), ppt=t=>t.vol*(t.cs||ACCT.csize);
-const CLOSED=TRADES.filter(t=>!t.open).sort((a,b)=>a.t1-b.t1), OPEN=TRADES.filter(t=>t.open);
-// % = เทียบยอดฝากรวม ไม่ทบต้น (ยิง lot ตายตัว -> TWR ใช้ไม่ได้ เพราะ balance แกว่งจากการโอนเข้า/ออก)
-const BASE=Math.max(1,CASH.filter(c=>c.amt>0).reduce((a,c)=>a+c.amt,0)); // ฐาน % = ยอดฝากเข้ารวม (คิดอัตโนมัติ)
-const calcAP=()=>TRADES.forEach(t=>{t.ap=t.profit/BASE*100});calcAP();
-const BIG=0.5; // ขาดทุนเกินกี่ % ของราคาทอง โดยไม่โดน SL = หลุดไม่มีเบรก
-const pp=(x,t)=>x/t.entry*100; // ระยะราคา -> % ของราคาทอง
-// ธงวินัย
-for(const t of TRADES){t.flags=[];
- if(t.vol>ACCT.maxLot+1e-9)t.flags.push('lot');
+// ธงวินัย คิดครั้งเดียวต่อบัญชีของไม้นั้น
+RAW_TRADES.forEach(t=>t.k=t.acct+':'+t.id);
+const RAW_CLOSED=RAW_TRADES.filter(t=>!t.open);
+for(const t of RAW_TRADES){t.flags=[];
+ if(t.vol>META.maxLot+1e-9)t.flags.push('lot');
  if(!t.open&&-pp(mv(t),t)>BIG&&!/\[sl/i.test(t.comment||''))t.flags.push('nosl');
- if(TRADES.some(o=>o!==t&&o.acct===t.acct&&o.side===t.side&&o.t0<t.t0&&o.t1>t.t0&&(t.entry-o.entry)*DIR(t)<0))t.flags.push('avg');
- if(CLOSED.some(o=>o.acct===t.acct&&o.profit<0&&o.t1<=t.t0&&t.t0-o.t1<=1800))t.flags.push('rev');}
-const FL=f=>({lot:tx('lot เกิน','Oversized lot'),nosl:tx('หลุดไม่มีเบรก','No-brake loss'),avg:tx('ถัวขาดทุน','Averaging down'),rev:tx('แก้มือ ≤30น.','Revenge ≤30m')})[f];
-const sum=(a,f)=>a.reduce((s,x)=>s+f(x),0), avg=(a,f)=>a.length?sum(a,f)/a.length:0;
-const $M=(d,p,dd=2)=>MODE==='$'?(d<0?'−$':'$')+fmt(Math.abs(d),dd):sg(p)+'%';   // เงินหรือ % ตามโหมด
-const $Ms=(d,p)=>MODE==='$'?(d>0?'+':d<0?'−':'')+'$'+fmt(Math.abs(d)):sg(p)+'%';
+ if(RAW_TRADES.some(o=>o!==t&&o.acct===t.acct&&o.side===t.side&&o.t0<t.t0&&o.t1>t.t0&&(t.entry-o.entry)*DIR(t)<0))t.flags.push('avg');
+ if(RAW_CLOSED.some(o=>o.acct===t.acct&&o.profit<0&&o.t1<=t.t0&&t.t0-o.t1<=1800))t.flags.push('rev');}
+const FL=f=>({lot:'lot เกิน',nosl:'หลุดไม่มีเบรก',avg:'ถัวขาดทุน',rev:'แก้มือ ≤30น.'})[f];
 
-function stats(L){ // L = ไม้ปิดแล้ว เรียงตามเวลาปิด
+let TRADES,CASH,CLOSED,OPEN,BASE,ACCT;
+function load(){const inSel=x=>ST.acct==='all'||String(x.acct)===ST.acct;
+ TRADES=RAW_TRADES.filter(inSel);CASH=RAW_CASH.filter(inSel);
+ CLOSED=TRADES.filter(t=>!t.open).sort((a,b)=>a.t1-b.t1);OPEN=TRADES.filter(t=>t.open);
+ BASE=Math.max(1,sum(CASH.filter(c=>c.amt>0),c=>c.amt));TRADES.forEach(t=>t.ap=t.profit/BASE*100);
+ ACCT=ACCTS.find(a=>String(a.login)===ST.acct)||ACCTS[ACCTS.length-1]}
+function stats(L){
  const n=L.length,W=L.filter(t=>t.profit>0),Lo=L.filter(t=>t.profit<=0),gw=sum(W,t=>t.profit),gl=-sum(Lo,t=>t.profit);
  let c=0,pc=0,dd$=0,sw=0,sl=0,mw=0,ml=0;
- for(const t of L){c+=t.profit;pc=Math.max(pc,c);dd$=Math.min(dd$,c-pc);
-  if(t.profit>0){sw++;sl=0;mw=Math.max(mw,sw)}else{sl++;sw=0;ml=Math.max(ml,sl)}}
+ for(const t of L){c+=t.profit;pc=Math.max(pc,c);dd$=Math.min(dd$,c-pc);if(t.profit>0){sw++;sl=0;mw=Math.max(mw,sw)}else{sl++;sw=0;ml=Math.max(ml,sl)}}
  const aw=avg(W,t=>t.profit),al=-avg(Lo,t=>t.profit),Wm=W.filter(t=>t.mfe>0);
  const r={n,w:W.length,wr:n?W.length/n*100:0,net:gw-gl,netP:(gw-gl)/BASE*100,pf:gl?gw/gl:(gw?Infinity:0),payoff:al?aw/al:0,aw,al,
-  awP:avg(W,t=>t.ap),alP:-avg(Lo,t=>t.ap),exp:n?(gw-gl)/n:0,expP:avg(L,t=>t.ap),dd$,ddP:dd$/BASE*100,
-  holdW:avg(W,t=>t.t1-t.t0),holdL:avg(Lo,t=>t.t1-t.t0),streakW:mw,streakL:ml,
-  best:L.reduce((b,t)=>!b||t.profit>b.profit?t:b,null),worst:L.reduce((b,t)=>!b||t.profit<b.profit?t:b,null),
+  awP:avg(W,t=>t.ap),alP:-avg(Lo,t=>t.ap),exp:n?(gw-gl)/n:0,expP:avg(L,t=>t.ap),dd$,ddP:dd$/BASE*100,holdW:avg(W,t=>t.t1-t.t0),holdL:avg(Lo,t=>t.t1-t.t0),
+  streakW:mw,streakL:ml,best:L.reduce((b,t)=>!b||t.profit>b.profit?t:b,null),worst:L.reduce((b,t)=>!b||t.profit<b.profit?t:b,null),
   be:L.filter(t=>Math.abs(t.pct)<0.05).length,cap:Wm.length?avg(Wm,t=>Math.min(1,mv(t)/t.mfe))*100:0,
-  left:sum(L.filter(t=>t.mfe!=null),t=>Math.max(0,t.mfe-mv(t))*ppt(t)),leftP:0};r.leftP=r.left/BASE*100;return r;
-}
-let ALL=stats(CLOSED);
-const MONTHS=[...new Set(CLOSED.map(t=>mkey(t.t1)))];
+  left:sum(L.filter(t=>t.mfe!=null),t=>Math.max(0,t.mfe-mv(t))*ppt(t))};r.leftP=r.left/BASE*100;return r}
+const $M=(d,p)=>ST.mode==='$'?(d>0?'+':d<0?'−':'')+'$'+fmt(Math.abs(d)):sg(p)+'%';
+const $D=(d,p)=>ST.mode==='$'?(d<0?'−$':'$')+fmt(Math.abs(d)):fmt(p)+'%';
+const PERIODS={d7:['7 วัน',7],d30:['30 วัน',30],d90:['3 เดือน',90],d365:['1 ปี',365],all:['ทั้งหมด',0]};
+const NOW=Math.max(BARS.H1.length?BARS.H1[BARS.H1.length-1][0]+3600:0,...RAW_TRADES.map(t=>t.t1));
+const inRange=k=>PERIODS[k]?CLOSED.filter(t=>!PERIODS[k][1]||t.t1>NOW-PERIODS[k][1]*86400):CLOSED.filter(t=>mkey(t.t1)===k);
 
-// ================= header =================
-function renderHeader(){
- const fl=sum(OPEN,t=>t.profit),flP=sum(OPEN,t=>t.ap);
- $('#stats').innerHTML=[[tx('ไม้ปิดแล้ว','Closed'),ALL.n,'o2'],['Winrate',ALL.wr.toFixed(0)+'%'],[MODE==='$'?'Net':tx('ผลตอบแทน','Return'),`<span class="${cls(ALL.net)}">${$Ms(ALL.net,ALL.netP)}</span>`],
-  ['Profit factor',ALL.pf.toFixed(2),'o1'],['Payoff',ALL.payoff.toFixed(2),'o1'],...(OPEN.length?[[tx('ลอยอยู่','Floating'),`<span class="${cls(fl)}">${$Ms(fl,flP)}</span>`]]:[])]
-  .map(([k,v,o=''])=>`<div class="stat num ${o}"><small>${k}</small><b>${v}</b></div>`).join('');
+// ตัวเลขวิ่ง: <b data-cu="ค่า" data-f="money|pct|num|int|pf">
+const FMTS={money:v=>ST.mode==='$'?(v>0?'+':v<0?'−':'')+'$'+fmt(Math.abs(v)):sg(v)+'%',dd:v=>ST.mode==='$'?(v<0?'−$':'$')+fmt(Math.abs(v)):fmt(v)+'%',pct:v=>v.toFixed(1)+'%',num:v=>v.toFixed(2),int:v=>Math.round(v)+''};
+function countUp(root){const els=[...root.querySelectorAll('[data-cu]')],t0=performance.now(),reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const step=now=>{const k=reduce?1:Math.min(1,(now-t0)/900),e=1-Math.pow(1-k,3);
+  els.forEach(el=>{const v=+el.dataset.cu;el.textContent=FMTS[el.dataset.f](v*e)});if(k<1)requestAnimationFrame(step)};requestAnimationFrame(step)}
+
+// ================= บัญชี + ช่วงเวลา + KPI =================
+function renderAccts(){
+ const one=(k,name,sub,status,net,dep,i)=>{const r=net/Math.max(1,dep)*100;
+  return `<button class="acct lift rise${ST.acct===k?' on':''}" data-a="${k}" style="animation-delay:${i*50}ms"><small><span>${sub}</span><span style="${status==='เปิดอยู่'?'color:var(--win);font-weight:600':''}">${status}</span></small><b>${name}</b><span class="${cls(net)}">${ST.mode==='$'?$M(net,0)+' · '+sg(r,1)+'%':sg(r,1)+'% ของเงินฝาก'}</span></button>`};
+ const per=a=>{const L=RAW_CLOSED.filter(t=>t.acct===a.login),dep=sum(RAW_CASH.filter(c=>c.acct===a.login&&c.amt>0),c=>c.amt);
+  const open=a.equity>0||RAW_TRADES.some(t=>t.open&&t.acct===a.login);return [sum(L,t=>t.profit),dep,open?'เปิดอยู่':'ปิดแล้ว',L.length]};
+ const allNet=sum(RAW_CLOSED,t=>t.profit),allDep=sum(RAW_CASH.filter(c=>c.amt>0),c=>c.amt);
+ $('#accts').innerHTML=(ACCTS.length>1?one('all','ทุกบัญชี','มุมมองรวม',RAW_CLOSED.length+' ไม้',allNet,allDep,0):'')+
+  [...ACCTS].reverse().map((a,i)=>{const [net,dep,st,n]=per(a);return one(String(a.login),a.name||('#'+a.login),'#'+a.login+' · '+n+' ไม้',st,net,dep,i+1)}).join('');
+ $('#per').innerHTML=Object.entries(PERIODS).map(([k,[l]])=>`<button data-p="${k}" class="${k===ST.per?'on':''}">${l}</button>`).join('');
+}
+function renderKpis(){
+ const pr=PERIODS[ST.per],A=stats(inRange(ST.per)),win=pr[1]||30,cut=NOW-win*86400;
+ const R=stats(CLOSED.filter(t=>t.t1>cut)),P=stats(CLOSED.filter(t=>t.t1<=cut&&(!pr[1]||t.t1>cut-win*86400)));
+ const cmp=(a,b,d=2,suf='')=>R.n&&P.n?`<i class="${a>b?'w':a<b?'l':''}">${pr[1]?pr[0]+'ล่าสุด':'30 วันล่าสุด'} ${fmt(a,d)}${suf} (เดิม ${fmt(b,d)}${suf})</i>`:'';
+ $('#perl').textContent=A.n?`${A.n} ไม้ปิดในช่วงนี้ · ข้อมูล ณ ${BUILT.slice(0,16)} (${TZL}) · v2.0.0`:'ช่วงนี้ไม่มีไม้ที่ปิด';
+ const k=(lab,html,sub,i)=>`<div class="card kpi lift rise" style="animation-delay:${100+i*70}ms"><small>${lab}</small>${html}${sub}</div>`;
+ $('#kpis').innerHTML=
+  k(ST.mode==='$'?'กำไรสุทธิ':'ผลตอบแทน',`<b class="${cls(A.net)}" data-cu="${ST.mode==='$'?A.net:A.netP}" data-f="money">0</b>`,`<i>${ST.mode==='$'?sg(A.netP)+'% ของเงินฝาก $'+fmt(BASE,0):'เทียบยอดฝากรวม · ไม่ทบต้น'}</i>`,0)+
+  k('Winrate',`<b data-cu="${A.wr}" data-f="pct">0</b>`,cmp(R.wr,P.wr,0,'%')||`<i>${A.w}W / ${A.n-A.w}L</i>`,1)+
+  k('Profit factor',A.pf===Infinity?'<b>∞</b>':`<b data-cu="${A.pf}" data-f="num">0</b>`,cmp(Math.min(R.pf,99),Math.min(P.pf,99))||`<i>Payoff ${A.payoff.toFixed(2)}</i>`,2)+
+  k('Max drawdown',`<b class="l" data-cu="${ST.mode==='$'?A.dd$:A.ddP}" data-f="dd">0</b>`,A.best?`<i>ไม้ดีสุด ${$M(A.best.profit,A.best.ap)} · แย่สุด ${$M(A.worst.profit,A.worst.ap)}</i>`:'',3);
+ countUp($('#kpis'));
 }
 
 // ================= กราฟ =================
-// ---- ธีม: อ่านสีจาก CSS variable ----
 const cssv=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
-let THEME='dark';try{THEME=localStorage.getItem('xau-theme')||''}catch(e){}
-if(THEME!=='light'&&THEME!=='dark')THEME=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';
-document.documentElement.dataset.theme=THEME;
-const chart=LightweightCharts.createChart($('#chart'),{layout:{fontFamily:'Segoe UI, Tahoma, sans-serif'},
- timeScale:{timeVisible:true,rightOffset:10},autoSize:true,crosshair:{mode:0}});
-const cs=chart.addCandlestickSeries({borderVisible:false});
-function paintChart(){const g=cssv('--grid'),ln=cssv('--line'),cr=cssv('--cross'),cb=cssv('--crossbg'),up=cssv('--win'),dn=cssv('--loss');
- chart.applyOptions({layout:{background:{color:cssv('--bg')},textColor:cssv('--axis')},grid:{vertLines:{color:g},horzLines:{color:g}},
-  rightPriceScale:{borderColor:ln},timeScale:{borderColor:ln},
-  crosshair:{vertLine:{color:cr,labelBackgroundColor:cb},horzLine:{color:cr,labelBackgroundColor:cb}}});
- cs.applyOptions({upColor:up,downColor:dn,wickUpColor:up,wickDownColor:dn,priceLineColor:cssv('--mute')})}
-paintChart();
-let TF='H1',bars=[];
-function barAt(t){let lo=0,hi=bars.length-1;if(t<bars[0].time)return 0;while(lo<hi){const mid=(lo+hi+1)>>1;bars[mid].time<=t?lo=mid:hi=mid-1}return lo}
-function setTF(tf,keep=true){
- const vr=keep&&bars.length?chart.timeScale().getVisibleRange():null;
- TF=tf;bars=BARS[tf].map(([time,open,high,low,close])=>({time,open,high,low,close}));cs.setData(bars);
- cs.setMarkers(TRADES.map(t=>({time:bars[barAt(t.t0)].time,position:t.side==='buy'?'belowBar':'aboveBar',
-  color:t.side==='buy'?'#10b981':'#ef4444',shape:t.side==='buy'?'arrowUp':'arrowDown'})).sort((a,b)=>a.time-b.time));
- $$('#tf button').forEach(b=>b.classList.toggle('on',b.dataset.tf===tf));
- if(vr)chart.timeScale().setVisibleRange(vr);legend();draw();
-}
+const chart=LightweightCharts.createChart($('#chart'),{layout:{background:{color:'#ffffff'},textColor:'#4b5260',fontFamily:'Anuphan, Segoe UI, sans-serif'},
+ grid:{vertLines:{color:'#f3f4f6'},horzLines:{color:'#f1f2f5'}},rightPriceScale:{borderColor:'#e3e5ea'},timeScale:{borderColor:'#e3e5ea',timeVisible:true,rightOffset:10},
+ crosshair:{mode:0,vertLine:{color:'#a1a7b3',labelBackgroundColor:'#2b59c3'},horzLine:{color:'#a1a7b3',labelBackgroundColor:'#2b59c3'}},autoSize:true});
+const cs=chart.addCandlestickSeries({upColor:'#0a8f5a',downColor:'#c23b3b',wickUpColor:'#0a8f5a',wickDownColor:'#c23b3b',borderVisible:false,priceLineColor:'#2b59c3'});
+let bars=[],fadeT=0;
+function barAt(t){let lo=0,hi=bars.length-1;if(!bars.length||t<bars[0].time)return 0;while(lo<hi){const mid=(lo+hi+1)>>1;bars[mid].time<=t?lo=mid:hi=mid-1}return lo}
+function setTF(tf,keep=true){const vr=keep&&bars.length?chart.timeScale().getVisibleRange():null;ST.tf=tf;
+ bars=BARS[tf].map(([time,open,high,low,close])=>({time,open,high,low,close}));cs.setData(bars);
+ cs.setMarkers(TRADES.map(t=>({time:bars[barAt(t.t0)].time,position:t.side==='buy'?'belowBar':'aboveBar',color:t.side==='buy'?'#0a8f5a':'#c23b3b',shape:t.side==='buy'?'arrowUp':'arrowDown'})).sort((a,b)=>a.time-b.time));
+ $$('#tf button').forEach(b=>b.classList.toggle('on',b.dataset.tf===tf));if(vr)chart.timeScale().setVisibleRange(vr);legend();redraw()}
 function legend(p){const b=p&&p.seriesData&&p.seriesData.get(cs)||bars[bars.length-1];if(!b)return;const ch=b.close-b.open,c=ch>=0?'w':'l';
- $('#legend').innerHTML=`<b>${ACCT.sym||'XAUUSD'} · ${TF}</b> <span class="m">O</span> <span class="${c}">${fmt(b.open)}</span> <span class="m">H</span> <span class="${c}">${fmt(b.high)}</span> <span class="m">L</span> <span class="${c}">${fmt(b.low)}</span> <span class="m">C</span> <span class="${c}">${fmt(b.close)}</span> <span class="${c}">${sg(ch)}</span>`}
+ $('#legend').innerHTML=`<span class="m">O</span> <span class="${c}">${fmt(b.open)}</span> <span class="m">H</span> <span class="${c}">${fmt(b.high)}</span> <span class="m">L</span> <span class="${c}">${fmt(b.low)}</span> <span class="m">C</span> <span class="${c}">${fmt(b.close)}</span>`}
 chart.subscribeCrosshairMove(legend);
-
-const cv=$('#ov'),ctx=cv.getContext('2d');let sel=null,hover=null,hit=[];
+const cv=$('#ov'),ctx=cv.getContext('2d');let hover=null,hit=[];
 const xOf=t=>chart.timeScale().logicalToCoordinate(barAt(t));
 function draw(){
- if(!$('#vchart').classList.contains('on'))return;
+ if(ST.tab!=='overview'&&ST.tab!=='chart')return;
  const r=$('#wrap').getBoundingClientRect(),dpr=devicePixelRatio;
  if(cv.width!==Math.round(r.width*dpr)||cv.height!==Math.round(r.height*dpr)){cv.width=r.width*dpr;cv.height=r.height*dpr;cv.style.width=r.width+'px';cv.style.height=r.height+'px'}
  ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,r.width,r.height);hit=[];
- const plotW=r.width-chart.priceScale('right').width(),plotH=r.height-chart.timeScale().height();
+ const plotW=r.width-chart.priceScale('right').width(),plotH=r.height-chart.timeScale().height(),half=Math.max(1,chart.timeScale().options().barSpacing/2);
+ const fa=Math.min(1,(performance.now()-fadeT)/500),sel=ST.sel;
  ctx.save();ctx.beginPath();ctx.rect(0,0,plotW,plotH);ctx.clip();
- const half=Math.max(1,chart.timeScale().options().barSpacing/2);
  for(const t of TRADES){
   const x0=xOf(t.t0)-half,xe=Math.max(xOf(t.t1)+half,x0+4);if(xe<0||x0>plotW)continue;
   const ye=cs.priceToCoordinate(t.entry),yx=cs.priceToCoordinate(t.exit);if(ye==null||yx==null)continue;
-  const win=t.profit>0,col=win?'16,185,129':'239,68,68',on=sel===t,hv=hover===t,dim=sel&&!on;
-  const top=Math.min(ye,yx),h=Math.max(2,Math.abs(yx-ye));
-  if(on||hv){
-   if(t.sl){const ys=cs.priceToCoordinate(t.sl);ctx.fillStyle='rgba(239,68,68,.08)';ctx.fillRect(x0,Math.min(ye,ys),xe-x0,Math.abs(ys-ye));line(x0,xe,ys,'rgba(239,68,68,.6)')}
-   if(t.tp)line(x0,xe,cs.priceToCoordinate(t.tp),'rgba(16,185,129,.6)');
-   if(t.mfe){const ym=cs.priceToCoordinate(t.entry+t.mfe*DIR(t));const mc=cssv('--mfe');line(x0,xe,ym,`rgba(${mc},.8)`);ctx.font='11px Segoe UI';ctx.fillStyle=`rgba(${mc},.95)`;ctx.fillText('MFE',xe+4,ym+4)}
-  }
-  ctx.globalAlpha=dim?.35:1;
-  ctx.fillStyle=`rgba(${col},${on||hv?.3:.16})`;ctx.fillRect(x0,top,xe-x0,h);
-  ctx.strokeStyle=`rgba(${col},${on?1:hv?.9:.5})`;ctx.lineWidth=on?1.5:1;ctx.setLineDash(t.open?[5,3]:[]);ctx.strokeRect(x0+.5,top+.5,xe-x0-1,h-1);ctx.setLineDash([]);
-  ctx.strokeStyle=cssv('--entry');ctx.beginPath();ctx.moveTo(x0,ye);ctx.lineTo(xe,ye);ctx.stroke();
-  if(xe-x0>18||on||hv){ctx.font='600 11px Segoe UI, Tahoma, sans-serif';ctx.fillStyle=`rgb(${col})`;
-   const lbl=(t.pct>0?'+':'')+t.pct+'%',above=(t.side==='buy')===win;ctx.fillText(lbl,x0+3,above?top-5:top+h+13)}
-  ctx.globalAlpha=1;hit.push({t,x0,x1:xe,y0:top-3,y1:top+h+3});
- }ctx.restore();
- function line(a,b,y,c){ctx.strokeStyle=c;ctx.lineWidth=1;ctx.setLineDash([2,3]);ctx.beginPath();ctx.moveTo(a,y);ctx.lineTo(b,y);ctx.stroke();ctx.setLineDash([])}
-}
+  const win=t.profit>0,col=win?'10,143,90':'194,59,59',on=sel===t,hv=hover===t,dim=sel&&!on,top=Math.min(ye,yx),h=Math.max(2,Math.abs(yx-ye));
+  if(on||hv){if(t.sl){const ys=cs.priceToCoordinate(t.sl);ctx.fillStyle='rgba(194,59,59,.07)';ctx.fillRect(x0,Math.min(ye,ys),xe-x0,Math.abs(ys-ye));line(x0,xe,ys,'rgba(194,59,59,.6)')}
+   if(t.tp)line(x0,xe,cs.priceToCoordinate(t.tp),'rgba(10,143,90,.6)');
+   if(t.mfe){const ym=cs.priceToCoordinate(t.entry+t.mfe*DIR(t));line(x0,xe,ym,'rgba(179,107,0,.85)');ctx.font='11px Anuphan, sans-serif';ctx.fillStyle='rgba(179,107,0,.95)';ctx.fillText('MFE',xe+4,ym+4)}}
+  ctx.globalAlpha=(dim?.3:1)*fa;
+  ctx.fillStyle=`rgba(${col},${on||hv?.22:.1})`;ctx.fillRect(x0,top,xe-x0,h);
+  ctx.strokeStyle=on?'#2b59c3':`rgba(${col},${hv?.95:.6})`;ctx.lineWidth=on?2:1;ctx.setLineDash(t.open?[5,3]:[]);ctx.strokeRect(x0+.5,top+.5,xe-x0-1,h-1);ctx.setLineDash([]);
+  ctx.strokeStyle='rgba(20,22,26,.45)';ctx.beginPath();ctx.moveTo(x0,ye);ctx.lineTo(xe,ye);ctx.stroke();
+  if(xe-x0>18||on||hv){ctx.font='600 11px Anuphan, sans-serif';ctx.fillStyle=`rgb(${col})`;ctx.fillText((t.pct>0?'+':'')+t.pct+'%',x0+3,(t.side==='buy')===win?top-5:top+h+13)}
+  ctx.globalAlpha=1;hit.push({t,x0,x1:xe,y0:top-3,y1:top+h+3})}
+ ctx.restore();if(fa<1)redraw();
+ function line(a,b,y,c){ctx.strokeStyle=c;ctx.lineWidth=1;ctx.setLineDash([2,3]);ctx.beginPath();ctx.moveTo(a,y);ctx.lineTo(b,y);ctx.stroke();ctx.setLineDash([])}}
 let raf=0;const redraw=()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(draw)};
 chart.timeScale().subscribeVisibleLogicalRangeChange(redraw);new ResizeObserver(redraw).observe($('#wrap'));
 $('#wrap').addEventListener('wheel',redraw,{passive:true});setInterval(draw,500);
-
 const pick=e=>{const r=$('#wrap').getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top;
  const hs=hit.filter(b=>mx>=b.x0&&mx<=b.x1&&my>=b.y0&&my<=b.y1).sort((a,b)=>(a.x1-a.x0)-(b.x1-b.x0));return [hs[0]&&hs[0].t,mx,my,r]};
 $('#wrap').addEventListener('mousemove',e=>{if(e.buttons)redraw();const [t,mx,my,r]=pick(e),tip=$('#tip');
- if(t!==hover){hover=t;redraw()}$('#wrap').style.cursor=t?'pointer':'';
- if(!t||t===sel){tip.style.display='none';return}
- tip.innerHTML=`<span class="tag ${t.side}">${t.side.toUpperCase()}</span> <span class="num">${fmt(t.entry)} → ${fmt(t.exit)}</span> · <b class="${cls(t.profit)}">${$Ms(t.profit,t.ap)}</b>`;
- tip.style.display='block';tip.style.left=Math.min(mx+14,r.width-260)+'px';tip.style.top=(my+16)+'px'});
+ if(t!==hover){hover=t;redraw()}$('#wrap').style.cursor=t?'pointer':'';if(!t||t===ST.sel){tip.style.display='none';return}
+ tip.innerHTML=`<span class="tag ${t.side}" style="display:inline-block">${t.side.toUpperCase()}</span> ${fmt(t.entry)} → ${fmt(t.exit)} · <b class="${cls(t.profit)}">${$M(t.profit,t.ap)}</b>`;
+ tip.style.display='block';tip.style.left=Math.min(mx+14,r.width-280)+'px';tip.style.top=(my+16)+'px'});
 $('#wrap').addEventListener('mouseleave',()=>{hover=null;$('#tip').style.display='none';redraw()});
 $('#wrap').addEventListener('click',e=>{const [t]=pick(e);if(t)select(t,false)});
+$('#tf').onclick=e=>{const b=e.target.closest('button');if(b)setTF(b.dataset.tf)};
 
-function showCard(t){const c=$('#card');if(!t){c.style.display='none';return}
- const m=mv(t),cap=t.mfe>0?Math.max(0,Math.min(100,m/t.mfe*100)):null;
- const rows=[['Lot',t.vol],[tx('เข้า','Entry'),`${fmt(t.entry)} <span class="m">· ${dts(t.t0)}</span>`],[tx('ออก','Exit'),t.open?`${fmt(t.exit)} <span class="live">● ${tx('เปิดอยู่','open')}</span>`:`${fmt(t.exit)} <span class="m">· ${dts(t.t1)}</span>`],
-  [tx('ถือ','Held'),dur(t.t1-t.t0)],['SL / TP',`${t.sl?fmt(t.sl):'-'} / ${t.tp?fmt(t.tp):'-'}`],[tx('ระยะที่ได้','Move captured'),sg(pp(m,t))+'%'],
-  [tx('เคยบวกสุด (MFE)','Max favorable (MFE)'),t.mfe!=null?`+${fmt(pp(t.mfe,t))}%`+(cap!=null&&t.profit>0?` <span class="m">· ${tx('เก็บได้','kept')} ${cap.toFixed(0)}%</span>`:''):'-'],[tx('เคยติดลบสุด (MAE)','Max adverse (MAE)'),t.mae!=null?`−${fmt(pp(t.mae,t))}%`:'-']];
- if(t.comment&&t.comment!=='OPEN')rows.push([tx('หมายเหตุ','Note'),t.comment]);
- c.innerHTML=`<div class="hd"><span><span class="tag ${t.side}">${t.side.toUpperCase()}</span> <span class="m">#${t.id}${SEL==='all'&&ACCTS.length>1?' · '+tx('บัญชี','acct')+' '+String(t.acct).slice(-4):''}</span>${t.flags.map(f=>`<span class="flag">${FL(f)}</span>`).join('')}</span><button class="x" onclick="select(null)">✕</button></div>
-  <table class="num">${rows.map(([k,v])=>`<tr><td class="m">${k}</td><td>${v}</td></tr>`).join('')}</table>
-  <div class="pl num ${cls(t.profit)}">${$Ms(t.profit,t.ap)} <span style="font-size:12px" class="m">${MODE==='$'?`(${sg(t.ap)}% ${tx('ของเงินฝาก','of deposits')})`:tx('ของเงินฝาก','of deposits')}</span></div>`;
- c.style.display='block'}
+// ================= แผงข้าง: สมุดไม้ล่าสุด / รายละเอียดไม้ =================
+function trRow(t,compact){const fl=!t.flags.length?'':compact?'':`<span class="flag">${t.flags.map(FL).join(' · ')}</span>`;
+ return `<button class="tr${ST.sel===t?' on':''}" data-k="${t.k}"><span class="tag ${t.side}">${t.side.toUpperCase()}</span>
+  <span class="px"><b>${fmt(t.entry)} → ${fmt(t.exit)} ${t.open?'<span class="live">● เปิดอยู่</span>':''}</b><small>${ACCTS.length>1&&ST.acct==='all'?ANAME[t.acct]+' · ':''}${pad(D(t.t0).getUTCHours())}:${pad(D(t.t0).getUTCMinutes())} · ถือ ${dur(t.t1-t.t0)}${compact?(t.flags.length?' · <span class="wr">ติดธง</span>':''):' · '+t.vol+' lot'}</small></span>
+  ${fl}<span class="pl"><b class="${cls(t.profit)}">${$M(t.profit,t.ap)}</b><small>${ST.mode==='$'?sg(t.ap)+'% เงินฝาก':'ราคา '+sg(t.pct)+'%'}</small></span></button>`}
+function byDay(L,compact){const g=[];for(const t of L){const k=dkey(t.t0);let x=g[g.length-1];if(!x||x.k!==k){x={k,t:t.t0,a:[]};g.push(x)}x.a.push(t)}
+ return g.map(x=>{const p=sum(x.a,t=>t.profit),ap=sum(x.a,t=>t.ap);return `<div class="dayh"><span>${dayL(x.t)} · ${x.a.length} ไม้</span><span class="${cls(p)}">${$M(p,ap)}</span></div>`+x.a.map(t=>trRow(t,compact)).join('')}).join('')}
+function renderSide(){const s=$('#side');
+ if(ST.tab==='chart'){const t=ST.sel||[...TRADES].sort((a,b)=>b.t0-a.t0)[0];if(!t){s.innerHTML='<div class="empty">ไม่มีไม้</div>';return}
+  const m=mv(t),cap=t.mfe>0?Math.max(0,Math.min(100,m/t.mfe*100)):null;
+  s.innerHTML=`<div class="detail" key="${t.k}">
+   <div style="display:flex;align-items:center;gap:8px"><span class="tag ${t.side}">${t.side.toUpperCase()}</span><span class="m" style="font-size:13px">${dts(t.t0)}</span><span class="m" style="margin-left:auto;font-size:12px">#${t.id}</span></div>
+   <div><div class="big ${cls(t.profit)}">${$M(t.profit,t.ap)}</div><div class="m" style="font-size:13px">${ST.mode==='$'?sg(t.ap)+'% ของเงินฝาก · ':''}${ANAME[t.acct]}</div></div>
+   ${t.flags.length?`<div class="flag" style="font-size:13px;padding:8px 12px;border-radius:10px;white-space:normal">ติดธง: ${t.flags.map(FL).join(', ')}</div>`:''}
+   <div class="dgrid"><div><small>เข้า</small>${fmt(t.entry)}</div><div><small>ออก</small>${fmt(t.exit)}${t.open?' <span class="live">● เปิดอยู่</span>':''}</div>
+    <div><small>ถือ</small>${dur(t.t1-t.t0)}</div><div><small>Lot</small>${t.vol}</div>
+    <div><small>SL / TP</small>${t.sl?fmt(t.sl):'-'} / ${t.tp?fmt(t.tp):'-'}</div><div><small>ระยะที่ได้</small>${sg(pp(m,t))}%</div>
+    <div><small>เคยบวกสุด (MFE)</small>${t.mfe!=null?'+'+fmt(pp(t.mfe,t))+'%'+(cap!=null&&t.profit>0?` <span class="m">· เก็บ ${cap.toFixed(0)}%</span>`:''):'-'}</div><div><small>เคยติดลบสุด (MAE)</small>${t.mae!=null?'−'+fmt(pp(t.mae,t))+'%':'-'}</div></div>
+   ${t.comment&&t.comment!=='OPEN'?`<div class="m" style="font-size:12px">หมายเหตุ: ${t.comment}</div>`:''}
+   <div class="sp"></div>
+   <div style="display:flex;gap:8px"><button class="btn ghost lift" style="flex:1;justify-content:center" id="pv">ไม้ก่อน</button><button class="btn lift" style="flex:1;justify-content:center" id="nx">ไม้ถัดไป</button></div>
+   <div class="m" style="font-size:11px">↑↓ เลื่อนไม้ · Esc ยกเลิก</div></div>`;
+  $('#pv').onclick=()=>step(1);$('#nx').onclick=()=>step(-1);return}
+ const L=[...TRADES].sort((a,b)=>b.t0-a.t0).slice(0,12);
+ s.innerHTML=`<div class="shead"><h3>สมุดไม้ล่าสุด</h3><span class="m" style="font-size:12px">${TRADES.length} ไม้</span><div class="sp"></div><button class="link" data-go="journal">ดูทั้งหมด</button></div><div class="scroll" style="max-height:440px">${byDay(L,true)}</div>`}
+function step(d){const L=[...TRADES].sort((a,b)=>b.t0-a.t0);let i=L.indexOf(ST.sel);i=i<0?0:Math.min(L.length-1,Math.max(0,i+d));select(L[i],true)}
+function select(t,zoom){ST.sel=t;if(t&&ST.tab!=='chart'&&ST.tab!=='overview'){setTab('chart');}renderSide();
+ if(t&&zoom){const p=Math.max({M15:6,H1:24,H4:96,D1:600}[ST.tf]*3600,(t.t1-t.t0)*0.8),i0=barAt(t.t0-p),i1=barAt(t.t1+p);chart.timeScale().setVisibleLogicalRange({from:i0,to:Math.max(i1,i0+20)+2})}
+ if(t&&ST.tab==='overview')setTab('chart');redraw()}
+document.addEventListener('click',e=>{const r=e.target.closest('.tr');if(r){select(RAW_TRADES.find(t=>t.k===r.dataset.k),true);return}
+ const g=e.target.closest('[data-go]');if(g)setTab(g.dataset.go);
+ const tr=e.target.closest('tr[data-k]');if(tr)select(RAW_TRADES.find(t=>t.k===tr.dataset.k),true)});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('#modal').classList.remove('on');ST.sel=null;renderSide();redraw()}
+ if(ST.tab==='chart'&&(e.key==='ArrowDown'||e.key==='ArrowUp')){e.preventDefault();step(e.key==='ArrowDown'?1:-1)}});
 
-let F='all';
-const pass=t=>F==='all'||(F==='win'&&t.profit>0)||(F==='loss'&&t.profit<=0)||(F==='flag'&&t.flags.length)||F===t.side;
-function renderList(){const L=[...TRADES].reverse().filter(pass);$('#count').textContent=L.length+tx(' ไม้',' trades');
- $('#list').innerHTML=L.map(t=>`<div class="row${sel===t?' on':''}" data-id="${t.id}"><span class="tag ${t.side}">${t.side.toUpperCase()}</span>
-  <div class="num">${fmt(t.entry)} → ${fmt(t.exit)}${t.open?'<span class="live">● LIVE</span>':''}${t.flags.length?'<span class="flag">⚠</span>':''}<small>${dts(t.t0)} · ${dur(t.t1-t.t0)}</small></div>
-  <div class="pl num ${cls(t.profit)}">${$Ms(t.profit,t.ap)}<small>${MODE==='$'?sg(t.ap)+tx('% เงินฝาก','% dep'):tx('ราคา ','price ')+sg(t.pct)+'%'}</small></div></div>`).join('')}
-$('#filters').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;F=b.dataset.f;$$('.chip').forEach(c=>c.classList.toggle('on',c===b));renderList()});
-$('#list').addEventListener('click',e=>{const r=e.target.closest('.row');if(r)select(TRADES.find(t=>t.id==r.dataset.id),true)});
-
-function select(t,zoom){sel=t;showCard(t);renderList();
- if(t){const row=$(`.row[data-id="${t.id}"]`);row&&row.scrollIntoView({block:'nearest'})}
- if(t&&zoom){const p=Math.max({M15:6,H1:24,H4:96,D1:600}[TF]*3600,(t.t1-t.t0)*0.8),i0=barAt(t.t0-p),i1=barAt(t.t1+p);
-  chart.timeScale().setVisibleLogicalRange({from:i0,to:Math.max(i1,i0+20)+2})}redraw()}
-window.select=select;
-window.goTrade=id=>{setView('chart');setTimeout(()=>select(TRADES.find(t=>t.id==id),true),30)};
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('#modal').classList.remove('on');select(null)}
- if(VIEW==='chart'&&(e.key==='ArrowDown'||e.key==='ArrowUp')){e.preventDefault();const L=[...TRADES].reverse().filter(pass);if(!L.length)return;
-  let i=L.indexOf(sel);i=i<0?0:Math.min(L.length-1,Math.max(0,i+(e.key==='ArrowDown'?1:-1)));select(L[i],true)}});
-$('#tf').addEventListener('click',e=>{const b=e.target.closest('button');if(b)setTF(b.dataset.tf)});
-
-// ================= Performance =================
+// ================= หน้า: สมุดไม้ / รายเดือน / วินัย =================
 function grp(L,key,order){const g={};for(const t of L){const k=key(t);(g[k]=g[k]||[]).push(t)}
  return order.filter(k=>g[k]).map(k=>{const a=g[k],w=a.filter(t=>t.profit>0).length;return {k,n:a.length,wr:w/a.length*100,net:sum(a,t=>t.profit),netP:sum(a,t=>t.ap)}})}
-function bars_(rows){const mx=Math.max(...rows.map(r=>Math.abs(MODE==='$'?r.net:r.netP)),1e-9);
- return `<div class="br m" style="font-size:11px"><span></span><span></span><span>${MODE==='$'?'P/L':tx('% รวม','% sum')}</span><span>Win</span><span>${tx('ไม้','#')}</span></div>`+rows.map(r=>{const v=MODE==='$'?r.net:r.netP;
-  return `<div class="br num"><span>${r.k}</span><div class="bar"><i style="left:0;width:${Math.abs(v)/mx*100}%;background:${v>=0?'var(--win)':'var(--loss)'}"></i></div><span class="${cls(v)}">${$Ms(r.net,r.netP)}</span><span>${r.wr.toFixed(0)}%</span><span class="m">${r.n}</span></div>`}).join('')}
-const hTH=t=>D(t).getUTCHours();
-// session คิดจากชั่วโมง UTC: เอเชีย 22–07, ลอนดอน 07–13, นิวยอร์ก 13–22
-const session=t=>{const h=(hTH(t.t0)-TZ+48)%24;return h>=22||h<7?tx('เอเชีย','Asia'):h<13?tx('ลอนดอน','London'):tx('นิวยอร์ก','New York')};
-const lh=h=>pad(((h+TZ)%24+24)%24);
-const holdB=t=>{const h=(t.t1-t.t0)/3600;return HBL()[h<1?0:h<4?1:h<12?2:h<24?3:h<72?4:5]};
-const HBL=()=>LANG==='en'?['< 1 h','1–4 h','4–12 h','12–24 h','1–3 d','> 3 d']:['< 1 ชม.','1–4 ชม.','4–12 ชม.','12–24 ชม.','1–3 วัน','> 3 วัน'];
-
-function kpi(k,v,sub,c=''){return `<div class="kpi"><small>${k}</small><b class="num ${c}">${v}</b>${sub?`<i class="m">${sub}</i>`:''}</div>`}
-function delta(a,b,better=1,d=2,suf=''){const x=(a-b)*better;return `<i class="${x>0?'w':x<0?'l':'m'}">${x>0?'▲':x<0?'▼':'•'} ${fmt(b,d)}${suf} → ${fmt(a,d)}${suf}</i>`}
-
-const PERIODS={d7:{th:'7 วัน',en:'7 days',d:7},d30:{th:'30 วัน',en:'30 days',d:30},d90:{th:'3 เดือน',en:'3 months',d:90},d365:{th:'1 ปี',en:'1 year',d:365},all:{th:'ทั้งหมด',en:'All time',d:0}};
-Object.values(PERIODS).forEach(v=>Object.defineProperty(v,'l',{get(){return v[LANG]}}));
-const NOW=Math.max(BARS.H1[BARS.H1.length-1][0]+3600,...TRADES.map(t=>t.t1));
-let PER='all';try{PER=localStorage.getItem('xau-per')||'all'}catch(e){}if(!PERIODS[PER])PER='all';
-const inRange=k=>PERIODS[k]?CLOSED.filter(t=>!PERIODS[k].d||t.t1>NOW-PERIODS[k].d*86400):CLOSED.filter(t=>mkey(t.t1)===k);
-const perBar=()=>`<div class="c12" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><div class="seg" id="per">${Object.entries(PERIODS).map(([k,v])=>`<button data-p="${k}" class="${k===PER?'on':''}">${v.l}</button>`).join('')}</div><span class="m" style="font-size:12px">${tx('ทุกส่วนด้านล่างคิดตามช่วงนี้','Everything below uses this period')}</span></div>`;
-document.addEventListener('click',e=>{const b=e.target.closest('#per button');if(!b)return;PER=b.dataset.p;try{localStorage.setItem('xau-per',PER)}catch(_){}renderPerf()});
+function bars_(rows){const mx=Math.max(...rows.map(r=>Math.abs(ST.mode==='$'?r.net:r.netP)),1e-9);
+ return `<div class="br m" style="font-size:11px"><span></span><span></span><span>${ST.mode==='$'?'P/L':'% รวม'}</span><span>Win</span><span>ไม้</span></div>`+rows.map(r=>{const v=ST.mode==='$'?r.net:r.netP;
+  return `<div class="br"><span>${r.k}</span><div class="bt"><i style="width:${Math.abs(v)/mx*100}%;background:${v>=0?'var(--win)':'var(--loss)'}"></i></div><span class="${cls(v)}">${$M(r.net,r.netP)}</span><span>${r.wr.toFixed(0)}%</span><span class="m">${r.n}</span></div>`}).join('')}
+const hTH=t=>D(t).getUTCHours(),lh=h=>pad(((h+TZ)%24+24)%24);
+const session=t=>{const h=(hTH(t.t0)-TZ+48)%24;return h>=22||h<7?'เอเชีย':h<13?'ลอนดอน':'นิวยอร์ก'};
+const HBL=['< 1 ชม.','1–4 ชม.','4–12 ชม.','12–24 ชม.','1–3 วัน','> 3 วัน'],holdB=t=>{const h=(t.t1-t.t0)/3600;return HBL[h<1?0:h<4?1:h<12?2:h<24?3:h<72?4:5]};
 let eqChart=null;
-function renderPerf(){
- const pr=PERIODS[PER],C=inRange(PER),A=stats(C),MK=[...new Set(C.map(t=>mkey(t.t1)))],CF=CASH.filter(c=>!pr.d||c.t>NOW-pr.d*86400);
- const now=NOW,win=pr.d||30,cut=now-win*86400;
- const R=stats(CLOSED.filter(t=>t.t1>cut)),P=stats(CLOSED.filter(t=>t.t1<=cut&&(!pr.d||t.t1>cut-win*86400)));
- const cmpLbl=pr.d?tx(`${pr.l}ล่าสุด เทียบกับ ${pr.l}ก่อนหน้า`,`Last ${pr.l} vs the ${pr.l} before`):tx('30 วันล่าสุด เทียบกับก่อนหน้าทั้งหมด','Last 30 days vs everything before');
- if(!C.length){$('#pw').innerHTML=perBar()+`<div class="box c12 m" style="text-align:center;padding:40px">${tx(`ช่วง ${pr.l} ไม่มีไม้ที่ปิด`,`No closed trades in the last ${pr.l}`)}</div>`;return}
- // --- คำตัดสิน ---
- const V=[];
- if(R.n&&P.n){
-  const ex=`${sg(P.expP,3)}% → ${sg(R.expP,3)}%`;
-  V.push(R.expP>P.expP?`<b class="w">▲ ${tx('คาดหวังต่อไม้ดีขึ้น','Expectancy improved')}</b> ${tx(`จาก ${ex} ของเงินฝากต่อไม้`,`from ${ex} of deposits per trade`)}`:`<b class="l">▼ ${tx('คาดหวังต่อไม้แย่ลง','Expectancy dropped')}</b> ${tx(`จาก ${ex} ของเงินฝากต่อไม้`,`from ${ex} of deposits per trade`)}`);
-  V.push(R.payoff>=P.payoff?`<b class="w">▲ Payoff</b> ${P.payoff.toFixed(2)} → ${R.payoff.toFixed(2)} — ${tx('ไม้ชนะใหญ่กว่าไม้แพ้มากขึ้น','winners getting bigger vs losers')}`:`<b class="l">▼ Payoff</b> ${P.payoff.toFixed(2)} → ${R.payoff.toFixed(2)} — ${tx('ไม้ชนะเล็กลงเทียบไม้แพ้','winners shrinking vs losers')}`);
- }
- if(R.n)V.push(R.cap<50?`<b class="wr">● ${tx('ยังออกไม้เร็ว','Still exiting early')}</b> ${tx(`ช่วงนี้ไม้ชนะเก็บได้เฉลี่ยแค่ ${R.cap.toFixed(0)}% ของระยะที่ตลาดเคยให้ (MFE)`,`winners kept only ${R.cap.toFixed(0)}% of the max move on average (MFE)`)}`:`<b class="w">● ${tx('ถือไม้ชนะได้ดี','Holding winners well')}</b> ${tx(`ช่วงนี้เก็บได้เฉลี่ย ${R.cap.toFixed(0)}% ของ MFE`,`kept ${R.cap.toFixed(0)}% of MFE on average`)}`);
- const beL=CLOSED.filter(t=>t.t1>cut&&Math.abs(t.pct)<0.05),be=beL.length,beW=beL.filter(t=>t.profit>0).length,nb=CLOSED.filter(t=>t.t1>cut&&Math.abs(t.pct)>=0.05);
- const twr=nb.length?(nb.filter(t=>t.profit>0).length/nb.length*100).toFixed(0):0;
- if(be)V.push(`<b class="wr">● ${tx(`ไม้เสมอตัว ${be} ไม้`,`${be} breakeven trades`)}</b> ${tx(`ช่วงนี้ (ราคาขยับไม่ถึง 0.05%) ในนี้ ${beW} ไม้ถูกนับเป็นชนะ — ถ้าตัดไม้เสมอตัวออก winrate จริงคือ ${twr}% (ไม่ใช่ ${R.wr.toFixed(0)}%)`,`(price moved < 0.05%), ${beW} counted as wins — excluding them, true winrate is ${twr}% (not ${R.wr.toFixed(0)}%)`)}`);
- const flg=C.filter(t=>t.t1>cut&&t.flags.length);
- V.push(flg.length?`<b class="wr">● ${tx(`ติดธงวินัย ${flg.length} ไม้`,`${flg.length} trades flagged`)}</b> — ${[...new Set(flg.flatMap(t=>t.flags))].map(FL).join(', ')}`:`<b class="w">● ${tx('วินัยสะอาด','Clean discipline')}</b> ${tx('ช่วงนี้ไม่มีไม้ติดธง','no flagged trades')}`);
-
- // --- รายเดือน ---
- const MS=MK.map(k=>{const L=C.filter(t=>mkey(t.t1)===k),s=stats(L);s.k=k;
-  s.wd=-sum(CF.filter(c=>c.amt<0&&mkey(c.t)===k),c=>c.amt);s.dep=sum(CF.filter(c=>c.amt>0&&mkey(c.t)===k),c=>c.amt);return s});
- const mmx=Math.max(...MS.map(s=>Math.abs(MODE==='$'?s.net:s.netP)),1e-9);
-
- // --- heatmap ---
- const day={};C.forEach(t=>{const k=dkey(t.t1);day[k]=day[k]||{p:0,a:0,n:0};day[k].p+=t.profit;day[k].a+=t.ap;day[k].n++});
- const hmx=Math.max(...Object.values(day).map(d=>Math.abs(MODE==='$'?d.p:d.a)),1e-9);
- let d0=D(C[0].t1);d0=new Date(Date.UTC(d0.getUTCFullYear(),d0.getUTCMonth(),d0.getUTCDate()-((d0.getUTCDay()+6)%7)));
- const d1=D(now);let weeks='',lastM=-1;
- for(let w=new Date(d0);w<=d1;w.setUTCDate(w.getUTCDate()+7)){const th=new Date(w);th.setUTCDate(th.getUTCDate()+3);let col=`<div class="wk"><div class="ml">${th.getUTCMonth()!==lastM?MO[th.getUTCMonth()]:''}</div>`;lastM=th.getUTCMonth();
-  for(let i=0;i<7;i++){const x=new Date(w);x.setUTCDate(x.getUTCDate()+i);const k=x.toISOString().slice(0,10),v=day[k];
-   if(!v){col+=`<div class="d" title="${k}"></div>`;continue}const val=MODE==='$'?v.p:v.a,a=.25+.75*Math.min(1,Math.abs(val)/hmx);
-   col+=`<div class="d" style="background:rgba(${val>=0?'16,185,129':'239,68,68'},${a})" title="${k} · ${v.n}${tx(' ไม้',' trades')} · ${$Ms(v.p,v.a)}"></div>`}
-  weeks+=col+'</div>'}
-
- // --- MFE ---
- const Wm=C.filter(t=>t.profit>0&&t.mfe>0),caps=Wm.map(t=>Math.min(1,mv(t)/t.mfe)*100);
- const cb=[caps.filter(c=>c<25).length,caps.filter(c=>c>=25&&c<50).length,caps.filter(c=>c>=50&&c<75).length,caps.filter(c=>c>=75).length];
- const lostWin=C.filter(t=>t.profit<=0&&pp(t.mfe||0,t)>=0.1);
- const leftTop=C.filter(t=>t.mfe!=null).map(t=>({t,left:pp(Math.max(0,t.mfe-mv(t)),t)})).sort((a,b)=>b.left-a.left).slice(0,8);
- const slD=avg(C.filter(t=>t.sl),t=>pp(Math.abs(t.entry-t.sl),t)),maeW=avg(C.filter(t=>t.profit>0&&t.mae!=null),t=>pp(t.mae,t));
-
- // --- วินัย ---
- const fc=f=>C.filter(t=>t.flags.includes(f));
- const flagRows=['lot','nosl','avg','rev'].map(f=>{const a=fc(f),s=stats(a);return {f,a,s}});
- const perDay={};C.forEach(t=>{const k=dkey(t.t0);(perDay[k]=perDay[k]||[]).push(t)});
- const busy=Object.entries(perDay).filter(([k,a])=>a.length>=5),busyS=stats(busy.flatMap(([k,a])=>a).sort((a,b)=>a.t1-b.t1));
- const wdTot=-sum(CF.filter(c=>c.amt<0),c=>c.amt);
-
- $('#pw').innerHTML=perBar()+`
- <div class="box c12"><h3>${tx('ตอนนี้เป็นยังไง','How am I doing')} <small>${cmpLbl}</small></h3>
-  <div class="kpis">
-   ${kpi('Winrate',R.wr.toFixed(0)+'%',delta(R.wr,P.wr,1,0,'%'))}
-   ${kpi('Payoff',R.payoff.toFixed(2),delta(R.payoff,P.payoff))}
-   ${kpi('Profit factor',R.pf===Infinity?'∞':R.pf.toFixed(2),delta(Math.min(R.pf,99),Math.min(P.pf,99)))}
-   ${kpi(tx('คาดหวัง/ไม้','Expectancy'),MODE==='$'?'$'+sg(R.exp):sg(R.expP,3)+'%',delta(R.expP,P.expP,1,3,'%'),cls(R.exp))}
-   ${kpi(tx('เก็บ MFE ได้','MFE kept'),R.cap.toFixed(0)+'%',delta(R.cap,P.cap,1,0,'%'))}
-   ${kpi(tx('ถือไม้ชนะ','Avg hold (win)'),dur(R.holdW),tx('ไม้แพ้ ','losers ')+dur(R.holdL))}
-  </div><ul class="verdict">${V.map(v=>`<li>${v}</li>`).join('')}</ul></div>
-
- <div class="box c12"><h3>${tx('ภาพรวม','Overview')} · ${pr.l} <small>${A.n}${tx(' ไม้',' trades')} · ${dts(C[0].t1).split(' ')[1]} – ${dts(C[C.length-1].t1).split(' ')[1]}</small></h3><div class="kpis">
-  ${kpi(MODE==='$'?'Net P/L':tx('ผลตอบแทน','Return'),$Ms(A.net,A.netP),MODE==='$'?`${sg(A.netP)}% ${tx('ของเงินฝาก','of deposits')} $${fmt(BASE,0)}`:tx('เทียบยอดฝากรวม · ไม่ทบต้น','vs total deposits · non-compounded'),cls(A.net))}
-  ${kpi('Winrate',A.wr.toFixed(1)+'%',`${A.w}W / ${A.n-A.w}L · ${tx('เสมอตัว','BE')} ${A.be}`)}
-  ${kpi('Profit factor',A.pf.toFixed(2))}
-  ${kpi('Payoff',A.payoff.toFixed(2),MODE==='$'?`avg W $${fmt(A.aw)} / L $${fmt(A.al)}`:`avg W ${sg(A.awP)}% / L −${fmt(A.alP)}%`)}
-  ${kpi('Max drawdown',MODE==='$'?(A.dd$<0?'−$':'$')+fmt(Math.abs(A.dd$)):fmt(A.ddP)+'%','','l')}
-  ${kpi('Streak',`${A.streakW}W / ${A.streakL}L`,tx('ชนะ/แพ้ติดกันยาวสุด','longest win/loss run'))}
-  ${kpi(tx('ไม้ดีสุด','Best trade'),$Ms(A.best.profit,A.best.ap),dts(A.best.t0),'w')}
-  ${kpi(tx('ไม้แย่สุด','Worst trade'),$Ms(A.worst.profit,A.worst.ap),dts(A.worst.t0),'l')}
-  ${MODE==='$'?kpi(tx('ถอน/โอนออก','Withdrawn'),'$'+fmt(wdTot),`${(wdTot/Math.max(A.net,1e-9)*100).toFixed(0)}% ${tx('ของกำไรสุทธิ','of net profit')}`):''}
- </div></div>
-
- <div class="box c12"><h3>Equity curve <small>${MODE==='$'?tx('กำไรสะสม ($) — ไม่รวมฝาก/ถอน','cumulative P/L ($) — excl. deposits/withdrawals'):tx('ผลตอบแทนสะสม (% ของเงินฝากรวม)','cumulative return (% of total deposits)')} · ${tx('แท่งแดง = drawdown','red bars = drawdown')}</small></h3><div id="eq"></div></div>
-
- <div class="box c12"><h3>${tx('รายเดือน','Monthly')} <small>${tx('เฉพาะไม้ในช่วงที่เลือก','trades in selected period')}</small></h3>
-  <div class="mbars num">${MS.map(s=>{const v=MODE==='$'?s.net:s.netP;return `<div><span class="${cls(v)}">${$Ms(s.net,s.netP)}</span><i style="height:${Math.abs(v)/mmx*100}%;background:${v>=0?'var(--win)':'var(--loss)'}"></i><span class="m">${mname(s.k)}</span></div>`}).join('')}</div>
-  <div class="tscroll"><table class="t num" style="margin-top:14px"><tr><th>${tx('เดือน','Month')}</th><th>${tx('ไม้','Trades')}</th><th>Winrate</th><th>${MODE==='$'?'P/L':tx('ผลตอบแทน','Return')}</th><th>PF</th><th>Payoff</th><th>Max DD</th><th>${tx('เก็บ MFE','MFE kept')}</th><th>${tx('ถือชนะ/แพ้','Hold W/L')}</th>${MODE==='$'?`<th>${tx('ฝาก','Deposit')}</th><th>${tx('ถอน','Withdraw')}</th>`:''}</tr>
-  ${MS.map(s=>`<tr><td>${mname(s.k)}</td><td>${s.n}</td><td>${s.wr.toFixed(0)}%</td><td class="${cls(s.net)}">${$Ms(s.net,s.netP)}</td><td>${s.pf===Infinity?'∞':s.pf.toFixed(2)}</td><td>${s.payoff.toFixed(2)}</td><td class="l">${MODE==='$'?(s.dd$<0?'−$':'$')+fmt(Math.abs(s.dd$)):fmt(s.ddP)+'%'}</td><td>${s.cap.toFixed(0)}%</td><td>${dur(s.holdW)} / ${dur(s.holdL)}</td>${MODE==='$'?`<td>${s.dep?'$'+fmt(s.dep):'-'}</td><td>${s.wd?'$'+fmt(s.wd):'-'}</td>`:''}</tr>`).join('')}</table></div></div>
-
- <div class="box c12"><h3>${tx('ปฏิทินรายวัน','Daily calendar')} <small>${tx('เข้มมาก = ได้/เสียเยอะ · ชี้ดูรายละเอียด','darker = bigger day · hover for details')}</small></h3>
-  <div class="heat"><div class="dl"><span></span>${(LANG==='en'?['M','T','W','T','F','S','S']:['จ','อ','พ','พฤ','ศ','ส','อา']).map(x=>`<span>${x}</span>`).join('')}</div>${weeks}</div></div>
-
- <div class="box c6"><h3>${tx('กำไรที่ทิ้งไว้บนโต๊ะ (MFE)','Profit left on the table (MFE)')} <small>${tx('ตลาดเคยให้เท่าไหร่ vs เก็บได้จริงเท่าไหร่','what the market offered vs what was kept')}</small></h3>
-  <div class="kpis">${kpi(tx('ไม้ชนะเก็บได้เฉลี่ย','Winners kept (avg)'),A.cap.toFixed(0)+'%',tx('ของระยะบวกสูงสุด','of max favorable move'))}
-   ${kpi(tx('ทิ้งไว้รวม','Left in total'),MODE==='$'?'$'+fmt(A.left):fmt(A.leftP)+'%',tx('MFE − ที่ได้จริง ทุกไม้','MFE − realized, all trades'),'wr')}
-   ${kpi(tx('ไม้แพ้ที่เคยบวก ≥0.1%','Losers once up ≥0.1%'),lostWin.length+tx(' ไม้',' trades'),MODE==='$'?`${tx('เสียไป','lost')} $${fmt(-sum(lostWin,t=>t.profit))}`:tx('เคยบวกแล้วกลับมาปิดขาดทุน','were green, closed red'))}</div>
-  <div style="margin-top:12px" class="m">${tx(`สัดส่วนที่เก็บได้ของไม้ชนะ (${Wm.length} ไม้)`,`Share of MFE kept by winners (${Wm.length} trades)`)}</div>
-  <div class="cap">${cb.map((n,i)=>n?`<i style="flex:${n};background:${['#ef4444','#f59e0b','#84cc16','#10b981'][i]}">${n}</i>`:'').join('')}</div>
-  <div class="m" style="font-size:11px;display:flex;justify-content:space-between"><span>🟥 &lt;25%</span><span>🟧 25–50%</span><span>🟨 50–75%</span><span>🟩 ≥75%</span></div>
-  <div class="m" style="margin-top:10px;font-size:12px">${tx('ไม้ชนะเคยติดลบเฉลี่ย (MAE)','Winners avg drawdown (MAE)')} <b class="num" style="color:var(--tx)">${fmt(maeW)}%</b> · ${tx('ระยะ SL เฉลี่ย','avg SL distance')} <b class="num" style="color:var(--tx)">${fmt(slD)}%</b></div>
-  <table class="t num" style="margin-top:10px"><tr><th>${tx('ทิ้งไว้เยอะสุด','Most left')}</th><th>MFE</th><th>${tx('ได้จริง','Realized')}</th><th>${tx('ทิ้ง','Left')}</th></tr>
-  ${leftTop.map(({t,left})=>`<tr class="click" onclick="goTrade(${t.id})"><td><span class="tag ${t.side}">${t.side.toUpperCase()}</span> ${dts(t.t0)}</td><td>+${fmt(pp(t.mfe,t))}%</td><td class="${cls(mv(t))}">${sg(pp(mv(t),t))}%</td><td class="wr">${fmt(left)}%</td></tr>`).join('')}</table>
-  <div class="m" style="font-size:11px;margin-top:6px">${tx('หน่วย = % ของราคาทอง · คลิกแถวเพื่อดูบนกราฟ','units = % of gold price · click a row to view on chart')}</div></div>
-
- <div class="box c6"><h3>${tx('เช็ควินัย','Discipline check')} <small>${tx('lot สูงสุด','max lot')} ${ACCT.maxLot} · ${tx('ธงคิดจากพฤติกรรมจริง','flags from actual behavior')}</small></h3>
-  <table class="t num"><tr><th>${tx('ธง','Flag')}</th><th>${tx('ไม้','Trades')}</th><th>Winrate</th><th>${MODE==='$'?'P/L':tx('% รวม','% sum')}</th></tr>
-  ${flagRows.map(r=>`<tr><td>${FL(r.f)}</td><td class="${r.a.length?'wr':'w'}">${r.a.length||'✓ 0'}</td><td>${r.a.length?r.s.wr.toFixed(0)+'%':'-'}</td><td class="${cls(r.s.net)}">${r.a.length?$Ms(r.s.net,sum(r.a,t=>t.ap)):'-'}</td></tr>`).join('')}
-  <tr><td>${tx('วันเทรดถี่ (≥5 ไม้/วัน)','Overtrading days (≥5/day)')}</td><td class="${busy.length?'wr':'w'}">${busy.length}${tx(' วัน',' days')}</td><td>${busy.length?busyS.wr.toFixed(0)+'%':'-'}</td><td class="${cls(busyS.net)}">${busy.length?$Ms(busyS.net,sum(busy.flatMap(([k,a])=>a),t=>t.ap)):'-'}</td></tr></table>
-  <div class="m" style="font-size:11px;margin:8px 0 12px">${tx(`หลุดไม่มีเบรก = ปิดขาดทุนเกิน ${BIG}% ของราคาทองโดยไม่ได้โดน SL · ถัวขาดทุน = เปิดทิศเดิมเพิ่มที่ราคาแย่กว่าไม้ที่ถืออยู่ · แก้มือ = เปิดใหม่ภายใน 30 นาทีหลังปิดไม้แพ้`,`No-brake loss = lost more than ${BIG}% of gold price without hitting SL · Averaging down = added same direction at a worse price while a position was open · Revenge = new trade within 30 min after a loss`)}</div>
-  <table class="t num"><tr><th>${tx('ไม้ติดธงล่าสุด','Latest flagged')}</th><th>${tx('ธง','Flag')}</th><th>${MODE==='$'?'P/L':'%'}</th></tr>
-  ${C.filter(t=>t.flags.length).slice(-8).reverse().map(t=>`<tr class="click" onclick="goTrade(${t.id})"><td><span class="tag ${t.side}">${t.side.toUpperCase()}</span> ${dts(t.t0)}</td><td class="wr" style="font-size:11px">${t.flags.map(FL).join(', ')}</td><td class="${cls(t.profit)}">${$Ms(t.profit,t.ap)}</td></tr>`).join('')||`<tr><td colspan="3" class="w">${tx('ไม่มี','None')}</td></tr>`}</table></div>
-
- <div class="box c4"><h3>${tx('ตาม session','By session')} <small>${tx('เวลาเปิดไม้','entry time')} ${TZL}</small></h3>${bars_(grp(C,session,[tx('เอเชีย','Asia'),tx('ลอนดอน','London'),tx('นิวยอร์ก','New York')]))}
-  <div class="m" style="font-size:11px;margin-top:6px">${tx('เอเชีย','Asia')} ${lh(22)}–${lh(7)} · ${tx('ลอนดอน','London')} ${lh(7)}–${lh(13)} · ${tx('นิวยอร์ก','New York')} ${lh(13)}–${lh(22)} (${TZL})</div></div>
- <div class="box c4"><h3>${tx('ตามวัน','By weekday')}</h3>${bars_(grp(C,t=>TH[D(t.t0).getUTCDay()],[1,2,3,4,5,6,0].map(i=>TH[i])))}</div>
- <div class="box c4"><h3>${tx('ตามเวลาถือ','By hold time')}</h3>${bars_(grp(C,holdB,HBL()))}</div>
- <div class="box c12"><h3>${tx('ตามชั่วโมงที่เปิดไม้','By entry hour')} <small>${TZL}</small></h3><div style="columns:2 360px;column-gap:24px">${bars_(grp(C,t=>pad(hTH(t.t0))+':00',[...Array(24).keys()].map(h=>pad(h)+':00')))}</div></div>
- <div class="box c12 m" style="font-size:11px">Buy vs Sell — ${grp(C,t=>t.side.toUpperCase(),['BUY','SELL']).map(r=>`${r.k}: ${r.n}${tx(' ไม้',' trades')} · win ${r.wr.toFixed(0)}% · <span class="${cls(r.net)}">${$Ms(r.net,r.netP)}</span>`).join(' &nbsp;|&nbsp; ')} · ${tx('ข้อมูล ณ','data as of')} ${BUILT}</div>`;
-
- // equity chart
- const el=$('#eq');eqChart&&eqChart.remove();
- eqChart=LightweightCharts.createChart(el,{autoSize:true,layout:{background:{color:'transparent'},textColor:cssv('--axis'),fontFamily:'Segoe UI, Tahoma'},
-  grid:{vertLines:{visible:false},horzLines:{color:cssv('--track')}},rightPriceScale:{borderVisible:false},timeScale:{borderVisible:false},crosshair:{mode:0},handleScroll:false,handleScale:false});
- const ser=eqChart.addAreaSeries({lineColor:'#10b981',topColor:'rgba(16,185,129,.28)',bottomColor:'rgba(16,185,129,0)',lineWidth:2,priceFormat:{type:'custom',formatter:v=>MODE==='$'?'$'+fmt(v):fmt(v)+'%'}});
- const dds=eqChart.addHistogramSeries({color:'rgba(239,68,68,.55)',priceScaleId:'dd',priceFormat:{type:'custom',formatter:v=>fmt(v)+(MODE==='$'?'':'%')}});
- eqChart.priceScale('dd').applyOptions({scaleMargins:{top:.78,bottom:0}});
- const pts=new Map(),dd=new Map(),k=MODE==='$'?1:100/BASE;let c=0,pc=0;
- for(const t of C){c+=t.profit;pc=Math.max(pc,c);pts.set(t.t1,c*k);dd.set(t.t1,(c-pc)*k)}
- ser.setData([...pts].map(([time,value])=>({time,value})));dds.setData([...dd].map(([time,value])=>({time,value})));eqChart.timeScale().fitContent();
+function renderPage(){const v=$('#vpage');eqChart&&(eqChart.remove(),eqChart=null);
+ if(ST.tab==='journal'){
+  const F=[['all','ทั้งหมด'],['win','กำไร'],['loss','ขาดทุน'],['buy','Buy'],['sell','Sell'],['flag','ติดธง']];
+  const pass=t=>ST.filter==='all'||(ST.filter==='win'&&t.profit>0)||(ST.filter==='loss'&&t.profit<=0)||(ST.filter==='flag'&&t.flags.length)||ST.filter===t.side;
+  const L=[...TRADES].sort((a,b)=>b.t0-a.t0).filter(pass),shown=L.slice(0,ST.jn||80);
+  v.innerHTML=`<section class="card rise"><div class="shead" style="padding:16px 18px;flex-wrap:wrap"><h3 style="font-size:16px">สมุดไม้</h3><span class="m" style="font-size:13px">${shown.length} จาก ${L.length} ไม้</span><div class="sp"></div>
+   <div class="filters" id="fil">${F.map(([k,l])=>`<button data-f="${k}" class="${ST.filter===k?'on':''}">${l}</button>`).join('')}</div></div>${L.length?byDay(shown):'<div class="empty">ไม่มีไม้ตามที่กรอง</div>'}
+   ${L.length>shown.length?`<div style="padding:14px;text-align:center;border-top:1px solid var(--soft2)"><button class="btn ghost lift" id="more">แสดงเพิ่มอีก ${Math.min(80,L.length-shown.length)} ไม้</button></div>`:''}</section>`;
+  $('#fil').onclick=e=>{const b=e.target.closest('button');if(b){ST.filter=b.dataset.f;ST.jn=80;renderPage()}};
+  if($('#more'))$('#more').onclick=()=>{const y=scrollY;ST.jn=(ST.jn||80)+80;renderPage();scrollTo(0,y)};return}
+ const C=inRange(ST.per),pr=PERIODS[ST.per]||['',0];
+ if(!C.length){v.innerHTML=`<div class="card empty">ช่วง ${pr[0]} ไม่มีไม้ที่ปิด</div>`;return}
+ const A=stats(C),CF=CASH.filter(c=>!pr[1]||c.t>NOW-pr[1]*86400);
+ if(ST.tab==='monthly'){
+  const MK=[...new Set(C.map(t=>mkey(t.t1)))],MS=MK.map(k=>{const s=stats(C.filter(t=>mkey(t.t1)===k));s.k=k;
+   s.wd=-sum(CF.filter(c=>c.amt<0&&mkey(c.t)===k),c=>c.amt);s.dep=sum(CF.filter(c=>c.amt>0&&mkey(c.t)===k),c=>c.amt);return s});
+  const val=s=>ST.mode==='$'?s.net:s.netP,mx=Math.max(...MS.map(s=>Math.abs(val(s))),1e-9);
+  const best=MS.reduce((a,b)=>val(b)>val(a)?b:a),worst=MS.reduce((a,b)=>val(b)<val(a)?b:a),posN=MS.filter(s=>s.net>0).length;
+  let run=0,maxRun=0;MS.forEach(s=>{run=s.net>0?run+1:0;maxRun=Math.max(maxRun,run)});
+  const day={};C.forEach(t=>{const k=dkey(t.t1);day[k]=day[k]||{p:0,a:0,n:0};day[k].p+=t.profit;day[k].a+=t.ap;day[k].n++});
+  const hmx=Math.max(...Object.values(day).map(d=>Math.abs(ST.mode==='$'?d.p:d.a)),1e-9);
+  let d0=D(C[0].t1);d0=new Date(Date.UTC(d0.getUTCFullYear(),d0.getUTCMonth(),d0.getUTCDate()-((d0.getUTCDay()+6)%7)));let weeks='',lastM=-1;
+  for(let w=new Date(d0);w<=D(NOW);w.setUTCDate(w.getUTCDate()+7)){const th=new Date(w);th.setUTCDate(th.getUTCDate()+3);let col=`<div class="wk"><div class="ml">${th.getUTCMonth()!==lastM?MO[th.getUTCMonth()]:''}</div>`;lastM=th.getUTCMonth();
+   for(let i=0;i<7;i++){const x=new Date(w);x.setUTCDate(x.getUTCDate()+i);const k=x.toISOString().slice(0,10),d=day[k];
+    if(!d){col+=`<div class="d" title="${k}"></div>`;continue}const vv=ST.mode==='$'?d.p:d.a,a=.25+.75*Math.min(1,Math.abs(vv)/hmx);
+    col+=`<div class="d" style="background:rgba(${vv>=0?'10,143,90':'194,59,59'},${a})" title="${k} · ${d.n} ไม้ · ${$M(d.p,d.a)}"></div>`}weeks+=col+'</div>'}
+  v.innerHTML=`<div class="grid12">
+   <section class="card pad c8 rise"><h3>กำไรรายเดือน <span class="m" style="font-weight:400;font-size:13px">${mname(MK[0])} – ${mname(MK[MK.length-1])}</span></h3>
+    <div class="mb" style="grid-template-columns:repeat(${MS.length},minmax(0,1fr))"><div class="ax"></div>${MS.map(s=>{const x=val(s),h=Math.abs(x)/mx*46;
+     return `<div class="col"><div class="bar" data-h="${h.toFixed(2)}" style="${x>=0?'bottom':'top'}:50%;height:0;background:${x>=0?'var(--win)':'var(--loss)'};border-radius:${x>=0?'6px 6px 2px 2px':'2px 2px 6px 6px'}"></div>
+      <div class="v ${cls(x)}" style="${x>=0?`bottom:calc(50% + ${h.toFixed(2)}% + 4px)`:`top:calc(50% + ${h.toFixed(2)}% + 4px)`};opacity:0">${$M(s.net,s.netP)}</div><div class="lb">${mname(s.k)}</div></div>`}).join('')}</div><div style="height:26px"></div></section>
+   <div class="c4" style="display:flex;flex-direction:column;gap:12px">
+    <div class="card pad lift rise" style="animation-delay:.08s"><div class="m" style="font-size:13px">เดือนที่ดีที่สุด</div><div style="font-size:26px;font-weight:700" class="${cls(best.net)}">${$M(best.net,best.netP)}</div><div class="m" style="font-size:13px">${mname(best.k)} · ${best.n} ไม้ · winrate ${best.wr.toFixed(0)}% · PF ${best.pf===Infinity?'∞':best.pf.toFixed(2)}</div></div>
+    <div class="card pad lift rise" style="animation-delay:.16s"><div class="m" style="font-size:13px">เดือนที่แย่ที่สุด</div><div style="font-size:26px;font-weight:700" class="${cls(worst.net)}">${$M(worst.net,worst.netP)}</div><div class="m" style="font-size:13px">${mname(worst.k)} · ${worst.n} ไม้ · winrate ${worst.wr.toFixed(0)}%</div></div>
+    <div class="card pad lift rise" style="animation-delay:.24s"><div class="m" style="font-size:13px">เดือนที่บวก</div><div style="font-size:26px;font-weight:700">${posN} / ${MS.length}</div><div class="m" style="font-size:13px">บวกติดกันยาวสุด ${maxRun} เดือน</div></div>
+   </div>
+   <section class="card pad c12 rise" style="animation-delay:.1s"><h3>Equity curve <span class="m" style="font-weight:400;font-size:13px">${ST.mode==='$'?'กำไรสะสม ($) ไม่รวมฝาก/ถอน':'ผลตอบแทนสะสม (% ของเงินฝากรวม)'} · แท่งแดง = drawdown</span></h3><div id="eq"></div></section>
+   <section class="card pad c12 rise" style="animation-delay:.15s"><h3 style="margin-bottom:6px">ตารางรายเดือน</h3><div class="scroll"><table class="t"><tr><th>เดือน</th><th>ไม้</th><th>Winrate</th><th>${ST.mode==='$'?'P/L':'ผลตอบแทน'}</th><th>PF</th><th>Payoff</th><th>Max DD</th><th>เก็บ MFE</th><th>ถือชนะ / แพ้</th>${ST.mode==='$'?'<th>ฝาก</th><th>ถอน</th>':''}</tr>
+    ${MS.map(s=>`<tr><td>${mname(s.k)}</td><td>${s.n}</td><td>${s.wr.toFixed(0)}%</td><td class="${cls(s.net)}">${$M(s.net,s.netP)}</td><td>${s.pf===Infinity?'∞':s.pf.toFixed(2)}</td><td>${s.payoff.toFixed(2)}</td><td class="l">${$D(s.dd$,s.ddP)}</td><td>${s.cap.toFixed(0)}%</td><td>${dur(s.holdW)} / ${dur(s.holdL)}</td>${ST.mode==='$'?`<td>${s.dep?'$'+fmt(s.dep):'-'}</td><td>${s.wd?'$'+fmt(s.wd):'-'}</td>`:''}</tr>`).join('')}</table></div></section>
+   <section class="card pad c12 rise" style="animation-delay:.2s"><h3 style="margin-bottom:8px">ปฏิทินรายวัน <span class="m" style="font-weight:400;font-size:13px">สีเข้ม = ได้/เสียเยอะ · ชี้ดูรายละเอียด</span></h3>
+    <div class="heat"><div class="dl"><span></span>${['จ','อ','พ','พฤ','ศ','ส','อา'].map(x=>`<span>${x}</span>`).join('')}</div>${weeks}</div></section></div>`;
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{$$('.mb .bar').forEach(b=>b.style.height=b.dataset.h+'%');$$('.mb .v').forEach(b=>b.style.opacity=1)}));
+  const el=$('#eq');eqChart=LightweightCharts.createChart(el,{autoSize:true,layout:{background:{color:'transparent'},textColor:'#4b5260',fontFamily:'Anuphan, sans-serif'},
+   grid:{vertLines:{visible:false},horzLines:{color:'#f1f2f5'}},rightPriceScale:{borderVisible:false},timeScale:{borderVisible:false},crosshair:{mode:0},handleScroll:false,handleScale:false});
+  const ser=eqChart.addAreaSeries({lineColor:'#2b59c3',topColor:'rgba(43,89,195,.22)',bottomColor:'rgba(43,89,195,0)',lineWidth:2,priceFormat:{type:'custom',formatter:x=>ST.mode==='$'?'$'+fmt(x):fmt(x)+'%'}});
+  const dds=eqChart.addHistogramSeries({color:'rgba(194,59,59,.5)',priceScaleId:'dd',priceFormat:{type:'custom',formatter:x=>fmt(x)}});eqChart.priceScale('dd').applyOptions({scaleMargins:{top:.78,bottom:0}});
+  const pts=new Map(),dd=new Map(),k=ST.mode==='$'?1:100/BASE;let c=0,pc=0;for(const t of C){c+=t.profit;pc=Math.max(pc,c);pts.set(t.t1,c*k);dd.set(t.t1,(c-pc)*k)}
+  ser.setData([...pts].map(([time,value])=>({time,value})));dds.setData([...dd].map(([time,value])=>({time,value})));eqChart.timeScale().fitContent();return}
+ // ---- วินัย ----
+ const win=pr[1]||30,cut=NOW-win*86400,R=stats(CLOSED.filter(t=>t.t1>cut)),P=stats(CLOSED.filter(t=>t.t1<=cut&&(!pr[1]||t.t1>cut-win*86400)));
+ const nb=CLOSED.filter(t=>t.t1>cut&&Math.abs(t.pct)>=0.05),twr=nb.length?nb.filter(t=>t.profit>0).length/nb.length*100:0,be=CLOSED.filter(t=>t.t1>cut&&Math.abs(t.pct)<0.05);
+ const wl=pr[1]?pr[0]+'ล่าสุด':'30 วันล่าสุด';
+ const ring=(lab,val,sub,col,i)=>`<div class="card ring lift rise" style="animation-delay:${i*80}ms"><svg width="96" height="96" viewBox="0 0 96 96" role="img" aria-label="${lab} ${val.toFixed(0)}%">
+  <circle cx="48" cy="48" r="40" fill="none" stroke="#eef0f3" stroke-width="9"/><circle class="v" data-v="${val}" cx="48" cy="48" r="40" fill="none" stroke="${col}" stroke-width="9" stroke-linecap="round" stroke-dasharray="251.3" stroke-dashoffset="251.3" transform="rotate(-90 48 48)"/>
+  <text x="48" y="54" text-anchor="middle" font-size="19" font-weight="700" fill="#14161a" data-cu="${val}" data-f="int">0</text></svg><div><div style="font-weight:700;font-size:15px">${lab}</div><div class="m" style="font-size:13px">${sub}</div></div></div>`;
+ const C2=[['คาดหวังต่อไม้',P.expP,R.expP,3,'%'],['Payoff',P.payoff,R.payoff,2,''],['Profit factor',Math.min(P.pf,99),Math.min(R.pf,99),2,''],['เก็บ MFE',P.cap,R.cap,0,'%'],['Winrate',P.wr,R.wr,0,'%']];
+ const fc=f=>C.filter(t=>t.flags.includes(f)),flagRows=['lot','nosl','avg','rev'].map(f=>{const a=fc(f);return {f,a,s:stats(a)}});
+ const perDay={};C.forEach(t=>{const k=dkey(t.t0);(perDay[k]=perDay[k]||[]).push(t)});const busy=Object.values(perDay).filter(a=>a.length>=5),busyL=busy.flat().sort((a,b)=>a.t1-b.t1),busyS=stats(busyL);
+ const flg=C.filter(t=>t.t1>cut&&t.flags.length),lostWin=C.filter(t=>t.profit<=0&&pp(t.mfe||0,t)>=0.1);
+ const leftTop=C.filter(t=>t.mfe!=null).map(t=>({t,left:pp(Math.max(0,t.mfe-mv(t)),t)})).sort((a,b)=>b.left-a.left).slice(0,6);
+ v.innerHTML=`<div class="grid12">
+  <div class="c12" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px">
+   ${ring('เก็บได้ % ของ MFE',R.cap,`${wl} · ไม้ชนะเก็บได้เฉลี่ย`,R.cap>=50?'#0a8f5a':'#b36b00',0)}
+   ${ring('Winrate',R.wr,`${wl} · ${R.w}W / ${R.n-R.w}L`,'#2b59c3',1)}
+   ${ring('Winrate ตัดไม้เสมอตัว',twr,be.length?`ตัดไม้เสมอตัว ${be.length} ไม้ (ราคาขยับ < 0.05%)`:'ไม่มีไม้เสมอตัว','#b36b00',2)}</div>
+  <section class="card pad c8 rise" style="animation-delay:.1s"><h3>${pr[1]?wl+' เทียบ'+pr[0]+'ก่อนหน้า':'30 วันล่าสุด เทียบกับก่อนหน้าทั้งหมด'}</h3>
+   ${R.n&&P.n?C2.map(([k,a,b,d,suf])=>{const good=b>=a,w=Math.max(a,b)>0?Math.max(0,b)/Math.max(Math.abs(a),Math.abs(b))*100:0;
+    return `<div class="cmp"><span class="m" style="font-size:13px">${k}</span><span class="tk"><i data-w="${w.toFixed(1)}" style="width:0;background:${good?'var(--win)':'var(--warn)'}"></i></span><span style="text-align:right;font-weight:600;color:${good?'var(--win)':'var(--warn)'}">${good?'▲':'▼'} ${fmt(a,d)}${suf} → ${fmt(b,d)}${suf}</span></div>`}).join(''):'<div class="m" style="padding:12px 0">ข้อมูลไม่พอเทียบ</div>'}</section>
+  <section class="card pad c4 rise" style="animation-delay:.16s;display:flex;flex-direction:column;gap:10px"><h3>ธงวินัย · ${wl}</h3>
+   <div style="font-size:34px;font-weight:700;color:${flg.length?'var(--warn)':'var(--win)'}">${flg.length} ไม้</div>
+   <div style="display:flex;gap:6px;flex-wrap:wrap">${[...new Set(flg.flatMap(t=>t.flags))].map(f=>`<span class="flag" style="font-size:12px;padding:4px 10px">${FL(f)}</span>`).join('')||'<span class="w">วินัยสะอาด</span>'}</div>
+   ${be.length?`<div class="m" style="font-size:13px;border-top:1px solid var(--soft2);padding-top:10px">ไม้เสมอตัว ${be.length} ไม้ ถ้าตัดออก winrate จริงคือ ${twr.toFixed(0)}% ไม่ใช่ ${R.wr.toFixed(0)}%</div>`:''}</section>
+  <section class="card pad c6 rise" style="animation-delay:.2s"><h3 style="margin-bottom:6px">เช็ควินัย <span class="m" style="font-weight:400;font-size:13px">lot สูงสุด ${META.maxLot} · ${pr[0]}</span></h3>
+   <table class="t"><tr><th>ธง</th><th>ไม้</th><th>Winrate</th><th>${ST.mode==='$'?'P/L':'% รวม'}</th></tr>
+   ${flagRows.map(r=>`<tr><td>${FL(r.f)}</td><td class="${r.a.length?'wr':'w'}">${r.a.length||'0'}</td><td>${r.a.length?r.s.wr.toFixed(0)+'%':'-'}</td><td class="${cls(r.s.net)}">${r.a.length?$M(r.s.net,sum(r.a,t=>t.ap)):'-'}</td></tr>`).join('')}
+   <tr><td>วันเทรดถี่ (≥5 ไม้/วัน)</td><td class="${busy.length?'wr':'w'}">${busy.length} วัน</td><td>${busy.length?busyS.wr.toFixed(0)+'%':'-'}</td><td class="${cls(busyS.net)}">${busy.length?$M(busyS.net,sum(busyL,t=>t.ap)):'-'}</td></tr></table>
+   <div class="m" style="font-size:12px;margin:10px 0 12px">หลุดไม่มีเบรก = ปิดขาดทุนเกิน ${BIG}% ของราคาทองโดยไม่โดน SL · ถัวขาดทุน = เปิดทิศเดิมเพิ่มที่ราคาแย่กว่าไม้ที่ถืออยู่ · แก้มือ = เปิดใหม่ภายใน 30 นาทีหลังปิดไม้แพ้</div>
+   <table class="t"><tr><th>ไม้ติดธงล่าสุด</th><th>ธง</th><th>${ST.mode==='$'?'P/L':'%'}</th></tr>
+   ${C.filter(t=>t.flags.length).slice(-6).reverse().map(t=>`<tr class="click" data-k="${t.k}"><td><span class="tag ${t.side}" style="display:inline-block">${t.side.toUpperCase()}</span> ${dts(t.t0)}</td><td class="wr" style="font-size:12px">${t.flags.map(FL).join(', ')}</td><td class="${cls(t.profit)}">${$M(t.profit,t.ap)}</td></tr>`).join('')||'<tr><td colspan="3" class="w">ไม่มี</td></tr>'}</table></section>
+  <section class="card pad c6 rise" style="animation-delay:.24s"><h3 style="margin-bottom:6px">กำไรที่ทิ้งไว้บนโต๊ะ (MFE) <span class="m" style="font-weight:400;font-size:13px">${pr[0]}</span></h3>
+   <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:6px 0 10px">
+    <div><small class="m">ไม้ชนะเก็บได้เฉลี่ย</small><div style="font-size:20px;font-weight:700">${A.cap.toFixed(0)}%</div></div>
+    <div><small class="m">ทิ้งไว้รวม</small><div style="font-size:20px;font-weight:700" class="wr">${ST.mode==='$'?'$'+fmt(A.left):fmt(A.leftP)+'%'}</div></div>
+    <div><small class="m">ไม้แพ้ที่เคยบวก ≥0.1%</small><div style="font-size:20px;font-weight:700">${lostWin.length} ไม้</div></div></div>
+   <table class="t"><tr><th>ทิ้งไว้เยอะสุด</th><th>MFE</th><th>ได้จริง</th><th>ทิ้ง</th></tr>
+   ${leftTop.map(({t,left})=>`<tr class="click" data-k="${t.k}"><td><span class="tag ${t.side}" style="display:inline-block">${t.side.toUpperCase()}</span> ${dts(t.t0)}</td><td>+${fmt(pp(t.mfe,t))}%</td><td class="${cls(mv(t))}">${sg(pp(mv(t),t))}%</td><td class="wr">${fmt(left)}%</td></tr>`).join('')}</table>
+   <div class="m" style="font-size:11px;margin-top:6px">หน่วย = % ของราคาทอง · คลิกแถวเพื่อดูบนกราฟ</div></section>
+  <section class="card pad c4 rise" style="animation-delay:.28s"><h3 style="margin-bottom:6px">ตาม session <span class="m" style="font-weight:400;font-size:12px">${TZL}</span></h3>${bars_(grp(C,session,['เอเชีย','ลอนดอน','นิวยอร์ก']))}<div class="m" style="font-size:11px;margin-top:6px">เอเชีย ${lh(22)}–${lh(7)} · ลอนดอน ${lh(7)}–${lh(13)} · นิวยอร์ก ${lh(13)}–${lh(22)}</div></section>
+  <section class="card pad c4 rise" style="animation-delay:.32s"><h3 style="margin-bottom:6px">ตามวัน</h3>${bars_(grp(C,t=>TH[D(t.t0).getUTCDay()],[1,2,3,4,5,6,0].map(i=>TH[i])))}</section>
+  <section class="card pad c4 rise" style="animation-delay:.36s"><h3 style="margin-bottom:6px">ตามเวลาถือ</h3>${bars_(grp(C,holdB,HBL))}</section></div>`;
+ countUp(v);requestAnimationFrame(()=>requestAnimationFrame(()=>{$$('.ring circle.v').forEach(c=>c.style.strokeDashoffset=251.3*(1-Math.min(100,+c.dataset.v)/100));$$('.cmp .tk i').forEach(i=>i.style.width=i.dataset.w+'%')}));
 }
 
-// ================= Export PNG (วาดบน canvas ตรงๆ) =================
+// ================= สลับแท็บ / บัญชี / โหมด =================
+function setTab(t){ST.tab=t;lset('xau-tab',t);$$('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));
+ const ch=t==='overview'||t==='chart';$('#vchart').style.display=ch?'':'none';$('#vpage').style.display=ch?'none':'';
+ $('#wrap').classList.toggle('big',t==='chart');$('#kpis').style.display=t==='chart'?'none':'';
+ if(ch){renderSide();fadeT=performance.now();redraw()}else renderPage()}
+function renderAll(){load();renderAccts();renderKpis();$('#sym').textContent=ACCT.sym;
+ const fl=sum(OPEN,t=>t.profit);$('#float').innerHTML=OPEN.length?`ลอยอยู่ <b class="${cls(fl)}">${$M(fl,sum(OPEN,t=>t.ap))}</b>`:'';
+ $$('#mode button').forEach(b=>b.classList.toggle('on',b.dataset.m===ST.mode));setTF(ST.tf,false);
+ if(bars.length)chart.timeScale().setVisibleLogicalRange({from:bars.length-21*24,to:bars.length+5});setTab(ST.tab)}
+$('#tabs').onclick=e=>{const b=e.target.closest('button');if(b)setTab(b.dataset.t)};
+$('#accts').onclick=e=>{const b=e.target.closest('.acct');if(!b)return;ST.acct=b.dataset.a;ST.sel=null;lset('xau-acct',ST.acct);renderAll()};
+$('#per').onclick=e=>{const b=e.target.closest('button');if(!b)return;ST.per=b.dataset.p;lset('xau-per',ST.per);renderAccts();renderKpis();if(ST.tab!=='overview'&&ST.tab!=='chart')renderPage()};
+$('#mode').onclick=e=>{const b=e.target.closest('button');if(!b)return;ST.mode=b.dataset.m;lset('xau-mode',ST.mode);const keep=chart.timeScale().getVisibleLogicalRange();renderAll();if(keep)chart.timeScale().setVisibleLogicalRange(keep)};
+
+// ================= Export PNG =================
 function card(period,mode){
  const W=1080,H=1350,c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d');
- const L=inRange(period),s=stats(L),long=period==='all'||period==='d365'||period==='d90',F='"Segoe UI", Tahoma, sans-serif';
- const G='#10b981',R='#ef4444',MU='#71717a',TX='#e4e4e7';
+ const L=inRange(period),s=stats(L),long=period==='all'||period==='d365'||period==='d90',F='Anuphan, "Segoe UI", Tahoma, sans-serif';
+ const G='#10b981',R='#ef4444',MU='#71717a',TX='#e4e4e7',MONTHS=[...new Set(CLOSED.map(t=>mkey(t.t1)))];
  g.fillStyle='#060606';g.fillRect(0,0,W,H);
  const gr=g.createRadialGradient(W*.85,0,0,W*.85,0,700);gr.addColorStop(0,'rgba(16,185,129,.16)');gr.addColorStop(1,'rgba(16,185,129,0)');g.fillStyle=gr;g.fillRect(0,0,W,H);
  const T=(txt,x,y,sz,col=TX,wt=400,al='left')=>{g.font=`${wt} ${sz}px ${F}`;g.fillStyle=col;g.textAlign=al;g.fillText(txt,x,y)};
- g.fillStyle=G;g.beginPath();g.arc(84,98,9,0,7);g.fill();
- T('XAU/USD · Trading Performance',106,108,30,TX,700);
- T(PERIODS[period]?(period==='all'?`${mname(MONTHS[0])} – ${mname(MONTHS[MONTHS.length-1])}`:tx(`${PERIODS[period].l}ล่าสุด`,`Last ${PERIODS[period].l}`)):mname(period),W-72,108,28,MU,400,'right');
- T(mode==='$'?tx('กำไรสุทธิ','Net profit'):tx('ผลตอบแทน','Return'),72,210,28,MU);
- const big=mode==='$'?(s.net>=0?'+$':'−$')+fmt(Math.abs(s.net)):sg(s.netP)+'%';
- T(big,68,340,150,s.net>=0?G:R,800);
- T(mode==='$'?`${sg(s.netP)}% ${tx('ของเงินฝาก','of deposits')} $${fmt(BASE,0)}`:tx('เทียบยอดฝากรวม · ไม่ทบต้น','vs total deposits · non-compounded'),72,398,28,MU);
- // equity curve
+ g.fillStyle=G;g.beginPath();g.arc(84,98,9,0,7);g.fill();T('XAU/USD · Trading Performance',106,108,30,TX,700);
+ T(PERIODS[period]?(period==='all'?`${mname(MONTHS[0])} – ${mname(MONTHS[MONTHS.length-1])}`:`${PERIODS[period][0]}ล่าสุด`):mname(period),W-72,108,28,MU,400,'right');
+ T(mode==='$'?'กำไรสุทธิ':'ผลตอบแทน',72,210,28,MU);
+ T(mode==='$'?(s.net>=0?'+$':'−$')+fmt(Math.abs(s.net)):sg(s.netP)+'%',68,340,150,s.net>=0?G:R,800);
+ T(mode==='$'?`${sg(s.netP)}% ของเงินฝาก $${fmt(BASE,0)}`:'เทียบยอดฝากรวม · ไม่ทบต้น',72,398,28,MU);
  const x0=72,x1=W-72,y0=450,y1=730;g.strokeStyle='#1f1f23';g.lineWidth=1;[0,.5,1].forEach(f=>{g.beginPath();g.moveTo(x0,y0+(y1-y0)*f);g.lineTo(x1,y0+(y1-y0)*f);g.stroke()});
  const pts=[0];let cu=0;L.forEach(t=>{cu+=t.profit;pts.push(cu)});
  const mn=Math.min(...pts),mx=Math.max(...pts),rg=mx-mn||1,X=k=>x0+(x1-x0)*k/Math.max(1,pts.length-1),Y=v=>y1-(v-mn)/rg*(y1-y0);
@@ -468,28 +445,25 @@ function card(period,mode){
  g.beginPath();pts.forEach((v,k)=>k?g.lineTo(X(k),Y(v)):g.moveTo(X(k),Y(v)));g.lineTo(x1,y1);g.lineTo(x0,y1);g.closePath();g.fillStyle=ar;g.fill();
  g.beginPath();pts.forEach((v,k)=>k?g.lineTo(X(k),Y(v)):g.moveTo(X(k),Y(v)));g.strokeStyle=G;g.lineWidth=4;g.lineJoin='round';g.stroke();
  if(mn<0){g.setLineDash([6,6]);g.strokeStyle='#3f3f46';g.lineWidth=1;g.beginPath();g.moveTo(x0,Y(0));g.lineTo(x1,Y(0));g.stroke();g.setLineDash([])}
- // stat grid
  const cells=[['Winrate',s.wr.toFixed(0)+'%'],['Profit factor',s.pf===Infinity?'∞':s.pf.toFixed(2)],['Payoff',s.payoff.toFixed(2)],
-  ['Max drawdown',mode==='$'?(s.dd$<0?'−$':'$')+fmt(Math.abs(s.dd$)):fmt(s.ddP)+'%'],[tx('จำนวนไม้','Trades'),String(s.n)],[tx('ถือไม้ชนะเฉลี่ย','Avg hold (win)'),dur(s.holdW)]];
+  ['Max drawdown',mode==='$'?(s.dd$<0?'−$':'$')+fmt(Math.abs(s.dd$)):fmt(s.ddP)+'%'],['จำนวนไม้',String(s.n)],['ถือไม้ชนะเฉลี่ย',dur(s.holdW)]];
  cells.forEach(([k,v],j)=>{const cx=72+(j%3)*((W-144)/3),cy=770+Math.floor(j/3)*124;
   g.fillStyle='#111113';g.strokeStyle='#1f1f23';g.lineWidth=2;g.beginPath();g.roundRect(cx,cy,(W-144)/3-16,108,16);g.fill();g.stroke();
   T(k,cx+24,cy+40,24,MU);T(v,cx+24,cy+90,44,k==='Max drawdown'?R:TX,700)});
- // แท่งย่อย: รายเดือน (ทั้งหมด) หรือ รายวัน (เดือนเดียว)
  const sub=long?[...new Set(L.map(t=>mkey(t.t1)))].map(k=>{const a=L.filter(t=>mkey(t.t1)===k);return {l:MO[+k.slice(5)-1],v:mode==='$'?sum(a,t=>t.profit):sum(a,t=>t.ap)}})
   :[...new Set(L.map(t=>dkey(t.t1)))].map(k=>{const a=L.filter(t=>dkey(t.t1)===k);return {l:String(+k.slice(8)),v:mode==='$'?sum(a,t=>t.profit):sum(a,t=>t.ap)}});
  const by=1190,bh=70,bmx=Math.max(...sub.map(b=>Math.abs(b.v)),1e-9),bw=Math.min(90,(W-144)/Math.max(1,sub.length));
- T(long?tx('รายเดือน','Monthly'):tx('รายวัน','Daily'),72,1068,24,MU);
+ T(long?'รายเดือน':'รายวัน',72,1068,24,MU);
  sub.forEach((b,k)=>{const h=Math.max(3,Math.abs(b.v)/bmx*bh),bx=72+k*bw;g.fillStyle=b.v>=0?G:R;g.beginPath();g.roundRect(bx+bw*.15,b.v>=0?by-h:by,bw*.7,h,4);g.fill();
   if(bw>=40)T(b.l,bx+bw/2,by+(b.v<0?h:0)+26,20,MU,400,'center');
   if(long)T(mode==='$'?(b.v>=0?'+':'−')+fmt(Math.abs(b.v),0):sg(b.v,1)+'%',bx+bw/2,b.v>=0?by-h-8:by-8,19,b.v>=0?G:R,600,'center')});
  g.strokeStyle='#27272a';g.beginPath();g.moveTo(72,by);g.lineTo(W-72,by);g.stroke();
- T(tx('ข้อมูลจริงจาก MT5 · ','Real data from MT5 · ')+BUILT.slice(0,10),72,H-30,20,'#52525b');
- return c;
-}
+ T('ข้อมูลจริงจาก MT5 · '+BUILT.slice(0,10),72,H-30,20,'#52525b');return c}
 let EXP={period:'all',mode:'%'};
 function refreshPrev(){$$('#mode2 button').forEach(b=>b.classList.toggle('on',b.dataset.m===EXP.mode));$('#prev').src=card(EXP.period,EXP.mode).toDataURL('image/png')}
-$('#exp').onclick=()=>{$('#period').innerHTML=`<optgroup label="${tx('ช่วงเวลา','Period')}">${Object.entries(PERIODS).map(([k,v])=>`<option value="${k}">${v.l}</option>`).join('')}</optgroup><optgroup label="${tx('รายเดือน','Month')}">${[...MONTHS].reverse().map(k=>`<option value="${k}">${mname(k)}</option>`).join('')}</optgroup>`;
- EXP={period:PER,mode:MODE};$('#period').value=PER;refreshPrev();$('#modal').classList.add('on')};
+$('#exp').onclick=()=>{const MONTHS=[...new Set(CLOSED.map(t=>mkey(t.t1)))];
+ $('#period').innerHTML=`<optgroup label="ช่วงเวลา">${Object.entries(PERIODS).map(([k,[l]])=>`<option value="${k}">${l}</option>`).join('')}</optgroup><optgroup label="รายเดือน">${[...MONTHS].reverse().map(k=>`<option value="${k}">${mname(k)}</option>`).join('')}</optgroup>`;
+ EXP={period:ST.per,mode:ST.mode};$('#period').value=ST.per;refreshPrev();$('#modal').classList.add('on')};
 $('#period').onchange=e=>{EXP.period=e.target.value;refreshPrev()};
 $('#mode2').onclick=e=>{const b=e.target.closest('button');if(b){EXP.mode=b.dataset.m;refreshPrev()}};
 $('#mclose').onclick=()=>$('#modal').classList.remove('on');
@@ -497,41 +471,11 @@ $('#modal').onclick=e=>{if(e.target.id==='modal')$('#modal').classList.remove('o
 $('#dl').onclick=()=>card(EXP.period,EXP.mode).toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);
  a.download=`xau-performance-${EXP.period}-${EXP.mode==='$'?'usd':'pct'}.png`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)});
 
-// ================= view / mode =================
-let VIEW='chart';
-function setView(v){VIEW=v;$$('#views button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));
- $('#vchart').classList.toggle('on',v==='chart');$('#perf').classList.toggle('on',v==='perf');$('#tf').style.display=v==='chart'?'':'none';
- if(v==='perf')renderPerf();else redraw()}
-function setMode(m){MODE=m;try{localStorage.setItem('xau-mode',m)}catch(e){}
- $$('#mode button').forEach(b=>b.classList.toggle('on',b.dataset.m===m));renderHeader();renderList();showCard(sel);if(VIEW==='perf')renderPerf()}
-$('#views').onclick=e=>{const b=e.target.closest('button');if(b)setView(b.dataset.v)};
-$('#mode').onclick=e=>{const b=e.target.closest('button');if(b)setMode(b.dataset.m)};
-function setLang(l){LANG=l;try{localStorage.setItem('xau-lang',l)}catch(e){}
- TH=WD[l];MO=MN[l];document.documentElement.lang=l;
- $('#brand').textContent=(ACCT.sym||'XAUUSD')+' · '+tx('ไม้จริง MT5','Real MT5 trades');
- $('#acct').style.display=ACCTS.length>1?'':'none';
- $('#acct').innerHTML=`<option value="all">${tx(`ทุกบัญชี (${ACCTS.length})`,`All accounts (${ACCTS.length})`)}</option>`+[...ACCTS].reverse().map(a=>
-  `<option value="${a.login}">#${a.login}${a.name?' · '+a.name:''}</option>`).join('');$('#acct').value=SEL;
- $$('[data-en]').forEach(e=>{if(e.dataset.th==null)e.dataset.th=e.textContent;e.textContent=l==='en'?e.dataset.en:e.dataset.th});
- $$('[data-en-title]').forEach(e=>{if(e.dataset.thTitle==null)e.dataset.thTitle=e.title;e.title=l==='en'?e.dataset.enTitle:e.dataset.thTitle});
- $$('#lang button').forEach(b=>b.classList.toggle('on',b.dataset.l===l));
- renderHeader();renderList();showCard(sel);if(VIEW==='perf')renderPerf();if($('#modal').classList.contains('on'))refreshPrev()}
-$('#acct').onchange=e=>{try{localStorage.setItem('xau-acct',e.target.value)}catch(_){}location.reload()};
-$('#lang').onclick=e=>{const b=e.target.closest('button');if(b)setLang(b.dataset.l)};
-const SUN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',
- MOON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
-function setTheme(t){THEME=t;document.documentElement.dataset.theme=t;try{localStorage.setItem('xau-theme',t)}catch(e){}
- $('#theme').innerHTML=t==='dark'?SUN:MOON;paintChart();redraw();if(VIEW==='perf')renderPerf()}
-$('#theme').onclick=()=>setTheme(THEME==='dark'?'light':'dark');
-
-setTF('H1',false);setMode(MODE);setLang(LANG);setTheme(THEME);
-chart.timeScale().setVisibleLogicalRange({from:bars.length-21*24,to:bars.length+5});
-if(location.hash==='#perf')setView('perf');
+renderAll();
 // เปิดหน้าด้วยข้อมูลรอบก่อนทันที -> poll stamp.js ระหว่าง build รันอยู่ข้างหลัง เสร็จแล้ว reload เอง
+const lastPx=()=>bars.length?fmt(bars[bars.length-1].close):'';
 (function poll(){const s=document.createElement('script');s.src='stamp.js?'+Date.now();
- s.onload=()=>{s.remove();const st=window.STAMP||{};
-  if(st.built&&st.built!==BUILT){try{sessionStorage.setItem('xau-view',VIEW)}catch(e){}location.reload();return}
-  $('#sync').textContent=st.state==='building'?' · '+tx('กำลังดึงข้อมูลใหม่…','updating…'):'';$('.brand i').style.background=st.state==='building'?'var(--warn)':''};
- s.onerror=()=>s.remove();document.head.appendChild(s);setTimeout(poll,2000)})();
-try{const v=sessionStorage.getItem('xau-view');if(v){sessionStorage.removeItem('xau-view');setView(v)}}catch(e){}
+ s.onload=()=>{s.remove();const st=window.STAMP||{};if(st.built&&st.built!==BUILT){location.reload();return}
+  const busy=st.state==='building';$('#dot').classList.toggle('busy',busy);$('#sync').innerHTML=busy?'กำลังดึงข้อมูลใหม่…':`${ACCT.sym} <b>${lastPx()}</b> · ${BUILT.slice(11,16)}`};
+ s.onerror=()=>{s.remove();$('#sync').innerHTML=`${ACCT.sym} <b>${lastPx()}</b> · ${BUILT.slice(11,16)}`};document.head.appendChild(s);setTimeout(poll,2000)})();
 </script></body></html>
