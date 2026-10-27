@@ -3,5 +3,6 @@
   "server": "",
   "symbol": "",
   "utc_offset": 7,
-  "max_lot": 0.01
+  "max_lot": 0.01,
+  "accounts": []
 }
