@@ -24,6 +24,17 @@ header{position:sticky;top:0;z-index:10;min-height:64px;background:var(--card);b
 .tabs{display:flex;gap:4px;flex-wrap:wrap}
 .tabs button{all:unset;cursor:pointer;padding:8px 14px;border-radius:8px;color:var(--mute);font-weight:500;transition:background .2s,color .2s}
 .tabs button:hover{color:var(--tx)}.tabs button.on{background:var(--bluebg);color:var(--blue);font-weight:600}
+.tabs button{display:flex;flex-direction:column;line-height:1.25;padding:6px 14px;font-size:15px}.tabs button small{font-size:11px;font-weight:400;color:var(--mute)}.tabs button.on small{color:#3d5a9e}
+.badge{font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px}.badge.g{background:var(--winbg);color:var(--win)}.badge.o{background:var(--warnbg);color:var(--warntx)}.badge.b{background:var(--lossbg);color:var(--loss)}
+.info{display:inline-flex;width:16px;height:16px;border-radius:50%;border:1px solid #b9bfca;font-size:10px;font-style:normal;align-items:center;justify-content:center;margin-left:4px;cursor:help;color:var(--mute)}
+.money{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:14px}.money>div{padding:14px;border-radius:10px;background:var(--soft)}.money small{font-size:13px;color:var(--mute)}.money b{display:block;font-size:22px;font-weight:700;margin-top:2px}.money i{font-style:normal;font-size:12px;color:var(--mute)}
+.money .real{background:var(--winbg);border:1px solid #bfe3cf}
+.cashl{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:0 24px;margin-top:14px;border-top:1px solid var(--soft2);padding-top:8px}.cashl div{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid var(--soft2)}
+.trcol{flex:999 1 640px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.hero{background:#161a22;color:#fff;border-radius:14px;padding:20px 24px;display:flex;flex-wrap:wrap;gap:12px 32px;align-items:center}.hero small{color:#b9c0cc;font-size:13px}
+.flagrow{display:grid;grid-template-columns:minmax(0,1fr) 80px 120px;gap:4px 16px;align-items:center;padding:12px 14px;border:1px solid var(--line);border-radius:10px;margin-top:8px}.flagrow span{text-align:right}
+.flagrow.bad{background:#fdf3f2;border-color:#f0c9c3}.flagrow.ok{background:var(--winbg);border-color:#c4e4d3}
+table.t tr.sub td{font-size:11px;color:var(--mute);background:var(--soft);padding:4px 8px}
 .sp{flex:1}
 .chip{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--mute);background:var(--bg);padding:6px 12px;border-radius:999px;white-space:nowrap}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--win);animation:pulse 2s infinite}.dot.busy{background:var(--warn);animation:pulseW 1.2s infinite}
@@ -92,6 +103,7 @@ table.t tr.click{cursor:pointer}table.t tr.click:hover td{background:#f6f8fc}
 .heat .d{width:14px;height:14px;border-radius:3px;background:var(--soft2)}.heat .ml{font-size:10px;color:var(--mute);white-space:nowrap;height:14px}
 .heat .dl{display:grid;grid-template-rows:14px repeat(7,14px);gap:3px;font-size:10px;color:var(--mute);margin-right:4px}
 #eq{height:260px;position:relative}
+.eqtip{display:none;position:absolute;z-index:5;pointer-events:none;background:#fff;border:1px solid #e3e6ec;border-radius:8px;padding:8px 10px;font-size:12.5px;line-height:1.6;box-shadow:0 4px 14px rgba(0,0,0,.08);white-space:nowrap}
 #modal{position:fixed;inset:0;background:rgba(20,22,26,.45);z-index:20;display:none;align-items:center;justify-content:center;padding:16px}
 #modal.on{display:flex}
 #modal .mbx{background:#fff;border-radius:16px;padding:16px;max-width:560px;width:100%;max-height:96vh;display:flex;flex-direction:column;gap:12px;animation:rise .3s both}
@@ -105,10 +117,11 @@ table.t tr.click{cursor:pointer}table.t tr.click:hover td{background:#f6f8fc}
 <header>
  <div class="logo"><b><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" aria-hidden="true"><path d="M4 19V5M4 19h16M8 15V9M12 15V6M16 15v-4"/></svg></b>XAU Trade Replay</div>
  <nav class="tabs" id="tabs" aria-label="หน้า">
-  <button data-t="overview">ภาพรวม</button><button data-t="chart">กราฟเต็มจอ</button><button data-t="journal">สมุดไม้</button><button data-t="monthly">รายเดือน</button><button data-t="discipline">วินัย</button>
+  <button data-t="overview">สรุปพอร์ต<small>เงินเข้า-ออก · กำไรรวม</small></button><button data-t="trades">ไม้ทั้งหมด<small>ลิสต์ไม้ + ดูบนกราฟ</small></button><button data-t="monthly">ผลตามช่วงเวลา<small>รายเดือน · รายวัน</small></button><button data-t="discipline">นิสัยการเทรด<small>ผิดกฎตัวเองตรงไหน</small></button>
  </nav>
  <div class="sp"></div>
  <div class="chip"><span class="dot" id="dot"></span><span id="sync"></span></div>
+ <div class="seg" id="lang" aria-label="ภาษา"><button data-l="th">ไทย</button><button data-l="en">EN</button></div>
  <div class="seg" id="mode" title="โหมด % ซ่อนตัวเลขเงิน ไว้แคปให้คนอื่นดู"><button data-m="$">$ จริง</button><button data-m="%">% อย่างเดียว</button></div>
  <button class="btn lift" id="exp"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Export รูป</button>
 </header>
@@ -119,12 +132,15 @@ table.t tr.click{cursor:pointer}table.t tr.click:hover td{background:#f6f8fc}
  <div class="kpis" id="kpis"></div>
 
  <div class="row2" id="vchart">
+  <section class="card side rise" style="flex:1 1 460px;max-width:480px" id="side"></section>
+  <div class="trcol">
   <section class="card chartcard rise" style="animation-delay:.15s">
    <div class="chhead"><b id="sym"></b><span class="m" style="font-size:12px" id="float"></span><div class="sp"></div>
     <div class="seg" id="tf"><button data-tf="M15">15m</button><button data-tf="H1">1H</button><button data-tf="H4">4H</button><button data-tf="D1">1D</button></div></div>
    <div id="wrap"><div id="chart"></div><canvas id="ov"></canvas><div id="legend"></div><div id="tip"></div></div>
   </section>
-  <section class="card side rise" style="animation-delay:.25s" id="side"></section>
+  <section class="card rise" style="animation-delay:.25s" id="detail"></section>
+  </div>
  </div>
  <div id="vpage"></div>
 </div>
@@ -140,14 +156,72 @@ table.t tr.click{cursor:pointer}table.t tr.click:hover td{background:#f6f8fc}
 <script>
 const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
 const ls=(k,d)=>{try{return localStorage.getItem(k)||d}catch(e){return d}},lset=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+// ================= ภาษา: EN = แปลทุกข้อความที่ขึ้นจอผ่าน tr() + MutationObserver =================
+const LANG=ls('xau-lang','th');
+const I18N_X={'เดือน':'Month','ไม้':'Trades','ชนะ':'Win','ปิด':'Close','ฝาก':'Deposit','ถอน':'Withdrawal','กำไร':'Winners','ขาดทุน':'Losers','จ':'M','อ':'T','พ':'W','พฤ':'T','ศ':'F','ส':'S','อา':'S'};
+const I18N=Object.entries({
+ 'เงินเข้า-ออก · กำไรรวม':'Cash flow · total P/L','ลิสต์ไม้ + ดูบนกราฟ':'List + chart','รายเดือน · รายวัน':'Monthly · daily','ผิดกฎตัวเองตรงไหน':'Where you break your rules',
+ 'สรุปพอร์ต':'Summary','ไม้ทั้งหมด':'All trades','ผลตามช่วงเวลา':'By period','นิสัยการเทรด':'Habits',
+ 'มุมมองรวม':'Combined','ทุกบัญชีรวมกัน':'All accounts combined','ทุกบัญชี':'All accounts','เปิดอยู่':'Open','ปิดแล้ว':'Closed',
+ '7 วันล่าสุด':'Last 7D','30 วันล่าสุด เทียบกับก่อนหน้าทั้งหมด':'Last 30D vs everything before','30 วันล่าสุด':'Last 30D','3 เดือนล่าสุด':'Last 3M','1 ปีล่าสุด':'Last 1Y',
+ '7 วันก่อนหน้า':'previous 7D','30 วันก่อนหน้า':'previous 30D','3 เดือนก่อนหน้า':'previous 3M','1 ปีก่อนหน้า':'previous 1Y','เดือนนี้ก่อนหน้า':'previous month',
+ '7 วัน':'7D','30 วัน':'30D','เดือนนี้':'This month','3 เดือน':'3M','1 ปี':'1Y','ทั้งหมด':'All',
+ 'ข้อมูล ณ':'data as of','ช่วงนี้ไม่มีไม้ที่ปิด':'No closed trades in this period','ไม่มีไม้ที่ปิด':'no closed trades',
+ 'กำไรจากการเทรด':'Trading P/L','ผลตอบแทน':'Return','ไม้ที่ปิด':'closed trades','% ของเงินฝากรวม':'% of total deposits','% ของเงินฝาก':'% of deposits','ของเงินฝาก':'of deposits','% เงินฝาก':'% deposits',
+ 'เทียบยอดฝากรวม ไม่ทบต้น':'vs total deposits, not compounded','เทียบยอดฝากรวม · ไม่ทบต้น':'vs total deposits · not compounded',
+ 'ไม้ที่ได้กำไร ÷ ไม้ทั้งหมด':'Winning trades ÷ all trades','ชนะกี่ % (ไม่นับไม้เสมอตัว)':'Win rate (excl. breakeven)','ชนะกี่ %':'Win rate',
+ 'กำไรรวมของไม้ชนะ ÷ ขาดทุนรวมของไม้แพ้ · เกิน 1 = ได้มากกว่าเสีย':'Gross profit ÷ gross loss · above 1 = you make more than you lose','ได้ต่อเสีย':'Profit factor',
+ 'เสีย $1 ได้กลับ $':'lose $1, get back $','เสีย $1 ได้คืนกี่ $':'$ back per $1 lost','ไม้ชนะใหญ่กว่าไม้แพ้':'Avg win ÷ avg loss','ชนะใหญ่กว่าแพ้':'Avg win/loss',
+ 'ร่วงหนักสุดจากยอด':'Max drawdown','กำไรสะสมลงจากจุดสูงสุดลึกที่สุดเท่าไหร่':'Deepest fall of cumulative P/L from its peak','ร่วงหนักสุด':'Max DD','ร่วงลึกสุด':'Deepest drop',
+ 'พอใช้':'OK','แย่':'Poor','ก่อนหน้า':'prev',
+ 'นับตั้งแต่เริ่ม ไม่ขึ้นกับช่วงเวลา':'since the start, ignores the period filter','เงินเข้า-ออก':'Cash flow','ฝากรวม':'Total deposits','ถอนรวม':'Total withdrawals',
+ 'ฝากสุทธิ (ฝาก − ถอน)':'Net deposits (in − out)','ถอนทุนคืนครบแล้ว':'All capital already withdrawn','ทุนที่ยังค้างในพอร์ต':'Capital still in the account',
+ 'เงินในพอร์ตตอนนี้':'Equity now','ไม่มีบัญชีที่มีเงิน':'No funded account','เงินในพอร์ต + ถอน − ฝาก':'equity + withdrawals − deposits','กำไรจริง':'Real profit',
+ 'โอนออก':'Transfer out','ต่างจากกำไรเทรด':'differs from trading P/L by',
+ 'ส่วนต่างนี้มาจากรายการเงินที่ MT5 ไม่ได้บันทึกเป็นฝาก/ถอนปกติ เช่น ค่าธรรมเนียม โบนัส หรือปรับยอด':'This gap comes from money movements MT5 did not record as normal deposits/withdrawals, e.g. fees, bonuses or balance corrections','ยังไม่มีรายการ':'No transactions yet',
+ 'ไม่รวมฝาก/ถอน':'excl. deposits/withdrawals','แท่งแดง = ห่างจากยอดสูงสุดเท่าไหร่':'red bars = distance from peak','ชี้ตรงไหนก็บอกตัวเลขจุดนั้น':'hover any point for its numbers',
+ 'กำไรสะสม':'Cumulative P/L','อยู่ที่ยอดสูงสุด':'At the peak','ห่างจากยอด':'From peak','ยอดสูงสุด':'Peak',
+ '↑↓ เลื่อนไม้':'↑↓ to step','ซื้อ (Buy)':'Buy','ขาย (Sell)':'Sell','ไม่มีไม้ตามที่กรอง':'No trades match the filter','แสดงเพิ่มอีก':'Show','ไม่มีไม้':'No trades',
+ 'ราคาเข้า':'Entry','ราคาออก':'Exit','ถือนาน':'Held','จุดตัดขาดทุน (SL) / ทำกำไร (TP)':'Stop loss / take profit','ราคาวิ่งไปทางเรา':'Move in our favor',
+ 'เคยบวกสุด':'Max favorable','เก็บได้':'captured','เคยติดลบสุด':'Max adverse','หมายเหตุ':'Note','ไม้ก่อน':'Previous','ไม้ถัดไป':'Next',
+ 'lot เกินเพดาน':'Lot over cap','ไม่ตัดขาดทุน':'No stop-out','ถัวขาดทุน':'Averaging down','แก้มือ':'Revenge trade',
+ 'เปิดใหญ่กว่า':'Opened larger than','ที่ตั้งเป็นเพดานไว้':'(your cap)','ปิดขาดทุนเกิน':'Closed a loss over','ของราคาทอง โดยไม่ได้โดน SL':'of gold price without hitting SL',
+ 'เปิดไม้ฝั่งเดิมเพิ่ม ที่ราคาแย่กว่าไม้ที่ถืออยู่':'Added on the same side at a worse price than an open position','เปิดไม้ใหม่ภายใน 30 นาทีหลังปิดไม้แพ้':'Opened within 30 min after closing a loser',
+ 'กำไรรายเดือน':'Monthly P/L','เดือนที่ดีที่สุด':'Best month','เดือนที่แย่ที่สุด':'Worst month','เดือนที่บวก':'Green months','บวกติดกันยาวสุด':'Longest green streak',
+ 'ตารางรายเดือน':'Monthly table','กำไร/ขาดทุน':'P/L','เก็บกำไรได้กี่ %':'Profit captured','ถือ ชนะ / แพ้':'Hold win / loss','ไม้ชนะ ÷ ไม้ทั้งหมด':'wins ÷ trades',
+ 'กำไรเฉลี่ย ÷ ขาดทุนเฉลี่ย':'avg win ÷ avg loss','ลงจากยอดในเดือน':'drop from peak in month','ของที่ราคาวิ่งไปสุด':'of the max favorable move','ถือนานเฉลี่ย':'avg hold',
+ 'ปฏิทินรายวัน':'Daily calendar','สีเข้ม = ได้/เสียเยอะ':'darker = bigger win/loss','ชี้ดูรายละเอียด':'hover for details','ไม่มีไม้ปิด':'no closed trades',
+ 'ข้อสรุปใหญ่สุดของหน้านี้':'Biggest takeaway','ไม้ เสียไป':'trades, lost','กำไรช่วงนี้':'P/L this period','ถ้าไม่มีไม้พวกนี้':'Without these trades',
+ 'ผิดกฎตัวเองกี่ไม้ และได้/เสียไปเท่าไหร่':'Rule breaks: how many and what they cost','ไม้ผิดได้หลายข้อ แต่ละแถวเลยบวกรวมกันไม่ได้':'trade can break several rules, so rows don’t add up',
+ 'วันที่เทรดถี่':'Overtrading days','วันที่เปิด 5 ไม้ขึ้นไป':'days with 5+ trades','ไม้ที่ไม่ผิดกฎเลย':'Clean trades','ไว้เทียบว่าถ้าทำตามกฎ ผลออกมาเป็นยังไง':'what following your rules looks like',
+ 'ไม้ชนะเก็บได้เฉลี่ยกี่ % ของที่ราคาวิ่งไปสุด':'avg share of the max move captured on winners','ตัดไม้เสมอตัว':'breakeven trades','ไม้ (ราคาขยับ < 0.05%)':'trades (move < 0.05%)','ไม่มีไม้เสมอตัว':'No breakeven trades',
+ 'ได้เฉลี่ยต่อไม้':'Avg per trade','ไม้ที่ผิดกฎล่าสุด':'Latest rule breaks','ไม้ที่ผิดกฎ':'Rule breaks','ไม่ผิดกฎเลย':'No rule breaks','ไม้เสมอตัว':'Breakeven trades',
+ 'ไม้ ถ้าไม่นับ จะชนะจริง':'trades; excluding them the real win rate is','ไม่ใช่':'not','กดแถวเพื่อดูบนกราฟ':'click a row to view on the chart','คลิกแถวเพื่อดูบนกราฟ':'click a row to view on the chart','เปิดเมื่อ':'Opened',
+ 'กำไรที่ปล่อยหลุดมือ':'Profit left on the table','ไม้ชนะเก็บได้เฉลี่ย':'Winners captured (avg)','ทิ้งไว้รวม':'Left in total','ไม้แพ้ที่เคยบวก':'Losers that were green','ทิ้งไว้เยอะสุด':'Most left','ได้จริง':'Realized','ทิ้ง':'Left',
+ 'หน่วย':'units','ของราคาทอง':'of gold price','ตามช่วงตลาด':'By session','เอเชีย':'Asia','ลอนดอน':'London','นิวยอร์ก':'New York','ตามวัน':'By weekday','ตามเวลาถือ':'By hold time','% รวม':'% total',
+ 'กำลังดึงข้อมูลใหม่':'Fetching new data','% อย่างเดียว':'% only','$ จริง':'$ real','โหมด % ซ่อนตัวเลขเงิน ไว้แคปให้คนอื่นดู':'% mode hides dollar amounts for sharing','ลอยอยู่':'Floating',
+ 'Export รูปรายงาน':'Export report image','Export รูป':'Export image','ตัวอย่างรูปรายงาน':'Report preview','ขนาดโพสต์':'post size','ดาวน์โหลด':'Download','ช่วงเวลา':'Period','รายเดือน':'Monthly','รายวัน':'Daily',
+ 'กำไรสุทธิ':'Net profit','จำนวนไม้':'Trades','ถือไม้ชนะเฉลี่ย':'Avg winner hold','ข้อมูลจริงจาก':'Real data from','ภาษา':'Language','หน้า':'Pages',
+ 'อา.':'Sun','จ.':'Mon','อ.':'Tue','พฤ.':'Thu','พ.':'Wed','ศ.':'Fri','ส.':'Sat',
+ 'ไม้ที่':'','ผิดกฎ':'Rule break','ชม.':'h','นาที':'min','วัน':'days','เดือน':'months','เท่า':'x','จาก':'of','ปิด':'closed','ถือ':'held','ราคา':'price','เงินฝาก':'deposits','ชนะ':'win','แพ้':'loss','ไม้':'trades','ดี':'Good','ช่วง':'Period','เทียบ':' vs '
+}).sort((a,b)=>b[0].length-a[0].length);
+const tr=s=>{if(LANG!=='en'||!s||!/[฀-๿]/.test(s))return s;const x=s.trim();if(I18N_X[x]!=null)return s.replace(x,I18N_X[x]);
+ for(const [a,b] of I18N)if(s.includes(a))s=s.split(a).join(b);return s};
+function trNode(n){if(n.nodeType===3){const v=tr(n.nodeValue);if(v!==n.nodeValue)n.nodeValue=v;return}
+ if(n.nodeType!==1||n.tagName==='SCRIPT'||n.tagName==='STYLE'||n.closest('#lang'))return;
+ for(const a of ['title','aria-label','placeholder','alt'])if(n.hasAttribute(a)){const v=tr(n.getAttribute(a));if(v!==n.getAttribute(a))n.setAttribute(a,v)}
+ n.childNodes.forEach(trNode)}
 const fmt=(n,d=2)=>n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
 const sg=(n,d=2)=>(n>0?'+':n<0?'−':'')+fmt(Math.abs(n),d),cls=n=>n>0?'w':n<0?'l':'m';
 const TH=['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'],MO=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
 const D=t=>new Date(t*1000),pad=n=>String(n).padStart(2,'0');
-const dts=t=>{const d=D(t);return `${TH[d.getUTCDay()]} ${d.getUTCDate()}/${d.getUTCMonth()+1} ${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}`};
-const dayL=t=>{const d=D(t);return `${TH[d.getUTCDay()]} ${d.getUTCDate()} ${MO[d.getUTCMonth()]} ${String(d.getUTCFullYear()+543).slice(2)}`};
+// วันที่ตัวเลขล้วน ปี/เดือน/วัน (ค.ศ.) ทั้งแอป
+const ymd=t=>{const d=D(t);return d.getUTCFullYear()+'/'+pad(d.getUTCMonth()+1)+'/'+pad(d.getUTCDate())},hm=t=>{const d=D(t);return pad(d.getUTCHours())+':'+pad(d.getUTCMinutes())};
+const dts=t=>ymd(t)+' '+hm(t);
+const dayL=t=>`${ymd(t)} (${TH[D(t).getUTCDay()]})`;
+const tick=(t,ty)=>{const d=D(t);return ty===0?String(d.getUTCFullYear()):ty===1?d.getUTCFullYear()+'/'+pad(d.getUTCMonth()+1):ty===2?pad(d.getUTCMonth()+1)+'/'+pad(d.getUTCDate()):hm(t)};
 const dur=s=>{const h=s/3600;return h<1?Math.round(h*60)+' นาที':h<48?h.toFixed(1)+' ชม.':(h/24).toFixed(1)+' วัน'};
-const mkey=t=>{const d=D(t);return d.getUTCFullYear()+'-'+pad(d.getUTCMonth()+1)},mname=k=>MO[+k.slice(5)-1]+' '+(+k.slice(0,4)+543-2500);
+const mkey=t=>{const d=D(t);return d.getUTCFullYear()+'-'+pad(d.getUTCMonth()+1)},mname=k=>k.replace('-','/');
 const dkey=t=>D(t).toISOString().slice(0,10);
 const TZ=+(META.tz??7),TZL='UTC'+(TZ>=0?'+':'')+TZ;
 const sum=(a,f)=>a.reduce((s,x)=>s+f(x),0),avg=(a,f)=>a.length?sum(a,f)/a.length:0;
@@ -156,6 +230,7 @@ const BIG=0.5;
 const ANAME=Object.fromEntries(ACCTS.map(a=>[a.login,a.name||('#'+a.login)]));
 let ST={acct:ls('xau-acct','all'),tab:ls('xau-tab','overview'),per:ls('xau-per','all'),mode:ls('xau-mode','$'),filter:'all',sel:null,tf:'H1'};
 if(ST.acct!=='all'&&!ACCTS.some(a=>String(a.login)===ST.acct))ST.acct='all';
+if(ST.tab==='chart'||ST.tab==='journal')ST.tab='trades';if(!['overview','trades','monthly','discipline'].includes(ST.tab))ST.tab='overview';
 
 // ธงวินัย คิดครั้งเดียวต่อบัญชีของไม้นั้น
 RAW_TRADES.forEach(t=>t.k=t.acct+':'+t.id);
@@ -165,7 +240,8 @@ for(const t of RAW_TRADES){t.flags=[];
  if(!t.open&&-pp(mv(t),t)>BIG&&!/\[sl/i.test(t.comment||''))t.flags.push('nosl');
  if(RAW_TRADES.some(o=>o!==t&&o.acct===t.acct&&o.side===t.side&&o.t0<t.t0&&o.t1>t.t0&&(t.entry-o.entry)*DIR(t)<0))t.flags.push('avg');
  if(RAW_CLOSED.some(o=>o.acct===t.acct&&o.profit<0&&o.t1<=t.t0&&t.t0-o.t1<=1800))t.flags.push('rev');}
-const FL=f=>({lot:'lot เกิน',nosl:'หลุดไม่มีเบรก',avg:'ถัวขาดทุน',rev:'แก้มือ ≤30น.'})[f];
+const FL=f=>({lot:'lot เกินเพดาน',nosl:'ไม่ตัดขาดทุน',avg:'ถัวขาดทุน',rev:'แก้มือ'})[f];
+const FD=f=>({lot:`เปิดใหญ่กว่า ${META.maxLot} lot ที่ตั้งเป็นเพดานไว้`,nosl:`ปิดขาดทุนเกิน ${BIG}% ของราคาทอง โดยไม่ได้โดน SL`,avg:'เปิดไม้ฝั่งเดิมเพิ่ม ที่ราคาแย่กว่าไม้ที่ถืออยู่',rev:'เปิดไม้ใหม่ภายใน 30 นาทีหลังปิดไม้แพ้'})[f];
 
 let TRADES,CASH,CLOSED,OPEN,BASE,ACCT;
 function load(){const inSel=x=>ST.acct==='all'||String(x.acct)===ST.acct;
@@ -175,18 +251,20 @@ function load(){const inSel=x=>ST.acct==='all'||String(x.acct)===ST.acct;
  ACCT=ACCTS.find(a=>String(a.login)===ST.acct)||ACCTS[ACCTS.length-1]}
 function stats(L){
  const n=L.length,W=L.filter(t=>t.profit>0),Lo=L.filter(t=>t.profit<=0),gw=sum(W,t=>t.profit),gl=-sum(Lo,t=>t.profit);
- let c=0,pc=0,dd$=0,sw=0,sl=0,mw=0,ml=0;
- for(const t of L){c+=t.profit;pc=Math.max(pc,c);dd$=Math.min(dd$,c-pc);if(t.profit>0){sw++;sl=0;mw=Math.max(mw,sw)}else{sl++;sw=0;ml=Math.max(ml,sl)}}
+ let c=0,pc=0,dd$=0,sw=0,sl=0,mw=0,ml=0,pkT=L.length?L[0].t1:0,ddFrom=0,ddTo=0;
+ for(const t of L){c+=t.profit;if(c>pc){pc=c;pkT=t.t1}if(c-pc<dd$){dd$=c-pc;ddFrom=pkT;ddTo=t.t1}if(t.profit>0){sw++;sl=0;mw=Math.max(mw,sw)}else{sl++;sw=0;ml=Math.max(ml,sl)}}
  const aw=avg(W,t=>t.profit),al=-avg(Lo,t=>t.profit),Wm=W.filter(t=>t.mfe>0);
  const r={n,w:W.length,wr:n?W.length/n*100:0,net:gw-gl,netP:(gw-gl)/BASE*100,pf:gl?gw/gl:(gw?Infinity:0),payoff:al?aw/al:0,aw,al,
-  awP:avg(W,t=>t.ap),alP:-avg(Lo,t=>t.ap),exp:n?(gw-gl)/n:0,expP:avg(L,t=>t.ap),dd$,ddP:dd$/BASE*100,holdW:avg(W,t=>t.t1-t.t0),holdL:avg(Lo,t=>t.t1-t.t0),
+  awP:avg(W,t=>t.ap),alP:-avg(Lo,t=>t.ap),exp:n?(gw-gl)/n:0,expP:avg(L,t=>t.ap),dd$,ddP:dd$/BASE*100,ddFrom,ddTo,holdW:avg(W,t=>t.t1-t.t0),holdL:avg(Lo,t=>t.t1-t.t0),
   streakW:mw,streakL:ml,best:L.reduce((b,t)=>!b||t.profit>b.profit?t:b,null),worst:L.reduce((b,t)=>!b||t.profit<b.profit?t:b,null),
   be:L.filter(t=>Math.abs(t.pct)<0.05).length,cap:Wm.length?avg(Wm,t=>Math.min(1,mv(t)/t.mfe))*100:0,
   left:sum(L.filter(t=>t.mfe!=null),t=>Math.max(0,t.mfe-mv(t))*ppt(t))};r.leftP=r.left/BASE*100;return r}
 const $M=(d,p)=>ST.mode==='$'?(d>0?'+':d<0?'−':'')+'$'+fmt(Math.abs(d)):sg(p)+'%';
 const $D=(d,p)=>ST.mode==='$'?(d<0?'−$':'$')+fmt(Math.abs(d)):fmt(p)+'%';
-const PERIODS={d7:['7 วัน',7],d30:['30 วัน',30],d90:['3 เดือน',90],d365:['1 ปี',365],all:['ทั้งหมด',0]};
 const NOW=Math.max(BARS.H1.length?BARS.H1[BARS.H1.length-1][0]+3600:0,...RAW_TRADES.map(t=>t.t1));
+const MTD=(NOW-Date.UTC(D(NOW).getUTCFullYear(),D(NOW).getUTCMonth(),1)/1000)/86400;
+const PERIODS={d7:['7 วัน',7],d30:['30 วัน',30],mtd:['เดือนนี้',MTD],d90:['3 เดือน',90],d365:['1 ปี',365],all:['ทั้งหมด',0]};
+const lastL=k=>k==='mtd'?'เดือนนี้':PERIODS[k][0]+'ล่าสุด';
 const inRange=k=>PERIODS[k]?CLOSED.filter(t=>!PERIODS[k][1]||t.t1>NOW-PERIODS[k][1]*86400):CLOSED.filter(t=>mkey(t.t1)===k);
 
 // ตัวเลขวิ่ง: <b data-cu="ค่า" data-f="money|pct|num|int|pf">
@@ -209,21 +287,23 @@ function renderAccts(){
 function renderKpis(){
  const pr=PERIODS[ST.per],A=stats(inRange(ST.per)),win=pr[1]||30,cut=NOW-win*86400;
  const R=stats(CLOSED.filter(t=>t.t1>cut)),P=stats(CLOSED.filter(t=>t.t1<=cut&&(!pr[1]||t.t1>cut-win*86400)));
- const cmp=(a,b,d=2,suf='')=>R.n&&P.n?`<i class="${a>b?'w':a<b?'l':''}">${pr[1]?pr[0]+'ล่าสุด':'30 วันล่าสุด'} ${fmt(a,d)}${suf} (เดิม ${fmt(b,d)}${suf})</i>`:'';
- $('#perl').textContent=A.n?`${A.n} ไม้ปิดในช่วงนี้ · ข้อมูล ณ ${BUILT.slice(0,16)} (${TZL}) · v2.0.0`:'ช่วงนี้ไม่มีไม้ที่ปิด';
- const k=(lab,html,sub,i)=>`<div class="card kpi lift rise" style="animation-delay:${100+i*70}ms"><small>${lab}</small>${html}${sub}</div>`;
+ const cmp=(a,b,d=2,suf='')=>R.n&&P.n?`<i class="${a>b?'w':a<b?'l':''}" style="display:block">${pr[1]?lastL(ST.per):'30 วันล่าสุด'} ${fmt(a,d)}${suf} (ก่อนหน้า ${fmt(b,d)}${suf})</i>`:'';
+ const IN=inRange(ST.per);$('#perl').textContent=A.n?`${ymd(IN[0].t1)} – ${ymd(IN[IN.length-1].t1)} · ${A.n} ไม้ · ข้อมูล ณ ${BUILT.slice(0,16).replace(/-/g,'/')} (${TZL}) · v3.0.0`:'ช่วงนี้ไม่มีไม้ที่ปิด';
+ const bd=lv=>`<span class="badge ${['b','o','g'][lv]}">${['แย่','พอใช้','ดี'][lv]}</span>`,inf=t=>`<i class="info" title="${t}">i</i>`;
+ const k=(lab,html,sub,i,b='')=>`<div class="card kpi lift rise" style="animation-delay:${100+i*70}ms"><small style="display:flex;justify-content:space-between;align-items:center"><span>${lab}</span>${b}</small>${html}${sub}</div>`;
+ const pf=A.pf===Infinity?'∞':A.pf.toFixed(2);
  $('#kpis').innerHTML=
-  k(ST.mode==='$'?'กำไรสุทธิ':'ผลตอบแทน',`<b class="${cls(A.net)}" data-cu="${ST.mode==='$'?A.net:A.netP}" data-f="money">0</b>`,`<i>${ST.mode==='$'?sg(A.netP)+'% ของเงินฝาก $'+fmt(BASE,0):'เทียบยอดฝากรวม · ไม่ทบต้น'}</i>`,0)+
-  k('Winrate',`<b data-cu="${A.wr}" data-f="pct">0</b>`,cmp(R.wr,P.wr,0,'%')||`<i>${A.w}W / ${A.n-A.w}L</i>`,1)+
-  k('Profit factor',A.pf===Infinity?'<b>∞</b>':`<b data-cu="${A.pf}" data-f="num">0</b>`,cmp(Math.min(R.pf,99),Math.min(P.pf,99))||`<i>Payoff ${A.payoff.toFixed(2)}</i>`,2)+
-  k('Max drawdown',`<b class="l" data-cu="${ST.mode==='$'?A.dd$:A.ddP}" data-f="dd">0</b>`,A.best?`<i>ไม้ดีสุด ${$M(A.best.profit,A.best.ap)} · แย่สุด ${$M(A.worst.profit,A.worst.ap)}</i>`:'',3);
+  k(ST.mode==='$'?'กำไรจากการเทรด':'ผลตอบแทน',`<b class="${cls(A.net)}" data-cu="${ST.mode==='$'?A.net:A.netP}" data-f="money">0</b>`,`<i>${A.n} ไม้ที่ปิด · ${ST.mode==='$'?sg(A.netP)+'% ของเงินฝาก':'เทียบยอดฝากรวม ไม่ทบต้น'}</i>`,0)+
+  k('ชนะกี่ %'+inf('ไม้ที่ได้กำไร ÷ ไม้ทั้งหมด'),`<b data-cu="${A.wr}" data-f="pct">0</b>`,`<i style="display:block">ชนะ ${A.w} · แพ้ ${A.n-A.w} ไม้</i>`+cmp(R.wr,P.wr,0,'%'),1,bd(A.wr>=55?2:A.wr>=45?1:0))+
+  k('ได้ต่อเสีย'+inf('กำไรรวมของไม้ชนะ ÷ ขาดทุนรวมของไม้แพ้ · เกิน 1 = ได้มากกว่าเสีย'),A.pf===Infinity?'<b>∞</b>':`<b data-cu="${A.pf}" data-f="num">0</b>`,`<i style="display:block">เสีย $1 ได้กลับ $${pf} · ไม้ชนะใหญ่กว่าไม้แพ้ ${A.payoff.toFixed(2)} เท่า</i>`+cmp(Math.min(R.pf,99),Math.min(P.pf,99)),2,bd(A.pf>=1.5?2:A.pf>=1?1:0))+
+  k('ร่วงหนักสุดจากยอด'+inf('กำไรสะสมลงจากจุดสูงสุดลึกที่สุดเท่าไหร่'),`<b class="l" data-cu="${ST.mode==='$'?A.dd$:A.ddP}" data-f="dd">0</b>`,A.ddTo?`<i>${ymd(A.ddFrom)} → ${ymd(A.ddTo)} (${Math.max(1,Math.round((A.ddTo-A.ddFrom)/86400))} วัน)</i>`:'',3,bd(A.ddP>-20?2:A.ddP>-40?1:0));
  countUp($('#kpis'));
 }
 
 // ================= กราฟ =================
 const cssv=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
-const chart=LightweightCharts.createChart($('#chart'),{layout:{background:{color:'#ffffff'},textColor:'#4b5260',fontFamily:'Anuphan, Segoe UI, sans-serif'},
- grid:{vertLines:{color:'#f3f4f6'},horzLines:{color:'#f1f2f5'}},rightPriceScale:{borderColor:'#e3e5ea'},timeScale:{borderColor:'#e3e5ea',timeVisible:true,rightOffset:10},
+const chart=LightweightCharts.createChart($('#chart'),{layout:{background:{color:'#ffffff'},textColor:'#4b5260',fontFamily:'Anuphan, Segoe UI, sans-serif'},localization:{timeFormatter:dts},
+ grid:{vertLines:{color:'#f3f4f6'},horzLines:{color:'#f1f2f5'}},rightPriceScale:{borderColor:'#e3e5ea'},timeScale:{borderColor:'#e3e5ea',timeVisible:true,rightOffset:10,tickMarkFormatter:tick},
  crosshair:{mode:0,vertLine:{color:'#a1a7b3',labelBackgroundColor:'#2b59c3'},horzLine:{color:'#a1a7b3',labelBackgroundColor:'#2b59c3'}},autoSize:true});
 const cs=chart.addCandlestickSeries({upColor:'#0a8f5a',downColor:'#c23b3b',wickUpColor:'#0a8f5a',wickDownColor:'#c23b3b',borderVisible:false,priceLineColor:'#2b59c3'});
 let bars=[],fadeT=0;
@@ -238,7 +318,7 @@ chart.subscribeCrosshairMove(legend);
 const cv=$('#ov'),ctx=cv.getContext('2d');let hover=null,hit=[];
 const xOf=t=>chart.timeScale().logicalToCoordinate(barAt(t));
 function draw(){
- if(ST.tab!=='overview'&&ST.tab!=='chart')return;
+ if(ST.tab!=='trades')return;
  const r=$('#wrap').getBoundingClientRect(),dpr=devicePixelRatio;
  if(cv.width!==Math.round(r.width*dpr)||cv.height!==Math.round(r.height*dpr)){cv.width=r.width*dpr;cv.height=r.height*dpr;cv.style.width=r.width+'px';cv.style.height=r.height+'px'}
  ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,r.width,r.height);hit=[];
@@ -280,55 +360,85 @@ function trRow(t,compact){const fl=!t.flags.length?'':compact?'':`<span class="f
   ${fl}<span class="pl"><b class="${cls(t.profit)}">${$M(t.profit,t.ap)}</b><small>${ST.mode==='$'?sg(t.ap)+'% เงินฝาก':'ราคา '+sg(t.pct)+'%'}</small></span></button>`}
 function byDay(L,compact){const g=[];for(const t of L){const k=dkey(t.t0);let x=g[g.length-1];if(!x||x.k!==k){x={k,t:t.t0,a:[]};g.push(x)}x.a.push(t)}
  return g.map(x=>{const p=sum(x.a,t=>t.profit),ap=sum(x.a,t=>t.ap);return `<div class="dayh"><span>${dayL(x.t)} · ${x.a.length} ไม้</span><span class="${cls(p)}">${$M(p,ap)}</span></div>`+x.a.map(t=>trRow(t,compact)).join('')}).join('')}
-function renderSide(){const s=$('#side');
- if(ST.tab==='chart'){const t=ST.sel||[...TRADES].sort((a,b)=>b.t0-a.t0)[0];if(!t){s.innerHTML='<div class="empty">ไม่มีไม้</div>';return}
+// ลิสต์ไม้ (ซ้าย) — กรอง + แบ่งตามวัน
+const JF=[['all','ทั้งหมด'],['win','กำไร'],['loss','ขาดทุน'],['buy','ซื้อ (Buy)'],['sell','ขาย (Sell)'],['flag','ผิดกฎ']];
+const jpass=t=>ST.filter==='all'||(ST.filter==='win'&&t.profit>0)||(ST.filter==='loss'&&t.profit<=0)||(ST.filter==='flag'&&t.flags.length)||ST.filter===t.side;
+const jlist=()=>[...TRADES].sort((a,b)=>b.t0-a.t0).filter(jpass);
+function renderSide(){const s=$('#side'),L=jlist(),shown=L.slice(0,ST.jn||80);
+ s.innerHTML=`<div class="shead" style="flex-wrap:wrap"><h3>ไม้ทั้งหมด</h3><span class="m" style="font-size:12px">${shown.length} จาก ${L.length} ไม้ · ↑↓ เลื่อนไม้</span>
+  <div class="filters" id="fil" style="width:100%;margin-top:8px">${JF.map(([k,l])=>`<button data-f="${k}" class="${ST.filter===k?'on':''}">${l}</button>`).join('')}</div></div>
+  <div class="scroll" id="jl" style="max-height:max(560px,calc(100vh - 260px))">${L.length?byDay(shown):'<div class="empty">ไม่มีไม้ตามที่กรอง</div>'}
+  ${L.length>shown.length?`<div style="padding:14px;text-align:center;border-top:1px solid var(--soft2)"><button class="btn ghost lift" id="more">แสดงเพิ่มอีก ${Math.min(80,L.length-shown.length)} ไม้</button></div>`:''}</div>`;
+ $('#fil').onclick=e=>{const b=e.target.closest('button');if(b){ST.filter=b.dataset.f;ST.jn=80;renderSide()}};
+ if($('#more'))$('#more').onclick=()=>{const y=$('#jl').scrollTop;ST.jn=(ST.jn||80)+80;renderSide();$('#jl').scrollTop=y}}
+function renderDetail(){const s=$('#detail');
+ {const t=ST.sel||[...TRADES].sort((a,b)=>b.t0-a.t0)[0];if(!t){s.innerHTML='<div class="empty">ไม่มีไม้</div>';return}
   const m=mv(t),cap=t.mfe>0?Math.max(0,Math.min(100,m/t.mfe*100)):null;
   s.innerHTML=`<div class="detail" key="${t.k}">
    <div style="display:flex;align-items:center;gap:8px"><span class="tag ${t.side}">${t.side.toUpperCase()}</span><span class="m" style="font-size:13px">${dts(t.t0)}</span><span class="m" style="margin-left:auto;font-size:12px">#${t.id}</span></div>
    <div><div class="big ${cls(t.profit)}">${$M(t.profit,t.ap)}</div><div class="m" style="font-size:13px">${ST.mode==='$'?sg(t.ap)+'% ของเงินฝาก · ':''}${ANAME[t.acct]}</div></div>
-   ${t.flags.length?`<div class="flag" style="font-size:13px;padding:8px 12px;border-radius:10px;white-space:normal">ติดธง: ${t.flags.map(FL).join(', ')}</div>`:''}
-   <div class="dgrid"><div><small>เข้า</small>${fmt(t.entry)}</div><div><small>ออก</small>${fmt(t.exit)}${t.open?' <span class="live">● เปิดอยู่</span>':''}</div>
-    <div><small>ถือ</small>${dur(t.t1-t.t0)}</div><div><small>Lot</small>${t.vol}</div>
-    <div><small>SL / TP</small>${t.sl?fmt(t.sl):'-'} / ${t.tp?fmt(t.tp):'-'}</div><div><small>ระยะที่ได้</small>${sg(pp(m,t))}%</div>
-    <div><small>เคยบวกสุด (MFE)</small>${t.mfe!=null?'+'+fmt(pp(t.mfe,t))+'%'+(cap!=null&&t.profit>0?` <span class="m">· เก็บ ${cap.toFixed(0)}%</span>`:''):'-'}</div><div><small>เคยติดลบสุด (MAE)</small>${t.mae!=null?'−'+fmt(pp(t.mae,t))+'%':'-'}</div></div>
+   ${t.flags.length?`<div class="flag" style="font-size:13px;padding:8px 12px;border-radius:10px;white-space:normal"><b>ผิดกฎ: ${t.flags.map(FL).join(', ')}</b> — ${t.flags.map(FD).join(' · ')}</div>`:''}
+   <div class="dgrid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))"><div><small>ราคาเข้า · ${dts(t.t0)}</small>${fmt(t.entry)}</div><div><small>ราคาออก · ${dts(t.t1)}</small>${fmt(t.exit)}${t.open?' <span class="live">● เปิดอยู่</span>':''}</div>
+    <div><small>ถือนาน</small>${dur(t.t1-t.t0)}</div><div><small>Lot</small>${t.vol}</div>
+    <div><small>จุดตัดขาดทุน (SL) / ทำกำไร (TP)</small>${t.sl?fmt(t.sl):'-'} / ${t.tp?fmt(t.tp):'-'}</div><div><small>ราคาวิ่งไปทางเรา</small>${sg(pp(m,t))}%</div>
+    <div><small>เคยบวกสุด</small>${t.mfe!=null?'+'+fmt(pp(t.mfe,t))+'%'+(cap!=null&&t.profit>0?` <span class="m">· เก็บได้ ${cap.toFixed(0)}%</span>`:''):'-'}</div><div><small>เคยติดลบสุด</small>${t.mae!=null?'−'+fmt(pp(t.mae,t))+'%':'-'}</div></div>
    ${t.comment&&t.comment!=='OPEN'?`<div class="m" style="font-size:12px">หมายเหตุ: ${t.comment}</div>`:''}
-   <div class="sp"></div>
-   <div style="display:flex;gap:8px"><button class="btn ghost lift" style="flex:1;justify-content:center" id="pv">ไม้ก่อน</button><button class="btn lift" style="flex:1;justify-content:center" id="nx">ไม้ถัดไป</button></div>
-   <div class="m" style="font-size:11px">↑↓ เลื่อนไม้ · Esc ยกเลิก</div></div>`;
-  $('#pv').onclick=()=>step(1);$('#nx').onclick=()=>step(-1);return}
- const L=[...TRADES].sort((a,b)=>b.t0-a.t0).slice(0,12);
- s.innerHTML=`<div class="shead"><h3>สมุดไม้ล่าสุด</h3><span class="m" style="font-size:12px">${TRADES.length} ไม้</span><div class="sp"></div><button class="link" data-go="journal">ดูทั้งหมด</button></div><div class="scroll" style="max-height:440px">${byDay(L,true)}</div>`}
-function step(d){const L=[...TRADES].sort((a,b)=>b.t0-a.t0);let i=L.indexOf(ST.sel);i=i<0?0:Math.min(L.length-1,Math.max(0,i+d));select(L[i],true)}
-function select(t,zoom){ST.sel=t;if(t&&ST.tab!=='chart'&&ST.tab!=='overview'){setTab('chart');}renderSide();
+   <div style="display:flex;gap:8px"><button class="btn ghost lift" style="flex:1;justify-content:center" id="pv">ไม้ก่อน</button><button class="btn lift" style="flex:1;justify-content:center" id="nx">ไม้ถัดไป</button></div></div>`;
+  $('#pv').onclick=()=>step(1);$('#nx').onclick=()=>step(-1)}}
+function step(d){const L=jlist();let i=L.indexOf(ST.sel);i=i<0?0:Math.min(L.length-1,Math.max(0,i+d));
+ if(i>=(ST.jn||80)){ST.jn=i+40;renderSide()}select(L[i],true)}
+function select(t,zoom){ST.sel=t;if(t&&ST.tab!=='trades')setTab('trades');
+ $$('#side .tr').forEach(r=>r.classList.toggle('on',!!t&&r.dataset.k===t.k));const r=t&&$(`#side .tr[data-k="${t.k}"]`);if(r)r.scrollIntoView({block:'nearest'});renderDetail();
  if(t&&zoom){const p=Math.max({M15:6,H1:24,H4:96,D1:600}[ST.tf]*3600,(t.t1-t.t0)*0.8),i0=barAt(t.t0-p),i1=barAt(t.t1+p);chart.timeScale().setVisibleLogicalRange({from:i0,to:Math.max(i1,i0+20)+2})}
- if(t&&ST.tab==='overview')setTab('chart');redraw()}
+ redraw()}
 document.addEventListener('click',e=>{const r=e.target.closest('.tr');if(r){select(RAW_TRADES.find(t=>t.k===r.dataset.k),true);return}
  const g=e.target.closest('[data-go]');if(g)setTab(g.dataset.go);
  const tr=e.target.closest('tr[data-k]');if(tr)select(RAW_TRADES.find(t=>t.k===tr.dataset.k),true)});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('#modal').classList.remove('on');ST.sel=null;renderSide();redraw()}
- if(ST.tab==='chart'&&(e.key==='ArrowDown'||e.key==='ArrowUp')){e.preventDefault();step(e.key==='ArrowDown'?1:-1)}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('#modal').classList.remove('on');ST.sel=null;$$('#side .tr.on').forEach(r=>r.classList.remove('on'));renderDetail();redraw()}
+ if(ST.tab==='trades'&&(e.key==='ArrowDown'||e.key==='ArrowUp')){e.preventDefault();step(e.key==='ArrowDown'?1:-1)}});
 
 // ================= หน้า: สมุดไม้ / รายเดือน / วินัย =================
 function grp(L,key,order){const g={};for(const t of L){const k=key(t);(g[k]=g[k]||[]).push(t)}
  return order.filter(k=>g[k]).map(k=>{const a=g[k],w=a.filter(t=>t.profit>0).length;return {k,n:a.length,wr:w/a.length*100,net:sum(a,t=>t.profit),netP:sum(a,t=>t.ap)}})}
 function bars_(rows){const mx=Math.max(...rows.map(r=>Math.abs(ST.mode==='$'?r.net:r.netP)),1e-9);
- return `<div class="br m" style="font-size:11px"><span></span><span></span><span>${ST.mode==='$'?'P/L':'% รวม'}</span><span>Win</span><span>ไม้</span></div>`+rows.map(r=>{const v=ST.mode==='$'?r.net:r.netP;
+ return `<div class="br m" style="font-size:11px"><span></span><span></span><span>${ST.mode==='$'?'กำไร/ขาดทุน':'% รวม'}</span><span>ชนะ</span><span>ไม้</span></div>`+rows.map(r=>{const v=ST.mode==='$'?r.net:r.netP;
   return `<div class="br"><span>${r.k}</span><div class="bt"><i style="width:${Math.abs(v)/mx*100}%;background:${v>=0?'var(--win)':'var(--loss)'}"></i></div><span class="${cls(v)}">${$M(r.net,r.netP)}</span><span>${r.wr.toFixed(0)}%</span><span class="m">${r.n}</span></div>`}).join('')}
 const hTH=t=>D(t).getUTCHours(),lh=h=>pad(((h+TZ)%24+24)%24);
 const session=t=>{const h=(hTH(t.t0)-TZ+48)%24;return h>=22||h<7?'เอเชีย':h<13?'ลอนดอน':'นิวยอร์ก'};
 const HBL=['< 1 ชม.','1–4 ชม.','4–12 ชม.','12–24 ชม.','1–3 วัน','> 3 วัน'],holdB=t=>{const h=(t.t1-t.t0)/3600;return HBL[h<1?0:h<4?1:h<12?2:h<24?3:h<72?4:5]};
 let eqChart=null;
+// กราฟกำไรสะสม + ป้ายยอดสูงสุด/ร่วงลึกสุด + tooltip ตามเมาส์
+function drawEq(el,C,A){eqChart=LightweightCharts.createChart(el,{autoSize:true,layout:{background:{color:'transparent'},textColor:'#4b5260',fontFamily:'Anuphan, sans-serif'},localization:{timeFormatter:dts},
+  grid:{vertLines:{visible:false},horzLines:{color:'#f1f2f5'}},rightPriceScale:{borderVisible:false},timeScale:{borderVisible:false,tickMarkFormatter:tick},crosshair:{mode:1},handleScroll:false,handleScale:false});
+ const F=x=>ST.mode==='$'?(x<0?'−$':'$')+fmt(Math.abs(x)):fmt(x)+'%';
+ const ser=eqChart.addAreaSeries({lineColor:'#2b59c3',topColor:'rgba(43,89,195,.22)',bottomColor:'rgba(43,89,195,0)',lineWidth:2,priceFormat:{type:'custom',formatter:F}});
+ const dds=eqChart.addHistogramSeries({color:'rgba(194,59,59,.5)',priceScaleId:'dd',priceFormat:{type:'custom',formatter:F}});eqChart.priceScale('dd').applyOptions({scaleMargins:{top:.78,bottom:0}});
+ const pts=new Map(),dd=new Map(),k=ST.mode==='$'?1:100/BASE;let c=0,pc=0,pk=-Infinity,pkT=0;for(const t of C){c+=t.profit;pc=Math.max(pc,c);if(c>pk){pk=c;pkT=t.t1}pts.set(t.t1,c*k);dd.set(t.t1,(c-pc)*k)}
+ ser.setData([...pts].map(([time,value])=>({time,value})));dds.setData([...dd].map(([time,value])=>({time,value})));
+ const mk=[{time:pkT,position:'aboveBar',color:'#0a8f5a',shape:'circle',text:tr('ยอดสูงสุด')+' '+F(pk*k)}];
+ if(A.ddTo&&A.dd$<0)mk.push({time:A.ddTo,position:'belowBar',color:'#c23b3b',shape:'circle',text:tr('ร่วงลึกสุด')+' '+F(A.dd$*k)});
+ ser.setMarkers(mk.sort((a,b)=>a.time-b.time));eqChart.timeScale().fitContent();
+ const tip=document.createElement('div');tip.className='eqtip';el.appendChild(tip);
+ eqChart.subscribeCrosshairMove(p=>{const a=p.point&&p.time&&p.seriesData.get(ser);if(!a){tip.style.display='none';return}const d=p.seriesData.get(dds)?.value??0;
+  tip.innerHTML=`<div class="m">${dts(p.time)}</div><div>กำไรสะสม <b class="${a.value<0?'l':'w'}">${F(a.value)}</b></div><div>ห่างจากยอด <b class="${d<0?'l':'w'}">${d<0?F(d):'อยู่ที่ยอดสูงสุด'}</b></div>`;
+  tip.style.display='block';const x=p.point.x+14+tip.offsetWidth>el.clientWidth?p.point.x-14-tip.offsetWidth:p.point.x+14;tip.style.left=x+'px';tip.style.top=Math.max(4,p.point.y-tip.offsetHeight-10)+'px'})}
 function renderPage(){const v=$('#vpage');eqChart&&(eqChart.remove(),eqChart=null);
- if(ST.tab==='journal'){
-  const F=[['all','ทั้งหมด'],['win','กำไร'],['loss','ขาดทุน'],['buy','Buy'],['sell','Sell'],['flag','ติดธง']];
-  const pass=t=>ST.filter==='all'||(ST.filter==='win'&&t.profit>0)||(ST.filter==='loss'&&t.profit<=0)||(ST.filter==='flag'&&t.flags.length)||ST.filter===t.side;
-  const L=[...TRADES].sort((a,b)=>b.t0-a.t0).filter(pass),shown=L.slice(0,ST.jn||80);
-  v.innerHTML=`<section class="card rise"><div class="shead" style="padding:16px 18px;flex-wrap:wrap"><h3 style="font-size:16px">สมุดไม้</h3><span class="m" style="font-size:13px">${shown.length} จาก ${L.length} ไม้</span><div class="sp"></div>
-   <div class="filters" id="fil">${F.map(([k,l])=>`<button data-f="${k}" class="${ST.filter===k?'on':''}">${l}</button>`).join('')}</div></div>${L.length?byDay(shown):'<div class="empty">ไม่มีไม้ตามที่กรอง</div>'}
-   ${L.length>shown.length?`<div style="padding:14px;text-align:center;border-top:1px solid var(--soft2)"><button class="btn ghost lift" id="more">แสดงเพิ่มอีก ${Math.min(80,L.length-shown.length)} ไม้</button></div>`:''}</section>`;
-  $('#fil').onclick=e=>{const b=e.target.closest('button');if(b){ST.filter=b.dataset.f;ST.jn=80;renderPage()}};
-  if($('#more'))$('#more').onclick=()=>{const y=scrollY;ST.jn=(ST.jn||80)+80;renderPage();scrollTo(0,y)};return}
  const C=inRange(ST.per),pr=PERIODS[ST.per]||['',0];
+ if(ST.tab==='overview'){
+  // เงินเข้า-ออก นับทั้งหมดของบัญชีที่เลือก ไม่ขึ้นกับช่วงเวลา
+  const inSel=x=>ST.acct==='all'||String(x.login)===ST.acct,dep=sum(CASH.filter(c=>c.amt>0),c=>c.amt),wd=-sum(CASH.filter(c=>c.amt<0),c=>c.amt);
+  const eqNow=sum(ACCTS.filter(inSel),a=>a.equity||0),real=eqNow+wd-dep,netIn=dep-wd,gap0=sum(TRADES,t=>t.profit),M=x=>(x<0?'−$':'$')+fmt(Math.abs(x));
+  const kind=c=>c.amt>0?'ฝาก':/^transfer/i.test(c.note||'')?'โอนออก':'ถอน';
+  const money=ST.mode!=='$'?'':`<section class="card pad rise"><div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:baseline"><h3>เงินเข้า-ออก</h3><span class="m" style="font-size:12px">${ST.acct==='all'?'ทุกบัญชีรวมกัน':ANAME[+ST.acct]} · นับตั้งแต่เริ่ม ไม่ขึ้นกับช่วงเวลา</span></div>
+   <div class="money"><div><small>ฝากรวม</small><b>${M(dep)}</b></div><div><small>ถอนรวม</small><b>${M(wd)}</b></div>
+    <div><small>ฝากสุทธิ (ฝาก − ถอน)</small><b class="${netIn<=0?'w':''}">${M(netIn)}</b>${netIn<=0?'<i class="w">ถอนทุนคืนครบแล้ว</i>':`<i>ทุนที่ยังค้างในพอร์ต</i>`}</div>
+    <div><small>เงินในพอร์ตตอนนี้</small><b>${M(eqNow)}</b><i>${ACCTS.filter(inSel).filter(a=>a.equity>0).map(a=>a.name||a.login).join(', ')||'ไม่มีบัญชีที่มีเงิน'}</i></div>
+    <div class="real"><small>กำไรจริง</small><b class="${cls(real)}">${real>=0?'+':''}${M(real)}</b><i>เงินในพอร์ต + ถอน − ฝาก</i>${Math.abs(real-gap0)>=0.5?`<i style="display:block" title="ส่วนต่างนี้มาจากรายการเงินที่ MT5 ไม่ได้บันทึกเป็นฝาก/ถอนปกติ เช่น ค่าธรรมเนียม โบนัส หรือปรับยอด">ต่างจากกำไรเทรด ${M(real-gap0)}</i>`:''}</div></div>
+   <div class="cashl">${[...CASH].sort((a,b)=>b.t-a.t).slice(0,6).map(c=>`<div><span class="m">${dts(c.t)}</span><span>${kind(c)}</span><b class="${cls(c.amt)}">${c.amt>0?'+':'−'}$${fmt(Math.abs(c.amt))}</b></div>`).join('')||'<div class="m">ยังไม่มีรายการ</div>'}</div></section>`;
+  const A=C.length?stats(C):null;
+  v.innerHTML=`<div style="display:flex;flex-direction:column;gap:16px">${money}
+   <section class="card pad rise" style="animation-delay:.1s"><h3>กำไรสะสม <span class="m" style="font-weight:400;font-size:13px">${ST.mode==='$'?'ไม่รวมฝาก/ถอน':'% ของเงินฝากรวม'} · แท่งแดง = ห่างจากยอดสูงสุดเท่าไหร่ · ชี้ตรงไหนก็บอกตัวเลขจุดนั้น</span></h3>${A?'<div id="eq"></div>':`<div class="empty">ช่วง ${pr[0]} ไม่มีไม้ที่ปิด</div>`}</section></div>`;
+  if(A)drawEq($('#eq'),C,A);return}
  if(!C.length){v.innerHTML=`<div class="card empty">ช่วง ${pr[0]} ไม่มีไม้ที่ปิด</div>`;return}
  const A=stats(C),CF=CASH.filter(c=>!pr[1]||c.t>NOW-pr[1]*86400);
  if(ST.tab==='monthly'){
@@ -340,72 +450,69 @@ function renderPage(){const v=$('#vpage');eqChart&&(eqChart.remove(),eqChart=nul
   const day={};C.forEach(t=>{const k=dkey(t.t1);day[k]=day[k]||{p:0,a:0,n:0};day[k].p+=t.profit;day[k].a+=t.ap;day[k].n++});
   const hmx=Math.max(...Object.values(day).map(d=>Math.abs(ST.mode==='$'?d.p:d.a)),1e-9);
   let d0=D(C[0].t1);d0=new Date(Date.UTC(d0.getUTCFullYear(),d0.getUTCMonth(),d0.getUTCDate()-((d0.getUTCDay()+6)%7)));let weeks='',lastM=-1;
-  for(let w=new Date(d0);w<=D(NOW);w.setUTCDate(w.getUTCDate()+7)){const th=new Date(w);th.setUTCDate(th.getUTCDate()+3);let col=`<div class="wk"><div class="ml">${th.getUTCMonth()!==lastM?MO[th.getUTCMonth()]:''}</div>`;lastM=th.getUTCMonth();
+  for(let w=new Date(d0);w<=D(NOW);w.setUTCDate(w.getUTCDate()+7)){const th=new Date(w);th.setUTCDate(th.getUTCDate()+3);let col=`<div class="wk"><div class="ml">${th.getUTCMonth()!==lastM?th.getUTCFullYear()+'/'+pad(th.getUTCMonth()+1):''}</div>`;lastM=th.getUTCMonth();
    for(let i=0;i<7;i++){const x=new Date(w);x.setUTCDate(x.getUTCDate()+i);const k=x.toISOString().slice(0,10),d=day[k];
-    if(!d){col+=`<div class="d" title="${k}"></div>`;continue}const vv=ST.mode==='$'?d.p:d.a,a=.25+.75*Math.min(1,Math.abs(vv)/hmx);
-    col+=`<div class="d" style="background:rgba(${vv>=0?'10,143,90':'194,59,59'},${a})" title="${k} · ${d.n} ไม้ · ${$M(d.p,d.a)}"></div>`}weeks+=col+'</div>'}
+    const kl=k.replace(/-/g,'/')+' ('+TH[x.getUTCDay()]+')';if(!d){col+=`<div class="d" title="${kl} · ไม่มีไม้ปิด"></div>`;continue}const vv=ST.mode==='$'?d.p:d.a,a=.25+.75*Math.min(1,Math.abs(vv)/hmx);
+    col+=`<div class="d" style="background:rgba(${vv>=0?'10,143,90':'194,59,59'},${a})" title="${kl} · ปิด ${d.n} ไม้ · ${$M(d.p,d.a)}"></div>`}weeks+=col+'</div>'}
   v.innerHTML=`<div class="grid12">
    <section class="card pad c8 rise"><h3>กำไรรายเดือน <span class="m" style="font-weight:400;font-size:13px">${mname(MK[0])} – ${mname(MK[MK.length-1])}</span></h3>
     <div class="mb" style="grid-template-columns:repeat(${MS.length},minmax(0,1fr))"><div class="ax"></div>${MS.map(s=>{const x=val(s),h=Math.abs(x)/mx*46;
      return `<div class="col"><div class="bar" data-h="${h.toFixed(2)}" style="${x>=0?'bottom':'top'}:50%;height:0;background:${x>=0?'var(--win)':'var(--loss)'};border-radius:${x>=0?'6px 6px 2px 2px':'2px 2px 6px 6px'}"></div>
       <div class="v ${cls(x)}" style="${x>=0?`bottom:calc(50% + ${h.toFixed(2)}% + 4px)`:`top:calc(50% + ${h.toFixed(2)}% + 4px)`};opacity:0">${$M(s.net,s.netP)}</div><div class="lb">${mname(s.k)}</div></div>`}).join('')}</div><div style="height:26px"></div></section>
    <div class="c4" style="display:flex;flex-direction:column;gap:12px">
-    <div class="card pad lift rise" style="animation-delay:.08s"><div class="m" style="font-size:13px">เดือนที่ดีที่สุด</div><div style="font-size:26px;font-weight:700" class="${cls(best.net)}">${$M(best.net,best.netP)}</div><div class="m" style="font-size:13px">${mname(best.k)} · ${best.n} ไม้ · winrate ${best.wr.toFixed(0)}% · PF ${best.pf===Infinity?'∞':best.pf.toFixed(2)}</div></div>
-    <div class="card pad lift rise" style="animation-delay:.16s"><div class="m" style="font-size:13px">เดือนที่แย่ที่สุด</div><div style="font-size:26px;font-weight:700" class="${cls(worst.net)}">${$M(worst.net,worst.netP)}</div><div class="m" style="font-size:13px">${mname(worst.k)} · ${worst.n} ไม้ · winrate ${worst.wr.toFixed(0)}%</div></div>
-    <div class="card pad lift rise" style="animation-delay:.24s"><div class="m" style="font-size:13px">เดือนที่บวก</div><div style="font-size:26px;font-weight:700">${posN} / ${MS.length}</div><div class="m" style="font-size:13px">บวกติดกันยาวสุด ${maxRun} เดือน</div></div>
+    <div class="card pad lift rise" style="animation-delay:.08s"><div class="m" style="font-size:13px">เดือนที่ดีที่สุด</div><div style="font-size:26px;font-weight:700" class="${cls(best.net)}">${$M(best.net,best.netP)}</div><div class="m" style="font-size:13px">${mname(best.k)} · ${best.n} ไม้ · ชนะ ${best.wr.toFixed(0)}% · ได้ต่อเสีย ${best.pf===Infinity?'∞':best.pf.toFixed(2)}</div></div>
+    <div class="card pad lift rise" style="animation-delay:.16s"><div class="m" style="font-size:13px">เดือนที่แย่ที่สุด</div><div style="font-size:26px;font-weight:700" class="${cls(worst.net)}">${$M(worst.net,worst.netP)}</div><div class="m" style="font-size:13px">${mname(worst.k)} · ${worst.n} ไม้ · ชนะ ${worst.wr.toFixed(0)}%</div></div>
+    <div class="card pad lift rise" style="animation-delay:.24s"><div class="m" style="font-size:13px">เดือนที่บวก</div><div style="font-size:26px;font-weight:700">${posN} จาก ${MS.length} เดือน</div><div class="m" style="font-size:13px">บวกติดกันยาวสุด ${maxRun} เดือน</div></div>
    </div>
-   <section class="card pad c12 rise" style="animation-delay:.1s"><h3>Equity curve <span class="m" style="font-weight:400;font-size:13px">${ST.mode==='$'?'กำไรสะสม ($) ไม่รวมฝาก/ถอน':'ผลตอบแทนสะสม (% ของเงินฝากรวม)'} · แท่งแดง = drawdown</span></h3><div id="eq"></div></section>
-   <section class="card pad c12 rise" style="animation-delay:.15s"><h3 style="margin-bottom:6px">ตารางรายเดือน</h3><div class="scroll"><table class="t"><tr><th>เดือน</th><th>ไม้</th><th>Winrate</th><th>${ST.mode==='$'?'P/L':'ผลตอบแทน'}</th><th>PF</th><th>Payoff</th><th>Max DD</th><th>เก็บ MFE</th><th>ถือชนะ / แพ้</th>${ST.mode==='$'?'<th>ฝาก</th><th>ถอน</th>':''}</tr>
+   <section class="card pad c12 rise" style="animation-delay:.15s"><h3 style="margin-bottom:6px">ตารางรายเดือน</h3><div class="scroll"><table class="t"><tr><th>เดือน</th><th>ไม้</th><th>ชนะกี่ %</th><th>${ST.mode==='$'?'กำไร/ขาดทุน':'ผลตอบแทน'}</th><th>ได้ต่อเสีย</th><th>ไม้ชนะใหญ่กว่าไม้แพ้</th><th>ร่วงหนักสุด</th><th>เก็บกำไรได้กี่ %</th><th>ถือ ชนะ / แพ้</th>${ST.mode==='$'?'<th>ฝาก</th><th>ถอน</th>':''}</tr>
+    <tr class="sub"><td></td><td></td><td>ไม้ชนะ ÷ ไม้ทั้งหมด</td><td></td><td>เสีย $1 ได้คืนกี่ $</td><td>กำไรเฉลี่ย ÷ ขาดทุนเฉลี่ย</td><td>ลงจากยอดในเดือน</td><td>ของที่ราคาวิ่งไปสุด</td><td>ถือนานเฉลี่ย</td>${ST.mode==='$'?'<td></td><td></td>':''}</tr>
     ${MS.map(s=>`<tr><td>${mname(s.k)}</td><td>${s.n}</td><td>${s.wr.toFixed(0)}%</td><td class="${cls(s.net)}">${$M(s.net,s.netP)}</td><td>${s.pf===Infinity?'∞':s.pf.toFixed(2)}</td><td>${s.payoff.toFixed(2)}</td><td class="l">${$D(s.dd$,s.ddP)}</td><td>${s.cap.toFixed(0)}%</td><td>${dur(s.holdW)} / ${dur(s.holdL)}</td>${ST.mode==='$'?`<td>${s.dep?'$'+fmt(s.dep):'-'}</td><td>${s.wd?'$'+fmt(s.wd):'-'}</td>`:''}</tr>`).join('')}</table></div></section>
    <section class="card pad c12 rise" style="animation-delay:.2s"><h3 style="margin-bottom:8px">ปฏิทินรายวัน <span class="m" style="font-weight:400;font-size:13px">สีเข้ม = ได้/เสียเยอะ · ชี้ดูรายละเอียด</span></h3>
     <div class="heat"><div class="dl"><span></span>${['จ','อ','พ','พฤ','ศ','ส','อา'].map(x=>`<span>${x}</span>`).join('')}</div>${weeks}</div></section></div>`;
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{$$('.mb .bar').forEach(b=>b.style.height=b.dataset.h+'%');$$('.mb .v').forEach(b=>b.style.opacity=1)}));
-  const el=$('#eq');eqChart=LightweightCharts.createChart(el,{autoSize:true,layout:{background:{color:'transparent'},textColor:'#4b5260',fontFamily:'Anuphan, sans-serif'},
-   grid:{vertLines:{visible:false},horzLines:{color:'#f1f2f5'}},rightPriceScale:{borderVisible:false},timeScale:{borderVisible:false},crosshair:{mode:0},handleScroll:false,handleScale:false});
-  const ser=eqChart.addAreaSeries({lineColor:'#2b59c3',topColor:'rgba(43,89,195,.22)',bottomColor:'rgba(43,89,195,0)',lineWidth:2,priceFormat:{type:'custom',formatter:x=>ST.mode==='$'?'$'+fmt(x):fmt(x)+'%'}});
-  const dds=eqChart.addHistogramSeries({color:'rgba(194,59,59,.5)',priceScaleId:'dd',priceFormat:{type:'custom',formatter:x=>fmt(x)}});eqChart.priceScale('dd').applyOptions({scaleMargins:{top:.78,bottom:0}});
-  const pts=new Map(),dd=new Map(),k=ST.mode==='$'?1:100/BASE;let c=0,pc=0;for(const t of C){c+=t.profit;pc=Math.max(pc,c);pts.set(t.t1,c*k);dd.set(t.t1,(c-pc)*k)}
-  ser.setData([...pts].map(([time,value])=>({time,value})));dds.setData([...dd].map(([time,value])=>({time,value})));eqChart.timeScale().fitContent();return}
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{$$('.mb .bar').forEach(b=>b.style.height=b.dataset.h+'%');$$('.mb .v').forEach(b=>b.style.opacity=1)}));return}
  // ---- วินัย ----
  const win=pr[1]||30,cut=NOW-win*86400,R=stats(CLOSED.filter(t=>t.t1>cut)),P=stats(CLOSED.filter(t=>t.t1<=cut&&(!pr[1]||t.t1>cut-win*86400)));
  const nb=CLOSED.filter(t=>t.t1>cut&&Math.abs(t.pct)>=0.05),twr=nb.length?nb.filter(t=>t.profit>0).length/nb.length*100:0,be=CLOSED.filter(t=>t.t1>cut&&Math.abs(t.pct)<0.05);
- const wl=pr[1]?pr[0]+'ล่าสุด':'30 วันล่าสุด';
+ const wl=pr[1]?lastL(ST.per):'30 วันล่าสุด';
  const ring=(lab,val,sub,col,i)=>`<div class="card ring lift rise" style="animation-delay:${i*80}ms"><svg width="96" height="96" viewBox="0 0 96 96" role="img" aria-label="${lab} ${val.toFixed(0)}%">
   <circle cx="48" cy="48" r="40" fill="none" stroke="#eef0f3" stroke-width="9"/><circle class="v" data-v="${val}" cx="48" cy="48" r="40" fill="none" stroke="${col}" stroke-width="9" stroke-linecap="round" stroke-dasharray="251.3" stroke-dashoffset="251.3" transform="rotate(-90 48 48)"/>
   <text x="48" y="54" text-anchor="middle" font-size="19" font-weight="700" fill="#14161a" data-cu="${val}" data-f="int">0</text></svg><div><div style="font-weight:700;font-size:15px">${lab}</div><div class="m" style="font-size:13px">${sub}</div></div></div>`;
- const C2=[['คาดหวังต่อไม้',P.expP,R.expP,3,'%'],['Payoff',P.payoff,R.payoff,2,''],['Profit factor',Math.min(P.pf,99),Math.min(R.pf,99),2,''],['เก็บ MFE',P.cap,R.cap,0,'%'],['Winrate',P.wr,R.wr,0,'%']];
- const fc=f=>C.filter(t=>t.flags.includes(f)),flagRows=['lot','nosl','avg','rev'].map(f=>{const a=fc(f);return {f,a,s:stats(a)}});
+ const C2=[['ได้เฉลี่ยต่อไม้',P.expP,R.expP,3,'%'],['ไม้ชนะใหญ่กว่าไม้แพ้',P.payoff,R.payoff,2,' เท่า'],['ได้ต่อเสีย',Math.min(P.pf,99),Math.min(R.pf,99),2,''],['เก็บกำไรได้กี่ %',P.cap,R.cap,0,'%'],['ชนะกี่ %',P.wr,R.wr,0,'%']];
+ const fc=f=>C.filter(t=>t.flags.includes(f)),flagRows=['nosl','avg','lot','rev'].map(f=>{const a=fc(f);return {f,a,s:stats(a)}}).sort((a,b)=>a.s.net-b.s.net);
+ const worstF=flagRows[0],clean=C.filter(t=>!t.flags.length),cleanS=stats(clean);
+ const hero=worstF&&worstF.a.length&&worstF.s.net<0?`<section class="hero c12 rise"><div style="flex:1 1 420px"><small>ข้อสรุปใหญ่สุดของหน้านี้ · ${pr[0]}</small><div style="font-size:22px;font-weight:700;margin-top:4px;line-height:1.4">ไม้ที่${FL(worstF.f)} ${worstF.a.length} ไม้ เสียไป <span style="color:#ff8a7a">${$M(worstF.s.net,sum(worstF.a,t=>t.ap))}</span></div></div>
+  <div style="display:flex;gap:28px;flex-wrap:wrap"><div><small>กำไรช่วงนี้</small><div style="font-size:22px;font-weight:700">${$M(A.net,A.netP)}</div></div><div><small>ถ้าไม่มีไม้พวกนี้</small><div style="font-size:22px;font-weight:700;color:#7fd8ac">${$M(A.net-worstF.s.net,A.netP-sum(worstF.a,t=>t.ap))}</div></div></div></section>`:'';
  const perDay={};C.forEach(t=>{const k=dkey(t.t0);(perDay[k]=perDay[k]||[]).push(t)});const busy=Object.values(perDay).filter(a=>a.length>=5),busyL=busy.flat().sort((a,b)=>a.t1-b.t1),busyS=stats(busyL);
  const flg=C.filter(t=>t.t1>cut&&t.flags.length),lostWin=C.filter(t=>t.profit<=0&&pp(t.mfe||0,t)>=0.1);
  const leftTop=C.filter(t=>t.mfe!=null).map(t=>({t,left:pp(Math.max(0,t.mfe-mv(t)),t)})).sort((a,b)=>b.left-a.left).slice(0,6);
- v.innerHTML=`<div class="grid12">
+ v.innerHTML=`<div class="grid12">${hero}
+  <section class="card pad c12 rise"><h3>ผิดกฎตัวเองกี่ไม้ และได้/เสียไปเท่าไหร่ <span class="m" style="font-weight:400;font-size:13px">${pr[0]} · 1 ไม้ผิดได้หลายข้อ แต่ละแถวเลยบวกรวมกันไม่ได้</span></h3>
+   ${flagRows.map((r,i)=>`<div class="flagrow${i===0&&r.a.length&&r.s.net<0?' bad':''}"><div><b style="font-size:15px">${FL(r.f)}</b><div class="m" style="font-size:13px">${FD(r.f)}</div></div><span>${r.a.length} ไม้</span><b style="text-align:right;font-size:17px" class="${cls(r.s.net)}">${r.a.length?$M(r.s.net,sum(r.a,t=>t.ap)):'-'}</b></div>`).join('')}
+   <div class="flagrow"><div><b style="font-size:15px">วันที่เทรดถี่</b><div class="m" style="font-size:13px">วันที่เปิด 5 ไม้ขึ้นไป (${busy.length} วัน)</div></div><span>${busyL.length} ไม้</span><b style="text-align:right;font-size:17px" class="${cls(busyS.net)}">${busy.length?$M(busyS.net,sum(busyL,t=>t.ap)):'-'}</b></div>
+   <div class="flagrow ok"><div><b style="font-size:15px">ไม้ที่ไม่ผิดกฎเลย</b><div class="m" style="font-size:13px">ไว้เทียบว่าถ้าทำตามกฎ ผลออกมาเป็นยังไง</div></div><span>${clean.length} ไม้</span><b style="text-align:right;font-size:17px" class="${cls(cleanS.net)}">${clean.length?$M(cleanS.net,sum(clean,t=>t.ap)):'-'}</b></div></section>
   <div class="c12" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px">
-   ${ring('เก็บได้ % ของ MFE',R.cap,`${wl} · ไม้ชนะเก็บได้เฉลี่ย`,R.cap>=50?'#0a8f5a':'#b36b00',0)}
-   ${ring('Winrate',R.wr,`${wl} · ${R.w}W / ${R.n-R.w}L`,'#2b59c3',1)}
-   ${ring('Winrate ตัดไม้เสมอตัว',twr,be.length?`ตัดไม้เสมอตัว ${be.length} ไม้ (ราคาขยับ < 0.05%)`:'ไม่มีไม้เสมอตัว','#b36b00',2)}</div>
+   ${ring('เก็บกำไรได้กี่ %',R.cap,`${wl} · ไม้ชนะเก็บได้เฉลี่ยกี่ % ของที่ราคาวิ่งไปสุด`,R.cap>=50?'#0a8f5a':'#b36b00',0)}
+   ${ring('ชนะกี่ %',R.wr,`${wl} · ชนะ ${R.w} · แพ้ ${R.n-R.w} ไม้`,'#2b59c3',1)}
+   ${ring('ชนะกี่ % (ไม่นับไม้เสมอตัว)',twr,be.length?`ตัดไม้เสมอตัว ${be.length} ไม้ (ราคาขยับ < 0.05%)`:'ไม่มีไม้เสมอตัว','#b36b00',2)}</div>
   <section class="card pad c8 rise" style="animation-delay:.1s"><h3>${pr[1]?wl+' เทียบ'+pr[0]+'ก่อนหน้า':'30 วันล่าสุด เทียบกับก่อนหน้าทั้งหมด'}</h3>
    ${R.n&&P.n?C2.map(([k,a,b,d,suf])=>{const good=b>=a,w=Math.max(a,b)>0?Math.max(0,b)/Math.max(Math.abs(a),Math.abs(b))*100:0;
     return `<div class="cmp"><span class="m" style="font-size:13px">${k}</span><span class="tk"><i data-w="${w.toFixed(1)}" style="width:0;background:${good?'var(--win)':'var(--warn)'}"></i></span><span style="text-align:right;font-weight:600;color:${good?'var(--win)':'var(--warn)'}">${good?'▲':'▼'} ${fmt(a,d)}${suf} → ${fmt(b,d)}${suf}</span></div>`}).join(''):'<div class="m" style="padding:12px 0">ข้อมูลไม่พอเทียบ</div>'}</section>
-  <section class="card pad c4 rise" style="animation-delay:.16s;display:flex;flex-direction:column;gap:10px"><h3>ธงวินัย · ${wl}</h3>
+  <section class="card pad c4 rise" style="animation-delay:.16s;display:flex;flex-direction:column;gap:10px"><h3>ไม้ที่ผิดกฎ · ${wl}</h3>
    <div style="font-size:34px;font-weight:700;color:${flg.length?'var(--warn)':'var(--win)'}">${flg.length} ไม้</div>
-   <div style="display:flex;gap:6px;flex-wrap:wrap">${[...new Set(flg.flatMap(t=>t.flags))].map(f=>`<span class="flag" style="font-size:12px;padding:4px 10px">${FL(f)}</span>`).join('')||'<span class="w">วินัยสะอาด</span>'}</div>
-   ${be.length?`<div class="m" style="font-size:13px;border-top:1px solid var(--soft2);padding-top:10px">ไม้เสมอตัว ${be.length} ไม้ ถ้าตัดออก winrate จริงคือ ${twr.toFixed(0)}% ไม่ใช่ ${R.wr.toFixed(0)}%</div>`:''}</section>
-  <section class="card pad c6 rise" style="animation-delay:.2s"><h3 style="margin-bottom:6px">เช็ควินัย <span class="m" style="font-weight:400;font-size:13px">lot สูงสุด ${META.maxLot} · ${pr[0]}</span></h3>
-   <table class="t"><tr><th>ธง</th><th>ไม้</th><th>Winrate</th><th>${ST.mode==='$'?'P/L':'% รวม'}</th></tr>
-   ${flagRows.map(r=>`<tr><td>${FL(r.f)}</td><td class="${r.a.length?'wr':'w'}">${r.a.length||'0'}</td><td>${r.a.length?r.s.wr.toFixed(0)+'%':'-'}</td><td class="${cls(r.s.net)}">${r.a.length?$M(r.s.net,sum(r.a,t=>t.ap)):'-'}</td></tr>`).join('')}
-   <tr><td>วันเทรดถี่ (≥5 ไม้/วัน)</td><td class="${busy.length?'wr':'w'}">${busy.length} วัน</td><td>${busy.length?busyS.wr.toFixed(0)+'%':'-'}</td><td class="${cls(busyS.net)}">${busy.length?$M(busyS.net,sum(busyL,t=>t.ap)):'-'}</td></tr></table>
-   <div class="m" style="font-size:12px;margin:10px 0 12px">หลุดไม่มีเบรก = ปิดขาดทุนเกิน ${BIG}% ของราคาทองโดยไม่โดน SL · ถัวขาดทุน = เปิดทิศเดิมเพิ่มที่ราคาแย่กว่าไม้ที่ถืออยู่ · แก้มือ = เปิดใหม่ภายใน 30 นาทีหลังปิดไม้แพ้</div>
-   <table class="t"><tr><th>ไม้ติดธงล่าสุด</th><th>ธง</th><th>${ST.mode==='$'?'P/L':'%'}</th></tr>
+   <div style="display:flex;gap:6px;flex-wrap:wrap">${[...new Set(flg.flatMap(t=>t.flags))].map(f=>`<span class="flag" style="font-size:12px;padding:4px 10px">${FL(f)}</span>`).join('')||'<span class="w">ไม่ผิดกฎเลย</span>'}</div>
+   ${be.length?`<div class="m" style="font-size:13px;border-top:1px solid var(--soft2);padding-top:10px">ไม้เสมอตัว ${be.length} ไม้ ถ้าไม่นับ จะชนะจริง ${twr.toFixed(0)}% ไม่ใช่ ${R.wr.toFixed(0)}%</div>`:''}</section>
+  <section class="card pad c6 rise" style="animation-delay:.2s"><h3 style="margin-bottom:6px">ไม้ที่ผิดกฎล่าสุด <span class="m" style="font-weight:400;font-size:13px">กดแถวเพื่อดูบนกราฟ</span></h3>
+   <table class="t"><tr><th>เปิดเมื่อ</th><th>ผิดกฎ</th><th>${ST.mode==='$'?'กำไร/ขาดทุน':'%'}</th></tr>
    ${C.filter(t=>t.flags.length).slice(-6).reverse().map(t=>`<tr class="click" data-k="${t.k}"><td><span class="tag ${t.side}" style="display:inline-block">${t.side.toUpperCase()}</span> ${dts(t.t0)}</td><td class="wr" style="font-size:12px">${t.flags.map(FL).join(', ')}</td><td class="${cls(t.profit)}">${$M(t.profit,t.ap)}</td></tr>`).join('')||'<tr><td colspan="3" class="w">ไม่มี</td></tr>'}</table></section>
-  <section class="card pad c6 rise" style="animation-delay:.24s"><h3 style="margin-bottom:6px">กำไรที่ทิ้งไว้บนโต๊ะ (MFE) <span class="m" style="font-weight:400;font-size:13px">${pr[0]}</span></h3>
+  <section class="card pad c6 rise" style="animation-delay:.24s"><h3 style="margin-bottom:6px">กำไรที่ปล่อยหลุดมือ <span class="m" style="font-weight:400;font-size:13px">${pr[0]}</span></h3>
    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:6px 0 10px">
     <div><small class="m">ไม้ชนะเก็บได้เฉลี่ย</small><div style="font-size:20px;font-weight:700">${A.cap.toFixed(0)}%</div></div>
     <div><small class="m">ทิ้งไว้รวม</small><div style="font-size:20px;font-weight:700" class="wr">${ST.mode==='$'?'$'+fmt(A.left):fmt(A.leftP)+'%'}</div></div>
     <div><small class="m">ไม้แพ้ที่เคยบวก ≥0.1%</small><div style="font-size:20px;font-weight:700">${lostWin.length} ไม้</div></div></div>
-   <table class="t"><tr><th>ทิ้งไว้เยอะสุด</th><th>MFE</th><th>ได้จริง</th><th>ทิ้ง</th></tr>
+   <table class="t"><tr><th>ทิ้งไว้เยอะสุด</th><th>เคยบวกสุด</th><th>ได้จริง</th><th>ทิ้ง</th></tr>
    ${leftTop.map(({t,left})=>`<tr class="click" data-k="${t.k}"><td><span class="tag ${t.side}" style="display:inline-block">${t.side.toUpperCase()}</span> ${dts(t.t0)}</td><td>+${fmt(pp(t.mfe,t))}%</td><td class="${cls(mv(t))}">${sg(pp(mv(t),t))}%</td><td class="wr">${fmt(left)}%</td></tr>`).join('')}</table>
    <div class="m" style="font-size:11px;margin-top:6px">หน่วย = % ของราคาทอง · คลิกแถวเพื่อดูบนกราฟ</div></section>
-  <section class="card pad c4 rise" style="animation-delay:.28s"><h3 style="margin-bottom:6px">ตาม session <span class="m" style="font-weight:400;font-size:12px">${TZL}</span></h3>${bars_(grp(C,session,['เอเชีย','ลอนดอน','นิวยอร์ก']))}<div class="m" style="font-size:11px;margin-top:6px">เอเชีย ${lh(22)}–${lh(7)} · ลอนดอน ${lh(7)}–${lh(13)} · นิวยอร์ก ${lh(13)}–${lh(22)}</div></section>
+  <section class="card pad c4 rise" style="animation-delay:.28s"><h3 style="margin-bottom:6px">ตามช่วงตลาด <span class="m" style="font-weight:400;font-size:12px">${TZL}</span></h3>${bars_(grp(C,session,['เอเชีย','ลอนดอน','นิวยอร์ก']))}<div class="m" style="font-size:11px;margin-top:6px">เอเชีย ${lh(22)}–${lh(7)} · ลอนดอน ${lh(7)}–${lh(13)} · นิวยอร์ก ${lh(13)}–${lh(22)}</div></section>
   <section class="card pad c4 rise" style="animation-delay:.32s"><h3 style="margin-bottom:6px">ตามวัน</h3>${bars_(grp(C,t=>TH[D(t.t0).getUTCDay()],[1,2,3,4,5,6,0].map(i=>TH[i])))}</section>
   <section class="card pad c4 rise" style="animation-delay:.36s"><h3 style="margin-bottom:6px">ตามเวลาถือ</h3>${bars_(grp(C,holdB,HBL))}</section></div>`;
  countUp(v);requestAnimationFrame(()=>requestAnimationFrame(()=>{$$('.ring circle.v').forEach(c=>c.style.strokeDashoffset=251.3*(1-Math.min(100,+c.dataset.v)/100));$$('.cmp .tk i').forEach(i=>i.style.width=i.dataset.w+'%')}));
@@ -413,16 +520,16 @@ function renderPage(){const v=$('#vpage');eqChart&&(eqChart.remove(),eqChart=nul
 
 // ================= สลับแท็บ / บัญชี / โหมด =================
 function setTab(t){ST.tab=t;lset('xau-tab',t);$$('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));
- const ch=t==='overview'||t==='chart';$('#vchart').style.display=ch?'':'none';$('#vpage').style.display=ch?'none':'';
- $('#wrap').classList.toggle('big',t==='chart');$('#kpis').style.display=t==='chart'?'none':'';
- if(ch){renderSide();fadeT=performance.now();redraw()}else renderPage()}
+ const ch=t==='trades';$('#vchart').style.display=ch?'':'none';$('#vpage').style.display=ch?'none':'';
+ $('#wrap').classList.toggle('big',ch);$('#kpis').style.display=t==='overview'?'':'none';
+ if(ch){renderSide();renderDetail();fadeT=performance.now();redraw()}else renderPage()}
 function renderAll(){load();renderAccts();renderKpis();$('#sym').textContent=ACCT.sym;
  const fl=sum(OPEN,t=>t.profit);$('#float').innerHTML=OPEN.length?`ลอยอยู่ <b class="${cls(fl)}">${$M(fl,sum(OPEN,t=>t.ap))}</b>`:'';
  $$('#mode button').forEach(b=>b.classList.toggle('on',b.dataset.m===ST.mode));setTF(ST.tf,false);
  if(bars.length)chart.timeScale().setVisibleLogicalRange({from:bars.length-21*24,to:bars.length+5});setTab(ST.tab)}
 $('#tabs').onclick=e=>{const b=e.target.closest('button');if(b)setTab(b.dataset.t)};
 $('#accts').onclick=e=>{const b=e.target.closest('.acct');if(!b)return;ST.acct=b.dataset.a;ST.sel=null;lset('xau-acct',ST.acct);renderAll()};
-$('#per').onclick=e=>{const b=e.target.closest('button');if(!b)return;ST.per=b.dataset.p;lset('xau-per',ST.per);renderAccts();renderKpis();if(ST.tab!=='overview'&&ST.tab!=='chart')renderPage()};
+$('#per').onclick=e=>{const b=e.target.closest('button');if(!b)return;ST.per=b.dataset.p;lset('xau-per',ST.per);renderAccts();renderKpis();if(ST.tab!=='trades')renderPage()};
 $('#mode').onclick=e=>{const b=e.target.closest('button');if(!b)return;ST.mode=b.dataset.m;lset('xau-mode',ST.mode);const keep=chart.timeScale().getVisibleLogicalRange();renderAll();if(keep)chart.timeScale().setVisibleLogicalRange(keep)};
 
 // ================= Export PNG =================
@@ -432,7 +539,7 @@ function card(period,mode){
  const G='#10b981',R='#ef4444',MU='#71717a',TX='#e4e4e7',MONTHS=[...new Set(CLOSED.map(t=>mkey(t.t1)))];
  g.fillStyle='#060606';g.fillRect(0,0,W,H);
  const gr=g.createRadialGradient(W*.85,0,0,W*.85,0,700);gr.addColorStop(0,'rgba(16,185,129,.16)');gr.addColorStop(1,'rgba(16,185,129,0)');g.fillStyle=gr;g.fillRect(0,0,W,H);
- const T=(txt,x,y,sz,col=TX,wt=400,al='left')=>{g.font=`${wt} ${sz}px ${F}`;g.fillStyle=col;g.textAlign=al;g.fillText(txt,x,y)};
+ const T=(txt,x,y,sz,col=TX,wt=400,al='left')=>{txt=tr(txt);g.font=`${wt} ${sz}px ${F}`;g.fillStyle=col;g.textAlign=al;g.fillText(txt,x,y)};
  g.fillStyle=G;g.beginPath();g.arc(84,98,9,0,7);g.fill();T('XAU/USD · Trading Performance',106,108,30,TX,700);
  T(PERIODS[period]?(period==='all'?`${mname(MONTHS[0])} – ${mname(MONTHS[MONTHS.length-1])}`:`${PERIODS[period][0]}ล่าสุด`):mname(period),W-72,108,28,MU,400,'right');
  T(mode==='$'?'กำไรสุทธิ':'ผลตอบแทน',72,210,28,MU);
@@ -445,12 +552,12 @@ function card(period,mode){
  g.beginPath();pts.forEach((v,k)=>k?g.lineTo(X(k),Y(v)):g.moveTo(X(k),Y(v)));g.lineTo(x1,y1);g.lineTo(x0,y1);g.closePath();g.fillStyle=ar;g.fill();
  g.beginPath();pts.forEach((v,k)=>k?g.lineTo(X(k),Y(v)):g.moveTo(X(k),Y(v)));g.strokeStyle=G;g.lineWidth=4;g.lineJoin='round';g.stroke();
  if(mn<0){g.setLineDash([6,6]);g.strokeStyle='#3f3f46';g.lineWidth=1;g.beginPath();g.moveTo(x0,Y(0));g.lineTo(x1,Y(0));g.stroke();g.setLineDash([])}
- const cells=[['Winrate',s.wr.toFixed(0)+'%'],['Profit factor',s.pf===Infinity?'∞':s.pf.toFixed(2)],['Payoff',s.payoff.toFixed(2)],
-  ['Max drawdown',mode==='$'?(s.dd$<0?'−$':'$')+fmt(Math.abs(s.dd$)):fmt(s.ddP)+'%'],['จำนวนไม้',String(s.n)],['ถือไม้ชนะเฉลี่ย',dur(s.holdW)]];
+ const cells=[['ชนะ',s.wr.toFixed(0)+'%'],['ได้ต่อเสีย',s.pf===Infinity?'∞':s.pf.toFixed(2)],['ชนะใหญ่กว่าแพ้',s.payoff.toFixed(2)+' เท่า'],
+  ['ร่วงหนักสุด',mode==='$'?(s.dd$<0?'−$':'$')+fmt(Math.abs(s.dd$)):fmt(s.ddP)+'%'],['จำนวนไม้',String(s.n)],['ถือไม้ชนะเฉลี่ย',dur(s.holdW)]];
  cells.forEach(([k,v],j)=>{const cx=72+(j%3)*((W-144)/3),cy=770+Math.floor(j/3)*124;
   g.fillStyle='#111113';g.strokeStyle='#1f1f23';g.lineWidth=2;g.beginPath();g.roundRect(cx,cy,(W-144)/3-16,108,16);g.fill();g.stroke();
-  T(k,cx+24,cy+40,24,MU);T(v,cx+24,cy+90,44,k==='Max drawdown'?R:TX,700)});
- const sub=long?[...new Set(L.map(t=>mkey(t.t1)))].map(k=>{const a=L.filter(t=>mkey(t.t1)===k);return {l:MO[+k.slice(5)-1],v:mode==='$'?sum(a,t=>t.profit):sum(a,t=>t.ap)}})
+  T(k,cx+24,cy+40,24,MU);T(v,cx+24,cy+90,44,k==='ร่วงหนักสุด'?R:TX,700)});
+ const sub=long?[...new Set(L.map(t=>mkey(t.t1)))].map(k=>{const a=L.filter(t=>mkey(t.t1)===k);return {l:k.slice(5),v:mode==='$'?sum(a,t=>t.profit):sum(a,t=>t.ap)}})
   :[...new Set(L.map(t=>dkey(t.t1)))].map(k=>{const a=L.filter(t=>dkey(t.t1)===k);return {l:String(+k.slice(8)),v:mode==='$'?sum(a,t=>t.profit):sum(a,t=>t.ap)}});
  const by=1190,bh=70,bmx=Math.max(...sub.map(b=>Math.abs(b.v)),1e-9),bw=Math.min(90,(W-144)/Math.max(1,sub.length));
  T(long?'รายเดือน':'รายวัน',72,1068,24,MU);
@@ -458,7 +565,7 @@ function card(period,mode){
   if(bw>=40)T(b.l,bx+bw/2,by+(b.v<0?h:0)+26,20,MU,400,'center');
   if(long)T(mode==='$'?(b.v>=0?'+':'−')+fmt(Math.abs(b.v),0):sg(b.v,1)+'%',bx+bw/2,b.v>=0?by-h-8:by-8,19,b.v>=0?G:R,600,'center')});
  g.strokeStyle='#27272a';g.beginPath();g.moveTo(72,by);g.lineTo(W-72,by);g.stroke();
- T('ข้อมูลจริงจาก MT5 · '+BUILT.slice(0,10),72,H-30,20,'#52525b');return c}
+ T('ข้อมูลจริงจาก MT5 · '+BUILT.slice(0,10).replace(/-/g,'/'),72,H-30,20,'#52525b');return c}
 let EXP={period:'all',mode:'%'};
 function refreshPrev(){$$('#mode2 button').forEach(b=>b.classList.toggle('on',b.dataset.m===EXP.mode));$('#prev').src=card(EXP.period,EXP.mode).toDataURL('image/png')}
 $('#exp').onclick=()=>{const MONTHS=[...new Set(CLOSED.map(t=>mkey(t.t1)))];
@@ -471,6 +578,10 @@ $('#modal').onclick=e=>{if(e.target.id==='modal')$('#modal').classList.remove('o
 $('#dl').onclick=()=>card(EXP.period,EXP.mode).toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);
  a.download=`xau-performance-${EXP.period}-${EXP.mode==='$'?'usd':'pct'}.png`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)});
 
+$$('#lang button').forEach(b=>b.classList.toggle('on',b.dataset.l===LANG));
+$('#lang').onclick=e=>{const b=e.target.closest('button');if(b&&b.dataset.l!==LANG){lset('xau-lang',b.dataset.l);location.reload()}};
+if(LANG==='en'){document.documentElement.lang='en';trNode(document.body);
+ new MutationObserver(ms=>{for(const m of ms){if(m.type==='characterData')trNode(m.target);else m.addedNodes.forEach(trNode)}}).observe(document.body,{childList:true,subtree:true,characterData:true})}
 renderAll();
 // เปิดหน้าด้วยข้อมูลรอบก่อนทันที -> poll stamp.js ระหว่าง build รันอยู่ข้างหลัง เสร็จแล้ว reload เอง
 const lastPx=()=>bars.length?fmt(bars[bars.length-1].close):'';

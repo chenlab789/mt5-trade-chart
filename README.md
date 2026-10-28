@@ -11,15 +11,17 @@ Plot your MetaTrader 5 gold trades as TradingView-style position boxes on a cand
 ## ภาษาไทย
 
 ### ทำอะไรได้บ้าง
-- **หน้ากราฟ**: ทุกไม้เป็นกล่องตั้งแต่จุดเข้าถึงจุดออก เขียวกำไร แดงขาดทุน สลับ TF ได้ 15m / 1H / 4H / 1D คลิกไม้แล้วจะเห็น SL, TP และจุดที่ไม้เคยบวกสูงสุด (MFE)
-- **หน้า Performance**: winrate, payoff, profit factor, drawdown, equity curve, สรุปรายเดือน, ปฏิทินรายวัน, แยกตาม session, วัน, ชั่วโมง และเวลาถือ
-- **เลือกช่วงเวลาได้**: 7 วัน / 30 วัน / 3 เดือน / 1 ปี / ทั้งหมด
+- **4 แท็บ**: สรุปพอร์ต / ไม้ทั้งหมด / ผลตามช่วงเวลา / นิสัยการเทรด
+- **สรุปพอร์ต**: ฝากรวม ถอนรวม เงินในพอร์ต กำไรจริง + กราฟกำไรสะสม ชี้ดูตัวเลขทุกจุด ปักป้ายยอดสูงสุด/ร่วงลึกสุด
+- **ไม้ทั้งหมด**: ลิสต์ไม้ซ้าย กราฟแท่งเทียนขวา ทุกไม้เป็นกล่องจุดเข้าถึงจุดออก สลับ TF 15m / 1H / 4H / 1D เห็น SL, TP, MFE
+- **ผลตามช่วงเวลา**: กำไรรายเดือน ตารางรายเดือน (ศัพท์เป็นภาษาคน) ปฏิทินรายวัน
+- **วันที่ตัวเลขล้วน** ปี/เดือน/วัน เช่น 2026/10/28 14:08
+- **เลือกช่วงเวลาได้**: 7 วัน / 30 วัน / เดือนนี้ / 3 เดือน / 1 ปี / ทั้งหมด
 - **MFE**: ไม้ชนะเก็บกำไรได้กี่ % ของที่ราคาเคยวิ่งให้ และมีกี่ไม้ที่เคยบวกแล้วกลับมาปิดขาดทุน
 - **เช็ควินัย**: lot เกินลิมิต, ถัวขาดทุน, เปิดไม้แก้มือหลังเพิ่งแพ้, ขาดทุนหนักแบบไม่โดน SL, วันที่เทรดถี่เกิน
 - **โหมด % อย่างเดียว**: ซ่อนตัวเลขเงินทั้งหมด ไว้แคปแชร์ให้คนอื่นดู
 - **Export PNG**: รูปการ์ดสรุปผลขนาด 1080×1350 ขนาดโพสต์ IG/FB
 - **2 ภาษา**: ไทย / อังกฤษ
-- **ธีมมืด / สว่าง**: กดปุ่ม ☀/☾ ที่หัวเว็บ ครั้งแรกจะใช้ธีมตามเครื่อง
 
 ### สิ่งที่ต้องมี
 - Windows ที่ลงโปรแกรม **MetaTrader 5** และ login บัญชีไว้ (Python API ของ MT5 ใช้ได้บน Windows เท่านั้น)
@@ -71,15 +73,17 @@ python build.py
 ## English
 
 ### Features
-- **Chart view**: every trade drawn as a box from entry to exit, green for wins and red for losses. Switch between 15m / 1H / 4H / 1D. Click a trade to see its SL, TP and max favorable excursion (MFE).
-- **Performance view**: winrate, payoff, profit factor, drawdown, equity curve, monthly summary, daily calendar, and breakdowns by session, weekday, hour and hold time.
-- **Period filter**: 7 days / 30 days / 3 months / 1 year / all time.
+- **4 tabs**: Summary / All trades / By period / Habits.
+- **Summary**: total deposits, withdrawals, equity and real profit, plus a cumulative P/L curve with hover values and peak / deepest-drop markers.
+- **All trades**: trade list on the left, candlestick chart on the right with every trade drawn as an entry-to-exit box (15m / 1H / 4H / 1D), SL, TP and MFE.
+- **By period**: monthly P/L, monthly table in plain language, daily calendar.
+- **Numeric dates** everywhere, e.g. 2026/10/28 14:08.
+- **Period filter**: 7 days / 30 days / this month / 3 months / 1 year / all time.
 - **MFE analysis**: how much of the available move your winners kept, and how many trades were in profit before closing at a loss.
 - **Discipline flags**: oversized lots, averaging down, revenge trades after a loss, large losses closed without hitting SL, overtrading days.
 - **% only mode**: hides every dollar amount so you can share screenshots.
 - **Export PNG**: 1080×1350 summary card, sized for Instagram/Facebook posts.
 - **Thai / English** UI.
-- **Dark / light theme**: toggle with the ☀/☾ button in the header. Defaults to your system setting.
 
 ### Requirements
 - Windows with the **MetaTrader 5** terminal installed and logged in (the MT5 Python API is Windows-only)
