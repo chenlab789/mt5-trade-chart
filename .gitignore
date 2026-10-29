@@ -7,3 +7,4 @@ data.js
 stamp.js
 stamp.json
 cache/
+!docs/*.png

@@ -4,6 +4,14 @@
 
 Plot your MetaTrader 5 gold trades as TradingView-style position boxes on a candlestick chart, plus a performance report that shows where you make and leak money.
 
+| Summary · สรุปพอร์ต | All trades · ไม้ทั้งหมด |
+|---|---|
+| ![Summary](docs/overview.png) | ![All trades](docs/trades.png) |
+| **By period · ผลตามช่วงเวลา** | **Habits · นิสัยการเทรด** |
+| ![By period](docs/monthly.png) | ![Habits](docs/discipline.png) |
+
+<sub>ภาพจากพอร์ตจริงในโหมด "% อย่างเดียว" ซ่อนตัวเลขเงินและเลขบัญชี · Real account in "% only" mode, dollar amounts and account numbers hidden.</sub>
+
 [ภาษาไทย](#ภาษาไทย) · [English](#english)
 
 ---
@@ -29,7 +37,7 @@ Plot your MetaTrader 5 gold trades as TradingView-style position boxes on a cand
 
 ### วิธีติดตั้ง
 ```bat
-git clone https://github.com/lec79731-debug/mt5-trade-chart.git
+git clone https://github.com/chenlab789/mt5-trade-chart.git
 cd mt5-trade-chart
 pip install -r requirements.txt
 copy config.example.json config.json
@@ -91,7 +99,7 @@ python build.py
 
 ### Install
 ```bat
-git clone https://github.com/lec79731-debug/mt5-trade-chart.git
+git clone https://github.com/chenlab789/mt5-trade-chart.git
 cd mt5-trade-chart
 pip install -r requirements.txt
 copy config.example.json config.json
